@@ -1,11 +1,17 @@
 "use client";
+import { useState } from "react";
+import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  Play,
-} from "lucide-react";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion, AnimatePresence } from "framer-motion";
 import AnimeCard from "@/components/ui/animeCard";
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 
 const animeCategories = [
   {
@@ -46,167 +52,456 @@ const animeCategories = [
       {
         id: 5,
         title: "Naruto",
-        image: "/api/placeholder/300",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
         description:
           "A young ninja's journey to become the strongest in his village.",
-      },
-
-      {
-        id: 2,
-        title: "Attack on Titan",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Humanity fights for survival against giant humanoid Titans.",
-      },
-      {
-        id: 3,
-        title: "Fullmetal Alchemist",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Two brothers search for the Philosopher's Stone to restore their bodies.",
-      },
-      {
-        id: 4,
-        title: "My Hero Academia",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "A world where superpowers are common, and one boy dreams of being a hero.",
       },
       {
         id: 5,
         title: "Naruto",
-        image: "/api/placeholder/300",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
         description:
           "A young ninja's journey to become the strongest in his village.",
-      },
-
-      {
-        id: 2,
-        title: "Attack on Titan",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Humanity fights for survival against giant humanoid Titans.",
-      },
-      {
-        id: 3,
-        title: "Fullmetal Alchemist",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Two brothers search for the Philosopher's Stone to restore their bodies.",
-      },
-      {
-        id: 4,
-        title: "My Hero Academia",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "A world where superpowers are common, and one boy dreams of being a hero.",
       },
       {
         id: 5,
         title: "Naruto",
-        image: "/api/placeholder/300",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
         description:
           "A young ninja's journey to become the strongest in his village.",
-      },
-
-      {
-        id: 2,
-        title: "Attack on Titan",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Humanity fights for survival against giant humanoid Titans.",
-      },
-      {
-        id: 3,
-        title: "Fullmetal Alchemist",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Two brothers search for the Philosopher's Stone to restore their bodies.",
-      },
-      {
-        id: 4,
-        title: "My Hero Academia",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "A world where superpowers are common, and one boy dreams of being a hero.",
       },
       {
         id: 5,
         title: "Naruto",
-        image: "/api/placeholder/300",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
         description:
           "A young ninja's journey to become the strongest in his village.",
-      },
-
-      {
-        id: 2,
-        title: "Attack on Titan",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Humanity fights for survival against giant humanoid Titans.",
-      },
-      {
-        id: 3,
-        title: "Fullmetal Alchemist",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Two brothers search for the Philosopher's Stone to restore their bodies.",
-      },
-      {
-        id: 4,
-        title: "My Hero Academia",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "A world where superpowers are common, and one boy dreams of being a hero.",
       },
       {
         id: 5,
         title: "Naruto",
-        image: "/api/placeholder/300",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
         description:
           "A young ninja's journey to become the strongest in his village.",
-      },
-
-      {
-        id: 2,
-        title: "Attack on Titan",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Humanity fights for survival against giant humanoid Titans.",
-      },
-      {
-        id: 3,
-        title: "Fullmetal Alchemist",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "Two brothers search for the Philosopher's Stone to restore their bodies.",
-      },
-      {
-        id: 4,
-        title: "My Hero Academia",
-        image:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
-        description:
-          "A world where superpowers are common, and one boy dreams of being a hero.",
       },
       {
         id: 5,
         title: "Naruto",
-        image: "/api/placeholder/300",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
+        description:
+          "A young ninja's journey to become the strongest in his village.",
+      },
+      {
+        id: 5,
+        title: "Naruto",
+        image:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
         description:
           "A young ninja's journey to become the strongest in his village.",
       },
@@ -243,74 +538,96 @@ const animeCategories = [
 ];
 
 export default function Anime() {
-  const [selectedAnime, setSelectedAnime] = useState<any>(null);
+  const [selectedAnime, setSelectedAnime] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); 
 
-  const handleAnimeSelect = (anime: any) => {
+  const handleAnimeSelect = (anime:any) => {
     setSelectedAnime(anime);
+    setIsDialogOpen(true);
   };
 
   const handleCloseModal = () => {
+    setIsDialogOpen(false);
     setSelectedAnime(null);
   };
 
   return (
-    <div className="">
-      <h1 className="text-2xl">Explore Anime</h1>
-      <div className="grid grid-cols-4 mt-4">
-        {animeCategories[0].items.map((category, index) => (
-          <motion.div className="col-span-1" key={index}>
-            <AnimeCard anime={category} handleAnimeSelect={handleAnimeSelect} />
-          </motion.div>
-        ))}
-      </div>
-      <div>
-      </div>
-      <AnimatePresence>
-        {selectedAnime && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-purple-800/80"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleCloseModal}
-          >
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Explore Anime</h1>
+
+      {/* Anime Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
+        <AnimatePresence>
+          {animeCategories[0].items.map((anime, index) => (
             <motion.div
-              className="bg-pink-50 rounded-lg max-w-2xl w-full p-8"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
+            
+              key={`${anime.id}-${index}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{
+                duration: 0.3,
+              }}
+              viewport={{
+                once: true,
+              }}
             >
-              <h2 className="text-3xl font-bold mb-4 text-purple-800">
-                {selectedAnime.title}
-              </h2>
-              <div className="flex">
-                <img
-                  src={selectedAnime.image}
-                  alt={selectedAnime.title}
-                  className="w-1/3 mr-6 rounded-lg"
-                />
-                <div>
-                  <p className="text-lg mb-4 text-gray-700">
-                    {selectedAnime.description}
-                  </p>
-                  <div className="flex space-x-4">
-                    <Button className="bg-pink-600 text-white hover:bg-pink-700">
-                      <Play className="mr-2" /> Watch Now
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="border-pink-600 text-pink-600 hover:bg-pink-100"
-                    >
-                      Add to List
-                    </Button>
-                  </div>
-                </div>
-              </div>
+              <AnimeCard anime={anime} handleAnimeSelect={handleAnimeSelect} />
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {/* Anime Details Dialog */}
+      <AnimeDetailsDialog
+        isOpen={isDialogOpen}
+        handleCloseModal={handleCloseModal}
+        selectedAnime={selectedAnime}
+      />
     </div>
+  );
+}
+
+interface AnimeDetailsDialogProps {
+  isOpen: boolean;
+  handleCloseModal: () => void;
+  selectedAnime: any | null;
+}
+
+function AnimeDetailsDialog({
+  isOpen,
+  handleCloseModal,
+  selectedAnime,
+}: AnimeDetailsDialogProps) {
+  return (
+    <Dialog open={isOpen} onOpenChange={handleCloseModal}>
+      {selectedAnime && (
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-3xl text-purple-800">
+              {selectedAnime.title}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+            <img
+              src={selectedAnime.image}
+              alt={selectedAnime.title}
+              className="w-full md:w-1/3 rounded-lg object-cover"
+            />
+            <div className="flex-1">
+              <DialogDescription className="text-lg mb-4">
+                {selectedAnime.description}
+              </DialogDescription>
+              <div className="flex space-x-4">
+                <Button className="bg-purple-600 hover:bg-purple-700">
+                  <Play className="mr-2" /> Watch Now
+                </Button>
+                <Button variant="secondary">Add to List</Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      )}
+    </Dialog>
   );
 }

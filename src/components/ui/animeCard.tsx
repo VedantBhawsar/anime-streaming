@@ -10,10 +10,10 @@ function AnimeCard({ anime, handleAnimeSelect }: AnimeCardProps) {
   return (
     <motion.div
       key={anime.id}
-      className=" p-2 flex-shrink-0 group relative cursor-pointer"
+      className="p-2 group relative cursor-pointer"
       onClick={() => handleAnimeSelect(anime)}
     >
-      <div className="relative w-full h-52 rounded-lg overflow-hidden group">
+      <div className="relative w-full h-80 rounded-lg overflow-hidden group">
         <Image
           src={anime.image}
           alt={anime.title}
@@ -21,7 +21,7 @@ function AnimeCard({ anime, handleAnimeSelect }: AnimeCardProps) {
           className="object-cover group-hover:scale-110 transition-transform duration-300"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 "></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
 
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <motion.div
@@ -34,13 +34,16 @@ function AnimeCard({ anime, handleAnimeSelect }: AnimeCardProps) {
           </motion.div>
         </div>
 
-        <motion.div className="flex group-hover:hidden transition-colors duration-300 items-center justify-between absolute bottom-1 left-0 w-full px-5 py-2 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
-          <p className="text-white text-sm group\card-hover:font-bold  truncate">
+        <motion.div className="flex flex-col group-hover:hidden transition-colors duration-300 absolute bottom-0 left-0 w-full px-4 py-3 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
+          <p className="text-white text-sm truncate font-semibold mb-1">
             {anime.title}
           </p>
-          <p className="text-white font-bold text-base group\card-hover:font-bold truncate">
-            0
-          </p>
+          <div className="flex justify-between items-center">
+            <p className="text-white text-xs opacity-80 truncate">Anime</p>
+            <p className="text-white font-bold text-sm truncate">
+              0
+            </p>
+          </div>
         </motion.div>
       </div>
     </motion.div>

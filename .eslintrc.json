@@ -1,1 +1,4 @@
-// adding it soon
+{
+    "extends": "next/core-web-vitals"
+  }
+  

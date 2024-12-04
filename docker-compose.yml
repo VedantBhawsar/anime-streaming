@@ -15,6 +15,14 @@ services:
     networks:
       - postgres-net
 
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+    networks:
+      - postgres-net
+
 volumes:
   postgres-data:
 

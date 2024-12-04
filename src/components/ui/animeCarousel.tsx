@@ -1,3 +1,4 @@
+'use client'
 import AnimeCard from "./animeCard";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./carousel";
 
@@ -13,7 +14,7 @@ function AnimeCarousel({ handleAnimeSelect, category }: any) {
           <Carousel className="w-full ">
             <CarouselContent>
               {category.items.map((anime: any, index: number) => (
-                <CarouselItem key={index} className="basis-1/4  gap-10">
+                <CarouselItem key={index} className="basis-1/6  gap-10">
                   <AnimeCard
                     anime={anime}
                     handleAnimeSelect={handleAnimeSelect}
