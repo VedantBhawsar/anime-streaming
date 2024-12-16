@@ -1,10 +1,20 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import AnimeCarousel from "@/components/ui/animeCarousel";
 import Hero from "@/components/Hero";
 import { api } from "@/lib/api";
 
-export default async function HomePage() {
-  const { data } = await api.get("/anime/home");
+export default function HomePage() {
+  const [data, setData] = useState<any | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data: anime } = await api.get("/anime/home");
+      setData(anime);
+    }
+
+    fetchData();
+  });
 
   return (
     <div className=" bg-gradient-to-br  text-purple-800 ">
