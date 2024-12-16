@@ -3,7 +3,7 @@ import { IAnime, ISuggestionAnime } from "./anime";
 export interface IAnimeResponse {
   currentPage: number;
   hasNextPage: boolean;
-  data: Array<IAnime>;
+  results: Array<IAnime>;
 }
 
 export interface ISugggestionResponse {

@@ -1,53 +1,76 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth, { NextAuthOptions, RequestInternal } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import signupSchema, { ISignupSchema } from "@/schemas/signupSchema";
+import { prisma } from "@/lib/prismaClient";
 
-const prisma = new PrismaClient();
+declare module "next-auth" {
+  interface User {
+    id: string;
+    email: string;
+    name?: string | null;
+    description?: string | null;
+  }
 
-const handler = NextAuth({
-  debug: true,
+  interface Session {
+    user: User;
+  }
+
+  interface JWT {
+    id?: string;
+    email?: string;
+    name?: string | null;
+  }
+}
+
+// Credentials type
+interface UserCredentials {
+  username: string;
+  email: string;
+  password: string;
+}
+
+// NextAuth Configuration
+const authConfig: NextAuthOptions = {
+  debug: process.env.NODE_ENV === "development",
+  adapter: PrismaAdapter(prisma),
   providers: [
-    // Google({
-    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    // }),
-    // Twitter({
-    //   clientId: process.env.TWITTER_CLIENT_ID as string,
-    //   clientSecret: process.env.TWITTER_CLIENT_SECRET as string,
-    // }),
-    // Github({
-    //   clientId: process.env.GITHUB_CLIENT_ID as string,
-    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    // }),
-    Credentials({
+    CredentialsProvider({
       name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        email: { label: "Email", type: "text" },
       },
-      async authorize(credentials) {
+      // @ts-ignore
+      async authorize(
+        credentials:
+          | Record<"email" | "username" | "password", string>
+          | undefined,
+        req: Pick<RequestInternal, "query" | "body" | "headers" | "method">
+      ) {
         try {
-          const validatedData: ISignupSchema = signupSchema.parse(credentials);
+          if (!credentials) return null;
+          const { email, password, username } = credentials as UserCredentials;
 
-          const { email, password, username } = validatedData;
+          // Validate input
+          if (!email || !password) {
+            throw new Error("Email and password are required");
+          }
 
+          // Find existing user
           let user = await prisma.user.findUnique({
             where: { email },
-            include: {
-              wishlist: true,
-              watchedAnimes: true,
-              likedAnimes: true,
-              dislikedAnimes: true,
-              genresWatched: true,
-            },
           });
 
+          // If no user, create a new one
           if (!user) {
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const saltRounds = parseInt(
+              process.env.BCRYPT_SALT_ROUNDS || "10",
+              10
+            );
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
 
             user = await prisma.user.create({
               data: {
@@ -56,55 +79,80 @@ const handler = NextAuth({
                 name: username,
                 description: "Welcome to Anime World!",
               },
-              include: {
-                wishlist: true,
-                watchedAnimes: true,
-                likedAnimes: true,
-                dislikedAnimes: true,
-                genresWatched: true,
-              },
             });
           } else {
+            // Verify password for existing user
             const isPasswordValid = await bcrypt.compare(
               password,
-              user.password ?? ""
+              user.password || ""
             );
 
             if (!isPasswordValid) {
-              throw new Error("Invalid email or password.");
+              throw new Error("Invalid email or password");
             }
           }
 
-          const userForSession = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            wishlist: user.wishlist,
-            watchedAnimes: user.watchedAnimes,
-            likedAnimes: user.likedAnimes,
-            dislikedAnimes: user.dislikedAnimes,
-            genresWatched: user.genresWatched,
-          };
-
-          return userForSession;
+          return user
+            ? {
+                ...user,
+                email: user.email,
+              }
+            : null;
         } catch (error) {
           console.error("Authorization error:", error);
-          throw new Error("Invalid credentials or internal error.");
+          return null;
         }
       },
     }),
   ],
-  adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/auth/signin",
     error: "/error",
   },
   callbacks: {
-    async session({ session, user }: any) {
-      session.user.id = user.id;
+    async jwt({ token, user, trigger, session }) {
+      // Initial sign in
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+      }
+
+      // Handle manual session updates
+      if (trigger === "update") {
+        token = { ...token, ...session };
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      // Add user details to session
+      if (token) {
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string | null;
+      }
       return session;
     },
   },
-});
+  events: {
+    async signIn(message) {
+      console.log("Successful sign-in", {
+        user: message.user,
+        account: message.account,
+      });
+    },
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+const handler = NextAuth(authConfig);
 
 export { handler as GET, handler as POST };

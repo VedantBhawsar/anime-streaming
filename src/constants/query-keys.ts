@@ -8,3 +8,6 @@ export const SEARCH_ANIME = "search-anime";
 export const GET_EPISODE_SERVERS = "get-episode-servers";
 
 export const GET_HOME_PAGE_DATA = "get-home-page-data";
+
+export const GET_GENRES = "get-genres";
+export const GET_GENRES_DATA = "get-genres-data";

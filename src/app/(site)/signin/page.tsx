@@ -12,11 +12,49 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Github, Twitter, Mail } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+type FormData = {
+  email: string;
+  password: string;
+};
 
 export default function SignIn() {
+  const router = useRouter();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<FormData>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
+  console.log(errors);
 
-  
+  const onSubmit = async (data: FormData) => {
+    try {
+      const response = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+      if (response?.error) {
+        alert("Sign-in failed: " + response.error);
+      } else if (response?.ok) {
+        console.log("Sign-in Data:", data);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Error signing in:", error);
+      alert("An unexpected error occurred. Please try again later.");
+    }
+  };
+
   return (
     <div className="h-full flex items-center justify-center bg-gradient-to-br p-4">
       <Card className="w-full max-w-md border-2 border-pink-300 shadow-2xl">
@@ -29,24 +67,40 @@ export default function SignIn() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                className="mt-2"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className="mt-2"
-              />
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-1 gap-4">
+              <div className="col-span-1">
+                <Label htmlFor="name">Email</Label>
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field }) => (
+                    <Input
+                      id="email"
+                      placeholder="Enter your email"
+                      {...field}
+                      required
+                      className="mt-2"
+                    />
+                  )}
+                />
+              </div>
+              <div className="col-span-1">
+                <Label htmlFor="name">Password</Label>
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field }) => (
+                    <Input
+                      id="password"
+                      placeholder="Enter your password"
+                      {...field}
+                      required
+                      className="mt-2"
+                    />
+                  )}
+                />
+              </div>
             </div>
             <Button className="w-full bg-pink-600 hover:bg-pink-700">
               Sign In

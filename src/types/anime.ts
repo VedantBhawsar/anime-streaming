@@ -1,20 +1,15 @@
-export interface IAnimeData {
-  spotlightAnimes: SpotlightAnime[];
-  trendingAnimes: IAnime[];
-  latestEpisodeAnimes: LatestCompletedAnime[];
-  topUpcomingAnimes: TopUpcomingAnime[];
-  top10Animes: Top10Animes;
-  topAiringAnimes: LatestCompletedAnime[];
-  mostPopularAnimes: IAnime[];
-  mostFavoriteAnimes: IAnime[];
-  latestCompletedAnimes: LatestCompletedAnime[];
-  genres: string[];
-}
-
-export interface LatestCompletedAnime extends IAnime {
-  duration?: string;
-  rating?: null;
-}
+// export interface IAnimeData {
+//   spotlightAnimes: SpotlightAnime[];
+//   trendingAnimes: IAnime[];
+//   latestEpisodeAnimes: LatestCompletedAnime[];
+//   topUpcomingAnimes: TopUpcomingAnime[];
+//   top10Animes: Top10Animes;
+//   topAiringAnimes: LatestCompletedAnime[];
+//   mostPopularAnimes: IAnime[];
+//   mostFavoriteAnimes: IAnime[];
+//   latestCompletedAnimes: LatestCompletedAnime[];
+//   genres: string[];
+// }
 
 export interface Episodes {
   sub: number | null;
@@ -27,14 +22,29 @@ export enum Type {
   Tv = "TV",
 }
 
+enum ISubOrDub {
+  "sub",
+  "dub",
+  "both",
+}
+
 export interface IAnime {
+  dub: number;
+  duration: string;
+  episodes: any;
   id: string;
-  name: string;
-  jname: string;
-  poster: string;
-  episodes: Episodes;
-  type?: Type;
-  rank?: number;
+  image: string;
+  japaneseTitle: string;
+  nsfw: boolean;
+  sub: number;
+  title: string;
+  type: string;
+  url: string;
+  description?: string;
+  totalEpisodes?: number;
+  subOrDub?: ISubOrDub;
+  originalTitle?: string;
+  hasSub: boolean;
 }
 
 export interface ISuggestionAnime extends IAnime {
@@ -53,11 +63,11 @@ export interface SpotlightAnime {
   otherInfo: string[];
 }
 
-export interface Top10Animes {
-  today: LatestCompletedAnime[];
-  week: IAnime[];
-  month: LatestCompletedAnime[];
-}
+// export interface Top10Animes {
+//   today: LatestCompletedAnime[];
+//   week: IAnime[];
+//   month: LatestCompletedAnime[];
+// }
 
 export interface TopUpcomingAnime {
   id: string;
@@ -69,3 +79,33 @@ export interface TopUpcomingAnime {
   rating: null | string;
   episodes: Episodes;
 }
+
+export type AnimeMetadata = {
+  title: string;
+  originalTitle: string;
+  studio: string;
+  genre: string[];
+  episodes: number;
+  status: string;
+  rating: number;
+  description: string;
+  coverImage: string;
+};
+
+export type EpisodeInfo = {
+  id: number;
+  number: number;
+  title: string;
+  duration: string;
+  releaseDate: string;
+  thumbnail: string;
+};
+
+export type CommentType = {
+  id: number;
+  username: string;
+  avatar: string;
+  content: string;
+  likes: number;
+  timestamp: string;
+};

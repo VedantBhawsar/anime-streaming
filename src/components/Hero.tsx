@@ -1,5 +1,4 @@
-'use client'
-
+"use client";
 import React from "react";
 import { motion } from "framer-motion";
 import { Play, Info } from "lucide-react";
@@ -47,10 +46,10 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         className="h-full bg-cover bg-center"
         style={{
           backgroundImage: `
-            linear-gradient(to bottom, 
-              rgba(255,105,180,0.5) 30%, 
-              rgba(0, 0, 0, 0.8) 100%
-            ), 
+            linear-gradient(to bottom,
+              rgba(0,0,0,0.0) 40%,
+              rgba(0, 0, 0, 1) 100%
+            ),
             url(${backgroundImage})
           `,
         }}

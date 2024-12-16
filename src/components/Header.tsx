@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -11,10 +12,22 @@ import { protestRevolution } from "@/fonts";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { signOut, useSession } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function Header() {
   const pathName = usePathname();
-  console.log(pathName.split('/')[1])
+  const { data } = useSession();
+  const user = data?.user;
+
   const navigationMenu = [
     {
       href: "/",
@@ -23,22 +36,22 @@ export default function Header() {
       hoverClass: "group/home",
     },
     {
-      href: "/anime",
-      icon: <TvIcon/>,
+      href: "/explore",
+      icon: <TvIcon />,
       label: "Anime",
       hoverClass: "group/anime",
     },
     {
       href: "/watchlist",
-      icon: <ListTodo/>,
+      icon: <ListTodo />,
       label: "Watchlist",
       hoverClass: "group/watchlist",
     },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow">
-      <div className="container mx-auto flex items-center justify-between p-4">
+    <nav className="sticky top-0 z-50 bg-white backdrop-blur-md shadow-md">
+      <div className="container mx-auto flex items-center justify-between py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
           <img src="./logo.png" alt="Logo" className="w-16 rounded-full " />
@@ -56,9 +69,10 @@ export default function Header() {
                 <NavigationMenuLink asChild>
                   <Link
                     href={item.href}
-                    className={cn(`relative flex hover:bg-pink-200 items-center gap-2 text-purple-700 hover:text-pink-600 transition-colors duration-300 p-2 px-3 `, 
-                      item.href.split('/')[1] === pathName.split('/')[1] && "bg-pink-200 text-pink-600"
-
+                    className={cn(
+                      `relative flex hover:bg-pink-200 items-center gap-2 text-purple-700 hover:text-pink-600 transition-colors duration-300 p-2 px-3 `,
+                      item.href.split("/")[1] === pathName.split("/")[1] &&
+                        "bg-pink-200 text-pink-600"
                     )}
                   >
                     {item.icon}
@@ -81,9 +95,37 @@ export default function Header() {
               <Github className="h-4 w-4" />
             </a>
           </Button>
-          <Button variant="default" className="bg-pink-600 hover:bg-pink-700">
-            <Link href={"/signup"}>Sign Up</Link>
-          </Button>
+
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link href={"/account"}>Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={"/setting"}>Setting</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut()}>
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant="default" className="bg-pink-600 hover:bg-pink-700">
+              <Link href={"/signup"}>Sign Up</Link>
+            </Button>
+          )}
         </div>
       </div>
     </nav>
