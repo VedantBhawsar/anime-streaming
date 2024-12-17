@@ -2,10 +2,12 @@ import { animePaheClient } from "@/lib/animeClient";
 import { getRedisClient } from "@/lib/redisClient";
 import { NextResponse } from "next/server";
 
-// eslint-disable-next-line
-export async function GET(request: Request, { params }: any) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ animeId: string }> }
+) {
   try {
-    const animeId = params?.animeId;
+    const animeId = (await params).animeId;
 
     if (!animeId) {
       return NextResponse.json({
@@ -21,7 +23,9 @@ export async function GET(request: Request, { params }: any) {
 
     const response = await animePaheClient.fetchAnimeInfo(animeId);
     await redisClient.set(animeId, JSON.stringify(response));
-    return NextResponse.json(response);
+    return NextResponse.json(response, {
+      status: 200,
+    });
   } catch (error: any) {
     console.error(error?.message);
     return NextResponse.json(

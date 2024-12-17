@@ -31,9 +31,10 @@ export async function GET() {
       EX: 1000 * 60 * 60,
     });
 
-    return NextResponse.json(homeData);
+    return NextResponse.json(homeData, {
+      status: 200
+    });
   } catch (error: any) {
-    console.error("Error occurred:", error);
     return NextResponse.json(
       {
         error: "An error occurred while fetching data",

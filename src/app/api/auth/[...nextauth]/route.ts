@@ -33,7 +33,7 @@ interface UserCredentials {
 
 // NextAuth Configuration
 const authConfig: NextAuthOptions = {
-  debug: process.env.NODE_ENV === "development",
+  // debug: process.env.NODE_ENV === "development",
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
