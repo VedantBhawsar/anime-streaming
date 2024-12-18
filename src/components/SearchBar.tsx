@@ -77,18 +77,18 @@ const SearchBar = () => {
             duration: 0.2,
             delay: 0.1,
           }}
-          className="absolute w-full mt-10 h-96 overflow-scroll bg-white shadow-lg rounded-md"
+          className="absolute w-full mt-10 h-96 overflow-scroll bg-pink-200  shadow-lg rounded-md"
         >
           <ScrollArea>
             {animeData?.length < 1 ? (
-              <div>
+              <div className="flex justify-center items-center h-full p-5">
                 <p>no result found</p>
               </div>
             ) : (
               animeData?.map((anime) => (
                 <Link
                   key={anime.id}
-                  href={`/anime/${anime.id}`}
+                  href={`/anime/a/${anime.id}`}
                   className="grid grid-cols-4 gap-4 p-4 hover:bg-gray-100 transition-colors duration-200"
                 >
                   <div className="col-span-1 w-full relative h-24 rounded-md overflow-hidden">

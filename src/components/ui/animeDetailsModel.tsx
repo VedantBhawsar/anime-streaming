@@ -110,16 +110,15 @@ export default function AnimeDetailsModal({
                 </div>
               </div>
             </div>
-
-            <DialogFooter className="flex space-x-4">
-              <Link href={`/anime/a/${anime?.id}`}>
-                <Button className="bg-pink-600 hover:bg-pink-700 flex items-center">
-                  <Tv className="" /> Watch Episodes
-                </Button>
-              </Link>
-            </DialogFooter>
           </div>
         </div>
+        <DialogFooter className="flex space-x-4">
+          <Link href={`/anime/a/${anime?.id}`}>
+            <Button className="bg-pink-600 hover:bg-pink-700 flex items-center">
+              <Tv className="" /> Watch Episodes
+            </Button>
+          </Link>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

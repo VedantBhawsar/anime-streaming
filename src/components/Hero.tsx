@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import { Play, Info } from "lucide-react";
+import { Play, Info, Fullscreen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface HeroProps {
@@ -11,6 +11,7 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
+  const divRef = useRef(null);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -35,12 +36,30 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
     },
   };
 
+  const enterFullScreen = () => {
+    const element = divRef.current;
+    if (element) {
+      // @ts-ignore
+      if (element.requestFullscreen) {
+        // @ts-ignore
+        element.requestFullscreen();
+      } else if ((element as any).mozRequestFullScreen) {
+        (element as any).mozRequestFullScreen();
+      } else if ((element as any).webkitRequestFullscreen) {
+        (element as any).webkitRequestFullscreen();
+      } else if ((element as any).msRequestFullscreen) {
+        (element as any).msRequestFullscreen();
+      }
+    }
+  };
+
   return (
     <motion.div
       className="relative h-[80vh] bg-cover bg-center overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      ref={divRef}
     >
       <motion.div
         className="h-full bg-cover bg-center"
@@ -66,14 +85,14 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         animate="visible"
       >
         <motion.h1
-          className="text-6xl font-bold text-white mb-4"
+          className="text-4xl font-bold text-pink-500 mb-2"
           variants={itemVariants}
         >
           {title}
         </motion.h1>
 
         <motion.p
-          className="text-xl max-w-xl mb-6 text-pink-50"
+          className="text-base tracking-wide text-justify max-w-xl mb-6 text-white line-clamp-4"
           variants={itemVariants}
         >
           {description}
@@ -98,6 +117,11 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
             </motion.button>
           </Button>
         </motion.div>
+      </motion.div>
+      <motion.div className="absolute bottom-8 right-8">
+        <Button size={"icon"} onClick={enterFullScreen}>
+          <Fullscreen className="text-white" />
+        </Button>
       </motion.div>
     </motion.div>
   );

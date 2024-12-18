@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { IAnimeDetails } from "@/types/anime-details";
 import { IAnime } from "@/types/anime";
 
 interface IAnimeStore {
