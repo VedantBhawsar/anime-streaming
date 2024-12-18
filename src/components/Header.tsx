@@ -7,10 +7,10 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Home, TvIcon, ListTodo, Github } from "lucide-react";
+import { Home, TvIcon, ListTodo, Lightbulb } from "lucide-react";
 import { protestRevolution } from "@/fonts";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, {  } from "react";
 import { cn } from "@/lib/utils";
 import { signOut, useSession } from "next-auth/react";
 import {
@@ -22,28 +22,35 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   const pathName = usePathname();
   const { data } = useSession();
   const user = data?.user;
-
+  
   const navigationMenu = [
     {
       href: "/",
-      icon: <Home />,
+      icon: <Home size={14} />,
       label: "Home",
       hoverClass: "group/home",
     },
     {
       href: "/explore",
-      icon: <TvIcon />,
-      label: "Anime",
+      icon: <TvIcon size={14} />,
+      label: "Explore",
       hoverClass: "group/anime",
     },
     {
+      href: "/recommendations",
+      icon: <Lightbulb size={14} />,
+      label: "Recommendations",
+      hoverClass: "group/recommendations",
+    },
+    {
       href: "/watchlist",
-      icon: <ListTodo />,
+      icon: <ListTodo size={14} />,
       label: "Watchlist",
       hoverClass: "group/watchlist",
     },
@@ -62,15 +69,15 @@ export default function Header() {
           </span>
         </Link>
 
-        <NavigationMenu>
-          <NavigationMenuList className="flex gap-4">
+        <NavigationMenu className="mr-auto ml-5">
+          <NavigationMenuList className="flex gap-1">
             {navigationMenu.map((item) => (
               <NavigationMenuItem key={item.href}>
                 <NavigationMenuLink asChild>
                   <Link
                     href={item.href}
                     className={cn(
-                      `relative flex hover:bg-pink-200 items-center gap-2 text-purple-700 hover:text-pink-600 transition-colors duration-300 p-2 px-3 `,
+                      `relative flex hover:bg-pink-200 items-center gap-1 text-purple-700 hover:text-pink-600 transition-colors duration-300 p-2 text-sm`,
                       item.href.split("/")[1] === pathName.split("/")[1] &&
                         "bg-pink-200 text-pink-600"
                     )}
@@ -86,16 +93,7 @@ export default function Header() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" asChild>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Github className="h-4 w-4" />
-            </a>
-          </Button>
-
+          <SearchBar />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger>

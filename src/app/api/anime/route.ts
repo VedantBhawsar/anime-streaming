@@ -3,9 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const response = await animePaheClient.fetchEpisodeSources(
-      "mountain-and-sea-organization-19420?ep=129562"
-    );
+    const response = await animePaheClient.search("jujutsu");
     console.log(response);
     return NextResponse.json(response);
   } catch (error: any) {

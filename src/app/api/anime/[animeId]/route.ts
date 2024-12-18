@@ -8,7 +8,6 @@ export async function GET(
 ) {
   try {
     const animeId = (await params).animeId;
-
     if (!animeId) {
       return NextResponse.json({
         error: "Anime ID is required",

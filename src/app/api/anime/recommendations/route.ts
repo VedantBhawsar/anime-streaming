@@ -1,8 +1,13 @@
+import { chat } from "@/lib/geminiClient";
 import { NextResponse } from "next/server";
 
-export function GET() {
+export async function GET() {
   try {
-    return NextResponse.json({ message: "not yet implemented" });
+    const response = await chat.ask("suggest some icons for recommondation option");
+
+    return NextResponse.json({
+      message: response,
+    });
   } catch (error: any) {
     console.error(error?.message);
     return NextResponse.json(
