@@ -2,7 +2,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -10,81 +9,77 @@ import {
 } from "@/components/ui/pagination";
 
 interface IAnimePagination {
-  hasNextPage: boolean | undefined;
-  currentPage: number | undefined;
-  totalPages: number | undefined;
+  hasNextPage: boolean;
+  currentPage: number;
   refetch: () => void;
 }
 
 function AnimePagination({
   hasNextPage,
-  currentPage,
-  totalPages,
+  currentPage = 1,
   refetch,
 }: IAnimePagination) {
   const searchParams = useSearchParams();
-  const genre = searchParams.get("q") || "action";
-  const curPage = currentPage || 1;
-  const totPages = totalPages || 1;
   const router = useRouter();
   const pathname = usePathname();
+  const genre = searchParams.get("q") || "action";
 
-  function handlePageChange(page: number) {
-    if (page < 1 || page > totPages) return;
-    const newUrl = `${pathname}?q=${genre.split("?")[0]}&page=${page}`;
-    router.push(newUrl);
-    setTimeout(refetch, 100);
-  }
+  const handlePageChange = (page: number) => {
+    if (page < 1) return;
+
+    const newUrl = `${pathname}?q=${genre}&page=${page}`;
+    router.push(newUrl, { scroll: true });
+    setTimeout(refetch, 150);
+  };
+
+  const getVisiblePages = () => {
+    const pages = [currentPage];
+
+    if (hasNextPage) {
+      pages.push(currentPage + 1);
+      if (currentPage + 2 <= currentPage + 3) {
+        pages.push(currentPage + 2);
+      }
+    }
+
+    return pages;
+  };
 
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            onClick={() => handlePageChange(curPage - 1)}
-            isActive={curPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            className={`${
+              currentPage === 1
+                ? "pointer-events-none opacity-50"
+                : "cursor-pointer"
+            }`}
+            aria-disabled={currentPage === 1}
           />
         </PaginationItem>
 
-        {/* Current Page */}
-        <PaginationItem>
-          <PaginationLink isActive>{curPage}</PaginationLink>
-        </PaginationItem>
-
-        {curPage + 1 <= totPages && (
-          <PaginationItem>
-            <PaginationLink onClick={() => handlePageChange(curPage + 1)}>
-              {curPage + 1}
+        {getVisiblePages().map((pageNum) => (
+          <PaginationItem key={pageNum}>
+            <PaginationLink
+              onClick={() => handlePageChange(pageNum)}
+              isActive={pageNum === currentPage}
+              className="cursor-pointer"
+            >
+              {pageNum}
             </PaginationLink>
           </PaginationItem>
-        )}
+        ))}
 
-        {curPage + 2 <= totPages && (
+        {hasNextPage && (
           <PaginationItem>
-            <PaginationLink onClick={() => handlePageChange(curPage + 2)}>
-              {curPage + 2}
-            </PaginationLink>
+            <PaginationNext
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="cursor-pointer"
+            />
           </PaginationItem>
         )}
-
-        {curPage + 2 < totPages && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
-        {curPage + 2 < totPages && (
-          <PaginationItem>
-            <PaginationLink onClick={() => handlePageChange(totPages)}>
-              {totPages}
-            </PaginationLink>
-          </PaginationItem>
-        )}
-        <PaginationItem>
-          <PaginationNext
-            onClick={() => handlePageChange(curPage + 1)}
-            isActive={!hasNextPage || curPage === totPages}
-          />
-        </PaginationItem>
       </PaginationContent>
     </Pagination>
   );

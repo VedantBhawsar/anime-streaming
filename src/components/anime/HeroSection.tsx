@@ -3,10 +3,11 @@ import { useAnimeStore } from "@/store/anime-store";
 import { IAnime } from "@/types/anime";
 import { motion } from "framer-motion";
 
-interface HeroSectionProps {}
+interface HeroSectionProps {
+  anime: any;
+}
 
-export function HeroSection({}: HeroSectionProps) {
-  const { anime } = useAnimeStore();
+export function HeroSection({ anime }: HeroSectionProps) {
   return (
     <div className="relative h-64 md:h-96 mb-6 rounded-xl overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

@@ -30,7 +30,7 @@ export default function ExplorePage() {
   } = useGetGenreData(genre, page);
 
   async function handleGenreChange(value: string) {
-    router.push("/explore" + "?" + "q=" + value + "?page=1");
+    router.push("/explore" + "?" + "q=" + value + "&page=1");
     setTimeout(refetch, 800);
   }
 
@@ -44,16 +44,20 @@ export default function ExplorePage() {
           <Skeleton className="w-24 h-8" />
         ) : (
           <Select
-            defaultValue={genre || (genres && genres[0])}
+            defaultValue={genre || (genres && genres[0].id)}
             onValueChange={handleGenreChange}
           >
             <SelectTrigger className="w-[150px] bg-white">
               <SelectValue placeholder="Genres" />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              {genres?.map((genre: string) => (
-                <SelectItem key={genre} value={genre} className="capitalize">
-                  {genre}
+              {genres?.map((genre) => (
+                <SelectItem
+                  key={genre.id}
+                  value={genre.id}
+                  className="capitalize"
+                >
+                  {genre.title}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -88,9 +92,8 @@ export default function ExplorePage() {
       </div>
       <div className="mt-5">
         <AnimePagination
-          hasNextPage={genreData?.hasNextPage}
-          currentPage={genreData?.currentPage}
-          totalPages={genreData?.totalPages}
+          hasNextPage={genreData?.hasNextPage|| false}
+          currentPage={genreData?.currentPage || 1}
           refetch={refetch}
         />
       </div>

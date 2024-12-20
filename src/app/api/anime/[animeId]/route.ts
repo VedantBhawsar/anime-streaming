@@ -1,4 +1,4 @@
-import { animePaheClient } from "@/lib/animeClient";
+import { animeGogoClient } from "@/lib/animeClient";
 import { getRedisClient } from "@/lib/redisClient";
 import { NextResponse } from "next/server";
 
@@ -20,7 +20,7 @@ export async function GET(
       return NextResponse.json(JSON.parse(cachedAnime));
     }
 
-    const response = await animePaheClient.fetchAnimeInfo(animeId);
+    const response = await animeGogoClient.fetchAnimeInfo(animeId);
     await redisClient.set(animeId, JSON.stringify(response));
     return NextResponse.json(response, {
       status: 200,

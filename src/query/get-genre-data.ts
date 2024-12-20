@@ -29,7 +29,6 @@ export const getGenreData = async (value: string, page: string) => {
 };
 
 export const useGetGenreData = (value: string, page: string) => {
-  console.log(page);
   return useQuery({
     queryFn: () => getGenreData(value, page),
     queryKey: [GET_GENRES_DATA],

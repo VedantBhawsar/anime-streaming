@@ -10,24 +10,21 @@ import {
 } from "@/components/ui/card";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useAnimeStore } from "@/store/anime-store";
+import { IAnime, IEpisode } from "./AnimeBottomSection";
 
-interface IAnime {
-  title: string;
-  episodes: [];
-  id: string;
+
+
+interface IEpisodesListProps {
+  anime: IAnime;
+  episodesPerPage?: number;
+  animeId: string;
 }
 
-interface IEpisode {
-  id: string;
-  number: number;
-  title: string;
-  isFiller: boolean;
-  url: string;
-}
-
-export function EpisodesList({ episodesPerPage = 32 }) {
-  const { anime } = useAnimeStore();
+export function EpisodesList({
+  anime,
+  episodesPerPage = 32,
+  animeId,
+}: IEpisodesListProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(
@@ -57,8 +54,12 @@ export function EpisodesList({ episodesPerPage = 32 }) {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 grid-cols-8">
-            {currentEpisodes.map((episode: IEpisode) => (
-              <EpisodeCard episode={episode} key={episode.id} />
+            {currentEpisodes?.map((episode: IEpisode) => (
+              <EpisodeCard
+                episode={episode}
+                key={episode.id}
+                animeId={animeId}
+              />
             ))}
           </div>
 
@@ -92,10 +93,16 @@ export function EpisodesList({ episodesPerPage = 32 }) {
   );
 }
 
-function EpisodeCard({ episode }: { episode: IEpisode }) {
+function EpisodeCard({
+  episode,
+  animeId,
+}: {
+  episode: IEpisode;
+  animeId: string;
+}) {
   return (
     <Link
-      href={`/anime/v/${episode.id}`}
+      href={`/anime/${animeId}/${episode.id}`}
       className="cursor-pointer border rounded-lg"
     >
       <div

@@ -39,7 +39,7 @@ model User {
   name          String?
   email         String?   @unique
   password      String?
-  emailVerified DateTime?
+  emailVerified Boolean?  @default(false)
   image         String?
   description   String?
   createdAt     DateTime  @default(now())
@@ -47,33 +47,13 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  // Relationships
-  wishlist       Anime[]   @relation("UserWishlist")
-  watchedAnimes  Anime[]   @relation("UserWatchedAnimes")
+  wishlist       String[]
+  watchedAnimes  String[]
   comments       Comment[]
-  likedAnimes    Anime[]   @relation("UserLikedAnimes")
-  dislikedAnimes Anime[]   @relation("UserDislikedAnimes")
-  genresWatched  Genre[]   @relation("UserWatchedGenres")
+  likedAnimes    String[]
+  dislikedAnimes String[]
   Like           Like[]
   Dislike        Dislike[]
-}
-
-model Anime {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  image       String?
-  releaseDate DateTime
-  genres      Genre[]   @relation("AnimeGenres")
-  comments    Comment[]
-  likes       Like[]
-  dislikes    Dislike[]
-
-  // Relations
-  wishlist   User[] @relation("UserWishlist")
-  watchedBy  User[] @relation("UserWatchedAnimes")
-  likedBy    User[] @relation("UserLikedAnimes")
-  dislikedBy User[] @relation("UserDislikedAnimes")
 }
 
 model Comment {
@@ -83,9 +63,9 @@ model Comment {
   updatedAt DateTime @updatedAt
   userId    String
   animeId   String
+  episode   String?
 
-  user  User  @relation(fields: [userId], references: [id])
-  anime Anime @relation(fields: [animeId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Like {
@@ -93,10 +73,8 @@ model Like {
   userId    String
   animeId   String
   createdAt DateTime @default(now())
-
-  user  User  @relation(fields: [userId], references: [id])
-  anime Anime @relation(fields: [animeId], references: [id])
-
+  user      User     @relation(fields: [userId], references: [id])
+ 
   @@unique([userId, animeId])
 }
 
@@ -106,18 +84,9 @@ model Dislike {
   animeId   String
   createdAt DateTime @default(now())
 
-  user  User  @relation(fields: [userId], references: [id])
-  anime Anime @relation(fields: [animeId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@unique([userId, animeId])
-}
-
-model Genre {
-  id    String  @id @default(cuid())
-  name  String  @unique
-  anime Anime[] @relation("AnimeGenres")
-
-  watchedByUsers User[] @relation("UserWatchedGenres")
 }
 
 model VerificationRequest {

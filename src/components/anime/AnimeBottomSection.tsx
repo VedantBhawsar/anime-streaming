@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { Star, Heart, Share2, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Heart, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -12,83 +12,99 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
-import { CommentType, IAnime } from "@/types/anime";
 import { CommentsList } from "./CommentsList";
+import { api } from "@/lib/api";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+
+export interface IEpisode {
+  id?: string;
+  number?: number;
+  title?: string;
+  isFiller?: boolean;
+  url?: string;
+}
+export interface IAnime {
+  description?: string;
+  episodes?: IEpisode[];
+  genres?: string[];
+  id?: string;
+  image?: string;
+  otherName?: string;
+  releaseDate?: string;
+  status?: string;
+  subOrDub?: string;
+  title?: string;
+  totalEpisodes?: number;
+  type?: string;
+  url?: string;
+}
+
+export interface IComment {
+  content: string;
+  id: string;
+  createdAt: string;
+  user: {
+    id: string;
+    name: string | null;
+    image: string | null;
+    email: string;
+  };
+  email: string;
+  image: string | null;
+  name: string | null;
+}
 
 export function AnimeBottomSection({
   anime,
-  animeMetadata,
+  animeId,
+  comments,
+  setComments,
+  episodeId,
 }: {
   anime: IAnime;
-  animeMetadata: any;
+  animeId: string;
+  episodeId: string;
+  comments: IComment[];
+  setComments: (
+    comments: IComment[] | ((prevComments: IComment[]) => IComment[])
+  ) => void;
 }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [newComment, setNewComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { data } = useSession();
 
-  const [comments, setComments] = useState<CommentType[]>([
-    {
-      id: 1,
-      username: "AnimeNinja",
-      avatar:
-        "https://images.unsplash.com/photo-1631947430066-48c30d57b943?q=80&w=2816&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      content:
-        "This anime is a masterpiece! The character development is incredible.",
-      likes: 42,
-      timestamp: "2 weeks ago",
-    },
-    {
-      id: 2,
-      username: "StoryTeller",
-      avatar:
-        "https://images.unsplash.com/photo-1631947430066-48c30d57b943?q=80&w=2816&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      content:
-        "The plot twists in this series are mind-blowing. Highly recommended!",
-      likes: 28,
-      timestamp: "1 week ago",
-    },
-  ]);
-
-  const handleLikeComment = (commentId: number) => {
-    setComments(
-      comments.map((comment) =>
-        comment.id === commentId
-          ? { ...comment, likes: comment.likes + 1 }
-          : comment
-      )
-    );
-  };
-
-  const handleAddComment = () => {
-    if (newComment.trim()) {
-      const newCommentObj: CommentType = {
-        id: comments.length + 1,
-        username: "Current User",
-        avatar:
-          "https://images.unsplash.com/photo-1631947430066-48c30d57b943?q=80&w=2816&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  async function handleComment() {
+    setLoading(true);
+    try {
+      if (newComment.length < 3) {
+        toast.error("Comment must be at least 3 characters long");
+        return;
+      }
+      const { data: comment } = await api.post("/anime/comment", {
         content: newComment,
-        likes: 0,
-        timestamp: "Just now",
-      };
-      setComments([newCommentObj, ...comments]);
+        userId: data?.user.id,
+        animeId,
+        episodeId,
+      });
       setNewComment("");
+      setComments((prevComments: IComment[]) => [...prevComments, comment]);
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
 
   return (
-    <div>
+    <div className="mt-6">
       <h1 className="text-2xl font-bold text-gray-800 mb-2">{anime?.title}</h1>
       <p className="text-base italic text-gray-600 mb-4">
-        {anime?.originalTitle}
+        {anime?.otherName || "No other name"}
       </p>
 
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-1">
-            <Star className="h-5 w-5 text-yellow-500" />
-            <span className="text-gray-700">{animeMetadata?.rating}</span>
-          </div>
-        </div>
-
+      <div className="hidden justify-between items-center">
         <div className="flex items-center space-x-2">
           <TooltipProvider>
             <Tooltip>
@@ -134,20 +150,20 @@ export function AnimeBottomSection({
         <CardContent className="p-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-base text-gray-600">Studio</p>
-              <p className="font-semibold">{animeMetadata.studio}</p>
+              <p className="text-base text-gray-600">Type</p>
+              <p className="font-semibold">{anime.type}</p>
             </div>
             <div>
               <p className="text-base text-gray-600">Status</p>
-              <p className="font-semibold">{animeMetadata.status}</p>
+              <p className="font-semibold">{anime.status}</p>
             </div>
             <div>
               <p className="text-base text-gray-600">Episodes</p>
-              <p className="font-semibold">{animeMetadata.episodes}</p>
+              <p className="font-semibold">{anime?.episodes?.length}</p>
             </div>
             <div>
               <p className="text-base text-gray-600">Genre</p>
-              <p className="font-semibold">{animeMetadata.genre.join(", ")}</p>
+              <p className="font-semibold">{anime?.genres?.join(", ")}</p>
             </div>
           </div>
         </CardContent>
@@ -168,33 +184,44 @@ export function AnimeBottomSection({
         </div>
 
         {/* Comment Input */}
-        <div className="flex space-x-4 mb-4">
-          <Avatar>
-            <AvatarImage
-              src="https://images.unsplash.com/photo-1631947430066-48c30d57b943?q=80&w=2816&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Your Avatar"
-              className="object-cover"
-            />
-            <AvatarFallback>YOU</AvatarFallback>
-          </Avatar>
-          <div className="flex-grow">
-            <div className="flex items-center space-x-2">
-              <Input
-                type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
-                className="flex-grow border-b border-gray-300 py-2 focus:outline-none focus:border-pink-400 bg-white"
-              />
-              <Button
-                onClick={handleAddComment}
-                variant="default"
-                className="text-base hover:bg-pink-600 bg-pink-500"
-              >
-                Comment
-              </Button>
+        <div className="mb-4">
+          {data?.user ? (
+            <div className="flex space-x-4">
+              <Avatar>
+                <AvatarImage
+                  src="https://images.unsplash.com/photo-1631947430066-48c30d57b943?q=80&w=2816&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Your Avatar"
+                  className="object-cover"
+                />
+                <AvatarFallback>YOU</AvatarFallback>
+              </Avatar>
+              <div className="flex-grow">
+                <div className="flex items-center space-x-2">
+                  <Input
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Add a comment..."
+                    className="flex-grow border-b border-gray-300 py-2 focus:outline-none focus:border-pink-400 bg-white"
+                  />
+                  <Button
+                    disabled={loading}
+                    onClick={handleComment}
+                    variant="default"
+                    className="text-base hover:bg-pink-600 bg-pink-500"
+                  >
+                    Comment
+                  </Button>
+                </div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <p className="text-gray-600 text-sm">
+                Please login to add a comment
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Comments List */}

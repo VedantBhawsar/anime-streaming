@@ -1,4 +1,4 @@
-import { animePaheClient } from "@/lib/animeClient";
+import { animeGogoClient, animePaheClient } from "@/lib/animeClient";
 import { getRedisClient } from "@/lib/redisClient";
 import { NextRequest } from "next/server";
 
@@ -28,7 +28,10 @@ export async function GET(
         status: 200,
       });
     }
-    const response = await animePaheClient.genreSearch(genre, parseInt(page));
+    const response = await animeGogoClient.fetchGenreInfo(
+      genre,
+      parseInt(page)
+    );
     await redisClient.set(redisKey, JSON.stringify(response));
     return Response.json(response, { status: 200 });
   } catch (error: any) {

@@ -34,7 +34,7 @@ const SearchBar = () => {
   const handleBlur = () => {
     setTimeout(() => {
       setIsFocused(false);
-    }, 150);
+    }, 200);
   };
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const SearchBar = () => {
           });
       }
     }
-    const fetchTimeout = setTimeout(fetchSearch, 300);
+    const fetchTimeout = setTimeout(fetchSearch, 500);
     return () => clearTimeout(fetchTimeout);
   }, [query]);
 
@@ -75,7 +75,6 @@ const SearchBar = () => {
           }}
           transition={{
             duration: 0.2,
-            delay: 0.1,
           }}
           className="absolute w-full mt-10 h-96 overflow-scroll bg-pink-200  shadow-lg rounded-md"
         >
@@ -88,7 +87,7 @@ const SearchBar = () => {
               animeData?.map((anime) => (
                 <Link
                   key={anime.id}
-                  href={`/anime/a/${anime.id}`}
+                  href={`/anime/${anime.id}`}
                   className="grid grid-cols-4 gap-4 p-4 hover:bg-gray-100 transition-colors duration-200"
                 >
                   <div className="col-span-1 w-full relative h-24 rounded-md overflow-hidden">

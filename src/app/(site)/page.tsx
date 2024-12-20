@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import AnimeCarousel from "@/components/ui/animeCarousel";
 import Hero from "@/components/Hero";
 import { api } from "@/lib/api";
-import { chat } from "@/lib/geminiClient";
 
 export default async function HomePage() {
   const { data } = await api.get("/anime/home");
-
+  if (!data) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className=" bg-gradient-to-br  text-purple-800 ">
       <Hero
@@ -16,19 +17,26 @@ export default async function HomePage() {
       />
 
       <AnimeCarousel
-        animes={data?.recentlyUpdated?.results}
+        episodes={data?.recentlyAddedEpisodes?.results}
         category="Recently Updated"
+        isEpisodes={true}
+        isLoading={false}
       />
-
-      <AnimeCarousel animes={data?.recentlyAdded?.results} category="Recent" />
-
+      <AnimeCarousel
+        movies={data?.recentlyAddedMovies?.results}
+        category="Recently Added Movies"
+        isMovie={true}
+        isLoading={false}
+      />
       <AnimeCarousel
         animes={data?.mostPopular?.results}
         category="Most Popular"
+        isLoading={false}
       />
       <AnimeCarousel
-        animes={data?.mostFavorite?.results}
-        category="Most Favorite"
+        isLoading={false}
+        animes={data?.topAiring?.results}
+        category="Top airing"
       />
     </div>
   );
