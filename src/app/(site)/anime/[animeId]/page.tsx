@@ -1,7 +1,6 @@
 import React from "react";
 import { HeroSection } from "@/components/anime/HeroSection";
 import { MainInfoCard } from "@/components/anime/MainInfoCard";
-import { ActionCard } from "@/components/anime/ActionCard";
 import { EpisodesList } from "@/components/anime/EpisodesList";
 import AnimeSuggestions from "@/components/anime/RecommendationSection";
 import { api } from "@/lib/api";
@@ -25,7 +24,7 @@ export default async function AnimeDetails({
 
         {/* Episode List */}
         <div className="mb-6">
-          <EpisodesList anime={data} animeId={animeId} />
+          <EpisodesList cols={8} anime={data} animeId={animeId} />
         </div>
 
         <div className="mb-6">

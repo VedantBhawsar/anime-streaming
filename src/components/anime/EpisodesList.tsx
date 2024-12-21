@@ -12,18 +12,18 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { IAnime, IEpisode } from "./AnimeBottomSection";
 
-
-
 interface IEpisodesListProps {
   anime: IAnime;
   episodesPerPage?: number;
   animeId: string;
+  cols: number;
 }
 
 export function EpisodesList({
   anime,
   episodesPerPage = 32,
   animeId,
+  cols = 8,
 }: IEpisodesListProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -53,7 +53,7 @@ export function EpisodesList({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 grid-cols-8">
+          <div className={`grid gap-4 grid-cols-${cols}`}>
             {currentEpisodes?.map((episode: IEpisode) => (
               <EpisodeCard
                 episode={episode}

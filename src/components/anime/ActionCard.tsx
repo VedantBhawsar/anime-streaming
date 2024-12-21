@@ -1,16 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Share2, Clock } from "lucide-react";
-import React, {  } from "react";
+import React from "react";
 
 export function ActionCard() {
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

@@ -40,10 +40,6 @@ function MovieCard({ movie }: AnimeCardProps) {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  setOpen(true);
-                }}
                 className="bg-white/90 p-3 rounded-full hover:bg-purple-500 text-black hover:text-white"
                 aria-label="Watch Episode"
               >

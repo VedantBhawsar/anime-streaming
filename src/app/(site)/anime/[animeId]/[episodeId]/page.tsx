@@ -95,7 +95,7 @@ export default function AnimePage() {
 
       {/* Episodes Section */}
       <div className="space-y-4 lg:max-h-[800px] overflow-y-auto -mt-6">
-        <EpisodesList animeId={params.animeId} anime={anime} />
+        <EpisodesList cols={4} animeId={params.animeId} anime={anime} />
       </div>
     </div>
   );

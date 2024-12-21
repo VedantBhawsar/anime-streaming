@@ -12,7 +12,7 @@ interface IAnime {
   id: string;
   title: string;
   image: string;
-  released: string;
+  released?: string;
 }
 
 interface AnimeCardProps {

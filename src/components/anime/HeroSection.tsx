@@ -7,7 +7,7 @@ interface HeroSectionProps {
   anime: any;
 }
 
-export function HeroSection({ anime }: HeroSectionProps) {
+export function HeroSection({ anime }: HeroSectionProps): JSX.Element {
   return (
     <div className="relative h-64 md:h-96 mb-6 rounded-xl overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

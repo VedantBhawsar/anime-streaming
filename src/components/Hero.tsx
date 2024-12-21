@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { Play, Info, Fullscreen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface HeroProps {
   backgroundImage: string;
@@ -99,23 +100,30 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         </motion.p>
 
         <motion.div className="flex space-x-4" variants={itemVariants}>
-          <Button asChild className="bg-pink-600 text-white hover:bg-pink-700">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          <Link href={"/anime/jujutsu-kaisen-tv-dub/jujutsu-kaisen-tv-dub-episode-1"}>
+            <Button
+              asChild
+              className="bg-pink-600 text-white hover:bg-pink-700"
             >
-              <Play className="mr-2" /> Watch Now
-            </motion.button>
-          </Button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Play className="mr-2" /> Watch Now
+              </motion.button>
+            </Button>
+          </Link>
 
-          <Button variant="outline" asChild>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Info className="mr-2" /> More Info
-            </motion.button>
-          </Button>
+          <Link href={'/anime/jujutsu-kaisen-tv-dub'}>
+            <Button variant="outline" asChild>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Info className="mr-2" /> More Info
+              </motion.button>
+            </Button>
+          </Link>
         </motion.div>
       </motion.div>
       <motion.div className="absolute bottom-8 right-8">
