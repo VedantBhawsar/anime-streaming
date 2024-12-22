@@ -58,7 +58,7 @@ export default function AnimePage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8 space-y-4">
+      <div className="container mx-auto px-4 pb-8 space-y-4">
         <Skeleton className="w-full aspect-video" />
         <Skeleton className="h-24 w-full" />
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -91,7 +91,7 @@ export default function AnimePage() {
   }
 
   return (
-    <div className="container mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+    <div className="container mx-auto p-4 lg:p-8 pt-0 lg:pt-0 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
       {/* Main Content Section */}
       <div className="lg:col-span-2 space-y-6">
         {/* Video Player */}

@@ -4,7 +4,6 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 
 const Settings = () => {
-  const [activeTab, setActiveTab] = useState("profile");
   const { setTheme, theme } = useTheme();
 
   const tabVariants = {
@@ -20,7 +19,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="h-full p-4">
+    <div className="h-full p-4 pt-0">
       <h1 className="text-3xl font-semibold text-purple-600 mb-5">Settings</h1>
       <div className=" shadow-sm  p-5">
         <div className="flex items-center justify-between">

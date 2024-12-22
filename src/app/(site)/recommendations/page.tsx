@@ -3,7 +3,7 @@ import AnimeCard from "@/components/ui/animeCard";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 
 interface IAnime {
   id: string;
@@ -27,12 +27,12 @@ export default function RecommendationsPage() {
     } catch (error: any) {
       console.log(error.message);
     } finally {
-      setLoading(false); // Fixed the console.log(false) to properly set loading state
+      setLoading(false); 
     }
   }
 
   return (
-    <section className="container mx-auto px-4 py-6 md:py-8">
+    <section className="container mx-auto px-4 pb-6 md:pb-8">
       <h1 className="text-xl md:text-2xl font-bold text-primary">
         Recommendations
       </h1>

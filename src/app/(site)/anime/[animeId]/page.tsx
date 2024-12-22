@@ -18,11 +18,9 @@ export default async function AnimeDetails({
     <div
       className={cn(
         "min-h-screen",
-        "bg-background",
-        "dark:bg-gradient-to-br dark:from-background dark:to-background/90" 
       )}
     >
-      <div className="container mx-auto px-4 py-6 space-y-8">
+      <div className="container mx-auto px-4 py-6 pt-0 space-y-8">
         {/* Hero Section */}
         <section className="w-full">
           <HeroSection anime={data} />

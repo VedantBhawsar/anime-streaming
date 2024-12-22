@@ -38,7 +38,7 @@ export default function ExplorePage() {
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto p-4 sm:p-6 space-y-6">
+      <div className="container mx-auto p-4 sm:p-6 pt-0 sm:pt-0 space-y-6">
         <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
           <h2 className="text-xl sm:text-2xl font-bold text-primary">
             Explore - <span className="capitalize">{genre}</span>
