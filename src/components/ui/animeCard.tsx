@@ -3,9 +3,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { PlayIcon, SaveIcon, CheckCircleIcon } from "lucide-react";
 import AnimeDetailsModal from "./animeDetailsModel";
-import toast from "react-hot-toast";
 import { useAnimeStore } from "@/store/anime-store";
-import { getWishlistAnime, updateWishlistAnime } from "@/utils/anime";
+import { getWishlistAnime } from "@/utils/anime";
 import Link from "next/link";
 
 interface IAnime {
@@ -29,12 +28,11 @@ function AnimeCard({ anime }: AnimeCardProps) {
     setAnimeIds(localAnime.map((anime) => anime.id));
   }, []);
 
-
   return (
     <motion.div className="group relative cursor-pointer rounded-lg overflow-hidden">
       {/* Image Container with Overlay */}
       <div className="relative overflow-hidden">
-        <div className="bg-gray-200 aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
+        <div className="bg-muted aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
           <Image
             fill
             src={anime.image}
@@ -48,12 +46,8 @@ function AnimeCard({ anime }: AnimeCardProps) {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  // handleRedirect();
-                  // setOpen(true);
-                }}
-                className="bg-white/90 p-3 rounded-full hover:bg-purple-500 text-black hover:text-white"
+                onClick={(e) => e.stopPropagation()}
+                className="bg-background/90 p-3 rounded-full hover:bg-primary text-foreground hover:text-background"
                 aria-label="Watch Episode"
               >
                 <PlayIcon size={24} />
@@ -63,11 +57,12 @@ function AnimeCard({ anime }: AnimeCardProps) {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                // handleSaveAnime();
-              }}
-              className="bg-white/90 p-3 rounded-full hover:bg-pink-500 hover:text-white"
+              onClick={(e) => e.stopPropagation()}
+              className={`bg-background/90 p-3 rounded-full ${
+                animeIds.includes(anime.id)
+                  ? "hover:bg-success hover:text-background"
+                  : "hover:bg-secondary hover:text-secondary-foreground"
+              }`}
               aria-label={
                 animeIds.includes(anime.id)
                   ? "Remove from Wishlist"
@@ -88,15 +83,15 @@ function AnimeCard({ anime }: AnimeCardProps) {
       <div className="mt-3 grid grid-cols-4">
         <div className="pr-2 col-span-3">
           <h4
-            className="text-base font-semibold text-gray-800 line-clamp-1"
+            className="text-base font-semibold text-foreground line-clamp-1"
             title={anime.title}
           >
             {anime.title}
           </h4>
         </div>
         <div className="flex justify-end">
-          <div className="bg-yellow-400 text-yellow-900 text-sm font-medium px-2 py-1 rounded-md shadow-sm line-clamp-1 ">
-            <span className="bg-bold text-yellow-700">{anime.released}</span>
+          <div className="bg-accent text-accent-foreground text-sm font-medium px-2 py-1 rounded-md shadow-sm line-clamp-1">
+            <span className="font-bold">{anime.released}</span>
           </div>
         </div>
       </div>

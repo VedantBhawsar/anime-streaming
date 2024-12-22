@@ -67,7 +67,7 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         style={{
           backgroundImage: `
             linear-gradient(to bottom,
-               rgba(0,0,0,0.0) 40%,
+               rgba(0,0,0,0.0) 50%,
               rgba(0, 0, 0, 1) 100%
             ),
             url(${backgroundImage})

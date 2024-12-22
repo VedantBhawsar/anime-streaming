@@ -13,13 +13,15 @@ interface AnimeCardProps {
 
 function EpisodeCard({ episode }: AnimeCardProps) {
   const [open, setOpen] = useState(false);
-  const [animeIds, setAnimeIds] = useState<string[]>([]);
-  const { anime: fullAnime, setAnime } = useAnimeStore();
+  const { setAnime } = useAnimeStore();
 
   useEffect(() => {
     const localAnime = getWishlistAnime();
-    setAnimeIds(localAnime.map((anime) => episode.id));
-  }, []);
+    const animeIds = localAnime.map((anime) => anime.id);
+    if (animeIds.includes(episode.id)) {
+      console.log(`Episode ${episode.id} is in the wishlist`);
+    }
+  }, [episode.id]);
 
   const handleRedirect = async () => {
     try {
@@ -27,10 +29,9 @@ function EpisodeCard({ episode }: AnimeCardProps) {
         cache: "no-cache",
       });
       const data = await response.json();
-
       setAnime(data);
     } catch (error: any) {
-      console.error(error.message);
+      console.error("Error fetching anime details:", error.message);
     }
   };
 
@@ -38,25 +39,24 @@ function EpisodeCard({ episode }: AnimeCardProps) {
     <motion.div className="group relative cursor-pointer rounded-lg overflow-hidden">
       {/* Image Container with Overlay */}
       <div className="relative overflow-hidden">
-        <div className="bg-gray-200 aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
+        <div className="aspect-[2/3] rounded-lg overflow-hidden shadow-lg bg-muted">
           <Image
             fill
             src={episode.image}
             alt={`${episode.title} poster`}
-            className="object-cover transition-transform group-hover:scale-110 duration-300"
+            className="object-cover transition-transform duration-300 group-hover:scale-110"
           />
-
           {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              onClick={async (e) => {
+              onClick={(e) => {
                 e.stopPropagation();
                 handleRedirect();
                 setOpen(true);
               }}
-              className="bg-white/90 p-3 rounded-full hover:bg-purple-500 text-black hover:text-white"
+              className="bg-background p-3 rounded-full text-primary hover:bg-primary hover:text-background transition-colors"
               aria-label="Watch Episode"
             >
               <PlayIcon size={24} />
@@ -66,17 +66,15 @@ function EpisodeCard({ episode }: AnimeCardProps) {
       </div>
 
       {/* Title and Episode Number */}
-      <div className="mt-3 grid grid-cols-4">
-        <div className="pr-2 col-span-3">
-          <h4
-            className="text-base font-semibold text-gray-800 line-clamp-1"
-            title={episode.title}
-          >
-            {episode.title}
-          </h4>
-        </div>
-        <div className="bg-yellow-400 text-yellow-900 text-sm font-medium px-2 py-1 self-end justify-end w-fit rounded-md shadow-sm flex-grow line-clamp-1">
-          <span>Ep {episode.episodeNumber}</span>
+      <div className="mt-3 grid grid-cols-5">
+        <h4
+          className="text-base font-semibold col-span-4 text-foreground line-clamp-1"
+          title={episode.title}
+        >
+          {episode.title}
+        </h4>
+        <div className="px-2 py-1 col-span-1 text-sm font-medium rounded-md shadow bg-secondary text-secondary-foreground">
+          Ep {episode.episodeNumber}
         </div>
       </div>
 

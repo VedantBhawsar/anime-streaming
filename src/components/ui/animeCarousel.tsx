@@ -85,8 +85,8 @@ function AnimeCarousel({
                   </CarouselItem>
                 ))}
           </CarouselContent>
-          <CarouselPrevious className="text-secondary hover:text-secondary-foreground border border-border" />
-          <CarouselNext className="text-secondary hover:text-secondary-foreground border border-border" />
+          <CarouselPrevious />
+          <CarouselNext />
         </Carousel>
       </div>
     </div>

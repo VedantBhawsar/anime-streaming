@@ -1,29 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { UserCircle2, Bell, Palette, Lock, Save } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
+  const { setTheme, theme } = useTheme();
 
   const tabVariants = {
     hidden: { opacity: 0, x: -20 },
@@ -40,8 +22,16 @@ const Settings = () => {
   return (
     <div className="h-full p-4">
       <h1 className="text-3xl font-semibold text-purple-600 mb-5">Settings</h1>
-      <div className=" shadow-sm bg-white p-5">
-        <div>This is setting page</div>
+      <div className=" shadow-sm  p-5">
+        <div className="flex items-center justify-between">
+          <h1 className="font-bold">Dark mode</h1>
+          <Switch
+          checked={theme === 'dark' ? true : false}
+            onCheckedChange={(checked) =>
+              checked ? setTheme("dark") : setTheme("light")
+            }
+          />
+        </div>
       </div>
     </div>
   );
