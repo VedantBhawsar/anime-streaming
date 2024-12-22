@@ -11,7 +11,8 @@ export default function Footer() {
           <div className="space-y-3">
             <h3 className="text-xl font-bold text-primary">AnimeVerse</h3>
             <p className="text-muted-foreground">
-              Your ultimate destination for anime discoveries and recommendations.
+              Your ultimate destination for anime discoveries and
+              recommendations.
             </p>
           </div>
 
@@ -56,29 +57,29 @@ export default function Footer() {
                 className="group hover:text-primary hover:border-primary"
                 asChild
               >
-                <Link href="/">
+                <Link href="https://github.com/VedantBhawsar/anime-streaming/">
                   <Star className="h-4 w-4" />
                 </Link>
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="icon"
                 className="hover:text-primary hover:border-primary"
                 asChild
               >
-                <Link href="/">
+                <Link href="https://github.com/VedantBhawsar/anime-streaming/">
                   <Github className="h-4 w-4" />
                 </Link>
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="icon"
                 className="group hover:text-primary hover:border-primary"
                 asChild
               >
-                <Link href="/">
+                <Link href="https://x.com/vedantBhavsar8/">
                   <Twitter className="h-4 w-4" />
                 </Link>
               </Button>
