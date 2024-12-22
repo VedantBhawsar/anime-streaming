@@ -16,26 +16,30 @@ export default function RecommendationsPage() {
   const { data } = useSession();
   const [suggested, setSuggested] = useState<IAnime[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
   async function fetchRecommendations() {
     setLoading(true);
     try {
       const response = await api.get(
-        `/anime/recommendations?userId=` + data?.user.id
+        `/anime/recommendations?userId=${data?.user.id}`
       );
       setSuggested(response.data.filteredAnimes);
     } catch (error: any) {
       console.log(error.message);
     } finally {
-      console.log(false);
+      setLoading(false); // Fixed the console.log(false) to properly set loading state
     }
   }
+
   return (
-    <section className="my-5">
-      <h1 className="text-xl font-bold text-purple-500">Recommendations</h1>
+    <section className="container mx-auto px-4 py-6 md:py-8">
+      <h1 className="text-xl md:text-2xl font-bold text-primary">
+        Recommendations
+      </h1>
 
       {!data?.user && (
-        <div className="w-full flex items-center justify-center h-40">
-          <p className="text-xs text-gray-700 italic">
+        <div className="w-full flex items-center justify-center h-40 border rounded-lg bg-muted/50">
+          <p className="text-sm text-muted-foreground">
             To use this feature you have to login first.
           </p>
         </div>
@@ -44,20 +48,19 @@ export default function RecommendationsPage() {
       {data?.user && (
         <div className="mt-5">
           {suggested?.length > 0 ? (
-            <div className="grid grid-cols-6 gap-4 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
               {suggested.map((item, index: number) => (
                 <AnimeCard anime={item} key={index} />
               ))}
             </div>
           ) : (
-            <div className="h-48 w-full flex items-center justify-center">
+            <div className="h-48 w-full flex items-center justify-center border rounded-lg bg-muted/50">
               <Button
-                className="text-pink-600 bg-pink-200 hover:bg-pink-300 hover:text-pink-800"
+                className="bg-primary hover:bg-primary/90"
                 disabled={loading}
-                variant={"outline"}
                 onClick={fetchRecommendations}
               >
-                Generate
+                {loading ? "Generating..." : "Generate"}
               </Button>
             </div>
           )}

@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 type FormData = {
   username: string;
@@ -33,11 +35,12 @@ type FormData = {
 };
 
 export default function SignUp() {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
+    watch,
   } = useForm<FormData>({
     defaultValues: {
       username: "",
@@ -50,158 +53,214 @@ export default function SignUp() {
     },
   });
 
-  console.log(errors);
-
   const onSubmit = async (data: FormData) => {
-    if (data.password !== data.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    if (data.password.length < 6) {
-      alert("Password must be at least 6 characters long.");
-      return;
-    }
-
+    setIsLoading(true);
     try {
       const response = await signIn("credentials", {
         ...data,
         redirect: false,
-        // callbackUrl: "http://localhost:3000/",
       });
 
       if (response?.error) {
-        alert("Sign-in failed: " + response.error);
+        toast.error("Sign-up failed: " + response.error);
       } else if (response?.ok) {
-        console.log("Sign-up Data:", data);
-        alert("Sign-in successful!");
+        toast.success("Sign-up successful!");
       }
     } catch (error) {
-      console.error("Error signing in:", error);
-      alert("An unexpected error occurred. Please try again later.");
+      console.error("Error signing up:", error);
+      toast.error("An unexpected error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br p-10">
-      <Card className="w-full max-w-lg border-2 border-pink-300 shadow-2xl">
-        <CardHeader className="text-center">
-          <CardTitle className="text-4xl font-bold text-pink-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
+      <Card className="w-full max-w-lg border-2 border-primary/20 shadow-lg">
+        <CardHeader className="text-center space-y-2">
+          <CardTitle className="text-3xl md:text-4xl font-bold text-primary">
             Join AnimeVerse
           </CardTitle>
-          <CardDescription className="text-purple-800">
+          <CardDescription className="text-muted-foreground">
             Create your account and start your anime journey
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <Label htmlFor="username">Username</Label>
               <Controller
                 control={control}
                 name="username"
+                rules={{
+                  required: "Username is required",
+                  minLength: {
+                    value: 3,
+                    message: "Username must be at least 3 characters",
+                  },
+                }}
                 render={({ field }) => (
-                  <Input
-                    id="username"
-                    placeholder="Choose a unique username"
-                    {...field}
-                    required
-                    className="mt-2"
-                  />
+                  <div className="mt-1">
+                    <Input
+                      id="username"
+                      placeholder="Choose a unique username"
+                      className="w-full"
+                      {...field}
+                    />
+                    {errors.username && (
+                      <span className="text-sm text-destructive mt-1">
+                        {errors.username.message}
+                      </span>
+                    )}
+                  </div>
                 )}
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <Label htmlFor="name">Full Name</Label>
                 <Controller
                   control={control}
                   name="name"
+                  rules={{ required: "Full name is required" }}
                   render={({ field }) => (
-                    <Input
-                      id="name"
-                      placeholder="Enter your full name"
-                      {...field}
-                      required
-                      className="mt-2"
-                    />
+                    <div className="mt-1">
+                      <Input
+                        id="name"
+                        placeholder="Enter your full name"
+                        {...field}
+                      />
+                      {errors.name && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.name.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
-              <div className="col-span-1">
+              <div>
                 <Label htmlFor="email">Email</Label>
                 <Controller
                   control={control}
                   name="email"
+                  rules={{
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  }}
                   render={({ field }) => (
-                    <Input
-                      id="email"
-                      placeholder="Enter your email"
-                      type="email"
-                      {...field}
-                      required
-                      className="mt-2"
-                    />
+                    <div className="mt-1">
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        {...field}
+                      />
+                      {errors.email && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <Label htmlFor="password">Password</Label>
                 <Controller
                   control={control}
                   name="password"
+                  rules={{
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  }}
                   render={({ field }) => (
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Create a strong password"
-                      {...field}
-                      required
-                      minLength={8}
-                      className="mt-2"
-                    />
+                    <div className="mt-1">
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Create a strong password"
+                        {...field}
+                      />
+                      {errors.password && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.password.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
-              <div className="col-span-1">
+              <div>
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <Controller
                   control={control}
                   name="confirmPassword"
+                  rules={{
+                    required: "Please confirm your password",
+                    validate: (value) =>
+                      value === watch("password") || "Passwords do not match",
+                  }}
                   render={({ field }) => (
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      placeholder="Repeat your password"
-                      {...field}
-                      required
-                      className="mt-2"
-                    />
+                    <div className="mt-1">
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="Repeat your password"
+                        {...field}
+                      />
+                      {errors.confirmPassword && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.confirmPassword.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="age">Age</Label>
                 <Controller
                   control={control}
                   name="age"
+                  rules={{
+                    required: "Age is required",
+                    min: {
+                      value: 13,
+                      message: "You must be at least 13 years old",
+                    },
+                    max: {
+                      value: 99,
+                      message: "Please enter a valid age",
+                    },
+                  }}
                   render={({ field }) => (
-                    <Input
-                      id="age"
-                      type="number"
-                      placeholder="Enter your age"
-                      min={13}
-                      max={99}
-                      {...field}
-                      required
-                      className="mt-2"
-                    />
+                    <div className="mt-1">
+                      <Input
+                        id="age"
+                        type="number"
+                        placeholder="Enter your age"
+                        {...field}
+                      />
+                      {errors.age && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.age.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
@@ -211,59 +270,70 @@ export default function SignUp() {
                 <Controller
                   control={control}
                   name="favoriteAnimeGenre"
+                  rules={{ required: "Please select a genre" }}
                   render={({ field }) => (
-                    <Select
-                      value={field.value}
-                      onValueChange={(value) =>
-                        setValue("favoriteAnimeGenre", value)
-                      }
-                    >
-                      <SelectTrigger className="mt-2">
-                        <SelectValue placeholder="Select your favorite genre" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="shonen">Shonen</SelectItem>
-                        <SelectItem value="slice-of-life">
-                          Slice of Life
-                        </SelectItem>
-                        <SelectItem value="mecha">Mecha</SelectItem>
-                        <SelectItem value="romance">Romance</SelectItem>
-                        <SelectItem value="fantasy">Fantasy</SelectItem>
-                        <SelectItem value="sci-fi">Sci-Fi</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="mt-1">
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your favorite genre" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="shonen">Shonen</SelectItem>
+                          <SelectItem value="slice-of-life">
+                            Slice of Life
+                          </SelectItem>
+                          <SelectItem value="mecha">Mecha</SelectItem>
+                          <SelectItem value="romance">Romance</SelectItem>
+                          <SelectItem value="fantasy">Fantasy</SelectItem>
+                          <SelectItem value="sci-fi">Sci-Fi</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {errors.favoriteAnimeGenre && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.favoriteAnimeGenre.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full bg-pink-600 hover:bg-pink-700"
-            >
-              Create Account
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Creating Account..." : "Create Account"}
             </Button>
 
-            <div className="flex w-full overflow-hidden items-center my-4">
-              <Separator className="flex-1" />
-              <span className="px-4 text-gray-500">Or continue with</span>
-              <Separator className="flex-1" />
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <Separator className="w-full" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
             </div>
 
             <div className="flex justify-center gap-4">
               <Button variant="outline" size="icon" type="button">
-                <Github className="h-5 w-5" />
+                <Github className="h-4 w-4" />
               </Button>
               <Button variant="outline" size="icon" type="button">
-                <Twitter className="h-5 w-5" />
+                <Twitter className="h-4 w-4" />
               </Button>
               <Button variant="outline" size="icon" type="button">
-                <Mail className="h-5 w-5" />
+                <Mail className="h-4 w-4" />
               </Button>
             </div>
 
-            <div className="text-center mt-4">
-              <Link href="/signin" className="text-pink-600 hover:underline">
+            <div className="text-center">
+              <Link
+                href="/signin"
+                className="text-primary hover:text-primary/90 hover:underline text-sm"
+              >
                 Already have an account? Sign In
               </Link>
             </div>

@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -7,10 +8,10 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Home, TvIcon, ListTodo, Lightbulb } from "lucide-react";
+import { Home, TvIcon, ListTodo, Lightbulb, Menu, X } from "lucide-react";
 import { protestRevolution } from "@/fonts";
 import { usePathname } from "next/navigation";
-import React, {  } from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { signOut, useSession } from "next-auth/react";
 import {
@@ -22,97 +23,132 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import SearchBar from "./SearchBar";
 
 export default function Header() {
   const pathName = usePathname();
   const { data } = useSession();
   const user = data?.user;
+  const [isOpen, setIsOpen] = useState(false);
   
   const navigationMenu = [
     {
       href: "/",
-      icon: <Home size={14} />,
+      icon: <Home className="h-4 w-4" />,
       label: "Home",
       hoverClass: "group/home",
     },
     {
       href: "/explore",
-      icon: <TvIcon size={14} />,
+      icon: <TvIcon className="h-4 w-4" />,
       label: "Explore",
       hoverClass: "group/anime",
     },
     {
       href: "/recommendations",
-      icon: <Lightbulb size={14} />,
+      icon: <Lightbulb className="h-4 w-4" />,
       label: "Recommendations",
       hoverClass: "group/recommendations",
     },
     {
       href: "/watchlist",
-      icon: <ListTodo size={14} />,
+      icon: <ListTodo className="h-4 w-4" />,
       label: "Watchlist",
       hoverClass: "group/watchlist",
     },
   ];
 
+  const NavItems = () => (
+    <>
+      {navigationMenu.map((item) => (
+        <NavigationMenuItem key={item.href}>
+          <NavigationMenuLink asChild>
+            <Link
+              href={item.href}
+              className={cn(
+                "relative flex items-center gap-2 transition-colors rounded-md p-2 text-sm",
+                "hover:bg-accent hover:text-accent-foreground",
+                item.href.split("/")[1] === pathName.split("/")[1]
+                  ? "bg-accent text-accent-foreground"
+                  : "text-foreground",
+                isOpen ? "w-full" : ""
+              )}
+              onClick={() => setIsOpen(false)}
+            >
+              {item.icon}
+              {item.label}
+            </Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      ))}
+    </>
+  );
+
   return (
-    <nav className="sticky top-0 z-50 bg-white backdrop-blur-md shadow-md">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="container mx-auto flex items-center justify-between py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
-          <img src="./logo.png" alt="Logo" className="w-16 rounded-full " />
-          <span
-            className={`text-2xl font-bold text-pink-600 ${protestRevolution.className}`}
-          >
+          <img src="./logo.png" alt="Logo" className="w-12 sm:w-16 rounded-full" />
+          <span className={`text-xl sm:text-2xl font-bold text-primary ${protestRevolution.className}`}>
             AnimeVerse
           </span>
         </Link>
 
-        <NavigationMenu className="mr-auto ml-5">
+        {/* Desktop Navigation */}
+        <NavigationMenu className="mr-auto ml-5 hidden md:block">
           <NavigationMenuList className="flex gap-1">
-            {navigationMenu.map((item) => (
-              <NavigationMenuItem key={item.href}>
-                <NavigationMenuLink asChild>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      `relative flex hover:bg-pink-200 items-center gap-1 text-purple-700 hover:text-pink-600 transition-colors duration-300 p-2 text-sm`,
-                      item.href.split("/")[1] === pathName.split("/")[1] &&
-                        "bg-pink-200 text-pink-600"
-                    )}
-                  >
-                    {item.icon}
-                    {item.label}
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
+            <NavItems />
           </NavigationMenuList>
         </NavigationMenu>
 
+        {/* Mobile Navigation */}
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="ghost" size="icon">
+              {isOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-72">
+            <NavigationMenu className="mt-8">
+              <NavigationMenuList className="flex flex-col gap-2">
+                <NavItems />
+              </NavigationMenuList>
+            </NavigationMenu>
+          </SheetContent>
+        </Sheet>
+
         {/* Action Buttons */}
-        <div className="flex items-center gap-4">
-          <SearchBar />
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="hidden sm:block">
+            <SearchBar />
+          </div>
+          
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link href={"/account"}>Account</Link>
+                <DropdownMenuItem asChild>
+                  <Link href="/account">Account</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={"/setting"}>Setting</Link>
+                <DropdownMenuItem asChild>
+                  <Link href="/setting">Setting</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => signOut()}>
                   Logout
@@ -120,8 +156,8 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant="default" className="bg-pink-600 hover:bg-pink-700">
-              <Link href={"/signup"}>Sign Up</Link>
+            <Button variant="default" asChild>
+              <Link href="/signup">Sign Up</Link>
             </Button>
           )}
         </div>

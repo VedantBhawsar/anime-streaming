@@ -4,9 +4,11 @@ import Footer from "@/components/Footer";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-pink-50 to-purple-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-muted">
       <Header />
-      <main className="flex-grow container mx-auto">{children}</main>
+      <main className="flex-grow container mx-auto px-4 md:px-6 py-4 md:py-8">
+        {children}
+      </main>
       <Footer />
     </div>
   );

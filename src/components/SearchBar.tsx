@@ -53,11 +53,11 @@ const SearchBar = () => {
   }, [query]);
 
   return (
-    <div className="relative w-96 flex justify-end">
+    <div className="relative w-full sm:w-96 flex justify-end">
       <Input
         ref={inputRef}
         placeholder="Search for anime..."
-        className="w-60 focus:w-96 transition-all text-gray-400 focus:text-black duration-200 bg-gray-100 hover:bg-gray-200 focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+        className="w-full sm:w-60 focus:sm:w-96 transition-all text-muted-foreground focus:text-foreground duration-200 bg-muted hover:bg-muted/80 focus:bg-background focus:ring-2 focus:ring-primary focus:border-primary"
         onFocus={handleFocus}
         onBlur={handleBlur}
         value={query}
@@ -76,19 +76,19 @@ const SearchBar = () => {
           transition={{
             duration: 0.2,
           }}
-          className="absolute w-full mt-10 h-96 overflow-scroll bg-pink-200  shadow-lg rounded-md"
+          className="absolute w-full sm:w-96 mt-2 h-96 overflow-y-auto bg-popover shadow-lg rounded-md top-10"
         >
           <ScrollArea>
             {animeData?.length < 1 ? (
               <div className="flex justify-center items-center h-full p-5">
-                <p>no result found</p>
+                <p className="text-muted-foreground">No results found</p>
               </div>
             ) : (
               animeData?.map((anime) => (
                 <Link
                   key={anime.id}
                   href={`/anime/${anime.id}`}
-                  className="grid grid-cols-4 gap-4 p-4 hover:bg-gray-100 transition-colors duration-200"
+                  className="grid grid-cols-4 gap-4 p-4 hover:bg-accent transition-colors duration-200"
                 >
                   <div className="col-span-1 w-full relative h-24 rounded-md overflow-hidden">
                     <Image
@@ -100,12 +100,12 @@ const SearchBar = () => {
                     />
                   </div>
                   <div className="col-span-3">
-                    <h3 className="text-base font-medium">{anime?.title}</h3>
-                    <p className="text-xs text-gray-500">
-                      durations: {anime?.duration}
+                    <h3 className="text-base font-medium text-foreground">{anime?.title}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Duration: {anime?.duration}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      episodes: {anime?.sub}
+                    <p className="text-xs text-muted-foreground">
+                      Episodes: {anime?.sub}
                     </p>
                   </div>
                 </Link>

@@ -1,4 +1,5 @@
 "use client";
+
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
@@ -46,16 +47,17 @@ export function PersonalInfoSection() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
-      <div>
-        <div className="flex items-center gap-1">
-          <Label htmlFor="username">Username</Label>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* Username Field */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <Label htmlFor="username" className="text-foreground">Username</Label>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Info className="text-sm" size={14} />
+              <Info className="h-4 w-4 text-muted-foreground" />
             </TooltipTrigger>
             <TooltipContent>
-              <p>Username can&apos;t be change</p>
+              <p className="text-sm">Username can&apos;t be changed</p>
             </TooltipContent>
           </Tooltip>
         </div>
@@ -70,15 +72,16 @@ export function PersonalInfoSection() {
               placeholder="Enter your username"
               {...field}
               required
-              className="mt-2"
+              className="w-full"
             />
           )}
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-1">
-          <Label htmlFor="name">Full Name</Label>
+      {/* Name and Email Fields */}
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-foreground">Full Name</Label>
           <Controller
             control={control}
             name="name"
@@ -88,13 +91,13 @@ export function PersonalInfoSection() {
                 placeholder="Enter your full name"
                 {...field}
                 required
-                className="mt-2"
+                className="w-full"
               />
             )}
           />
         </div>
-        <div className="col-span-1">
-          <Label htmlFor="email">Email</Label>
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-foreground">Email</Label>
           <Controller
             control={control}
             name="email"
@@ -105,16 +108,17 @@ export function PersonalInfoSection() {
                 type="email"
                 {...field}
                 required
-                className="mt-2"
+                className="w-full"
               />
             )}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="age">Age</Label>
+      {/* Age and Anime Genre Fields */}
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="age" className="text-foreground">Age</Label>
           <Controller
             control={control}
             name="age"
@@ -127,14 +131,14 @@ export function PersonalInfoSection() {
                 max={99}
                 {...field}
                 required
-                className="mt-2"
+                className="w-full"
               />
             )}
           />
         </div>
 
-        <div>
-          <Label>Favorite Anime Genre</Label>
+        <div className="space-y-2">
+          <Label className="text-foreground">Favorite Anime Genre</Label>
           <Controller
             control={control}
             name="favoriteAnimeGenre"
@@ -143,7 +147,7 @@ export function PersonalInfoSection() {
                 value={field.value}
                 onValueChange={(value) => setValue("favoriteAnimeGenre", value)}
               >
-                <SelectTrigger className="mt-2">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select your favorite genre" />
                 </SelectTrigger>
                 <SelectContent>
@@ -160,8 +164,8 @@ export function PersonalInfoSection() {
         </div>
       </div>
 
-      <div className="flex justify-end pt-5">
-        <Button type="submit" className="w-fit bg-pink-600 hover:bg-pink-700">
+      <div className="flex justify-end pt-4">
+        <Button type="submit" className="w-fit">
           Save
         </Button>
       </div>

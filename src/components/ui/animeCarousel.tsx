@@ -40,42 +40,53 @@ function AnimeCarousel({
   isMovie = false,
 }: IAnimeCarouselProps) {
   return (
-    <div className="px-0 py-8 border-b border-pink-300">
-      <h2 className="text-2xl font-bold mb-4 text-purple-800">{category}</h2>
+    <div className="px-0 py-8 border-b border-border">
+      <h2 className="text-2xl font-bold mb-4 text-primary">{category}</h2>
 
       <div>
         {/* Anime Carousel */}
-        <Carousel className="w-full ">
+        <Carousel className="w-full">
           <CarouselContent>
             {isLoading
               ? Array(10)
                   .fill("")
                   .map((_, index) => (
-                    <CarouselItem key={index} className="basis-1/6  gap-10">
-                      {" "}
+                    <CarouselItem
+                      key={index}
+                      className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                    >
                       <AnimeCardLoading />
                     </CarouselItem>
                   ))
               : isEpisodes
               ? episodes?.map((episode: IEpisodes, index: number) => (
-                  <CarouselItem key={index} className="basis-1/6  gap-10">
+                  <CarouselItem
+                    key={index}
+                    className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                  >
                     <EpisodeCard key={index} episode={episode} />
                   </CarouselItem>
                 ))
               : isMovie
               ? movies?.map((movie: IMovie, index: number) => (
-                  <CarouselItem key={index} className="basis-1/6  gap-10">
+                  <CarouselItem
+                    key={index}
+                    className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                  >
                     <MovieCard key={index} movie={movie} />
                   </CarouselItem>
                 ))
               : animes?.map((anime: any, index: number) => (
-                  <CarouselItem key={index} className="basis-1/6  gap-10">
+                  <CarouselItem
+                    key={index}
+                    className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                  >
                     <AnimeCard key={index} anime={anime} />
                   </CarouselItem>
                 ))}
           </CarouselContent>
-          <CarouselPrevious className="text-pink-400 hover:text-pink-500 border border-pink-500" />
-          <CarouselNext className="text-pink-400 hover:text-pink-500 border border-pink-500" />
+          <CarouselPrevious className="text-secondary hover:text-secondary-foreground border border-border" />
+          <CarouselNext className="text-secondary hover:text-secondary-foreground border border-border" />
         </Carousel>
       </div>
     </div>

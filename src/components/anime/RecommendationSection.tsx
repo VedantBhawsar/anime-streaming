@@ -1,5 +1,4 @@
 "use client";
-import { useAnimeStore } from "@/store/anime-store";
 import {
   Card,
   CardContent,
@@ -11,7 +10,6 @@ import { motion } from "framer-motion";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { api } from "@/lib/api";
-import Typing from "react-typing-animation";
 import { convertToHTML } from "@/lib/textToHtml";
 
 export default function AnimeSuggestions({
@@ -38,35 +36,36 @@ export default function AnimeSuggestions({
 
   return (
     <motion.div
-      className="mt-6"
+      className="mt-4 sm:mt-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
     >
-      <Card className="border-2 border-pink-200 shadow-xl">
-        <CardHeader className="pb-0">
-          <CardTitle className="text-2xl text-pink-600">
+      <Card className="border-2 border-primary/20">
+        <CardHeader className="pb-0 space-y-2">
+          <CardTitle className="text-xl sm:text-2xl text-primary">
             Unveiling the Story
           </CardTitle>
-          <CardDescription>
-            Let AI guide you through the captivating world of {anime?.title},
+          <CardDescription className="text-sm sm:text-base">
+            Let AI guide you through the captivating world of{" "}
+            <span className="text-primary/80">{anime?.title}</span>,
             summarizing its essence in a way that sparks curiosity and
             excitement.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="min-h-40 flex justify-center items-center">
+          <div className="min-h-[10rem] sm:min-h-[12rem] flex justify-center items-center p-4">
             {suggestions.length > 0 ? (
-              <div>
+              <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none">
                 <span dangerouslySetInnerHTML={{ __html: suggestions }} />
               </div>
             ) : (
               <Button
-                className="bg-pink-500 hover:bg-pink-600"
+                className="bg-primary hover:bg-primary/90"
                 onClick={generateSuggestions}
                 disabled={loading}
               >
-                Generate
+                {loading ? "Generating..." : "Generate"}
               </Button>
             )}
           </div>

@@ -2,43 +2,51 @@ import React from "react";
 import { Image as ImageIcon } from "lucide-react";
 import { PersonalInfoSection } from "@/components/account/PersonalInfoSection";
 import { ResetPasswordSection } from "@/components/account/ResetPasswordSection";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function AccountPage() {
   return (
-    <section>
-      <h1 className="text-3xl text-purple-700 font-semibold ">Account</h1>
-      <div className="grid grid-cols-4 gap-4 mt-5 items-start">
-        <div className="col-span-1 p-10 bg-white rounded-lg shadow-sm ">
-          <div className="relative w-40 aspect-square bg-gray-100 rounded-full flex justify-center items-center">
-            <div>
-              comming
-              <ImageIcon className="text-black" />
+    <section className="container mx-auto p-4">
+      <h1 className="text-3xl font-semibold text-primary mb-6">Account</h1>
+      
+      <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
+        {/* Profile Image Card */}
+        <Card className="lg:col-span-1 md:col-span-1 sm:col-span-full">
+          <CardContent className="flex justify-center p-6">
+            <div className="relative w-40 aspect-square rounded-full flex justify-center items-center bg-muted">
+              <div className="flex flex-col items-center gap-2">
+                <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Upload Image</span>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="col-span-3 p-5 bg-white flex gap-4 flex-col rounded-lg shadow-sm">
-          <div>
-            <h1 className="text-purple-600 font-bold text-xl">
-              Personal Information
-            </h1>
-            <p className="text-sm text-gray-700">
+          </CardContent>
+        </Card>
+
+        {/* Personal Information Card */}
+        <Card className="lg:col-span-3 md:col-span-1 sm:col-span-full">
+          <CardHeader>
+            <CardTitle className="text-xl text-primary">Personal Information</CardTitle>
+            <CardDescription>
               This is my personal information.
-            </p>
-          </div>
-          <PersonalInfoSection />
-        </div>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PersonalInfoSection />
+          </CardContent>
+        </Card>
 
-        <span className="col-span-1"></span>
-
-        <div className="col-span-3 p-5 bg-white flex gap-4 flex-col rounded-lg shadow-sm">
-          <div>
-            <h1 className="text-purple-600 font-bold text-xl">
-              Reset password
-            </h1>
-            <p className="text-sm text-gray-700">Reset your password</p>
-          </div>
-          <ResetPasswordSection />
-        </div>
+        {/* Reset Password Card */}
+        <Card className="lg:col-start-2 lg:col-span-3 md:col-span-2 sm:col-span-full">
+          <CardHeader>
+            <CardTitle className="text-xl text-primary">Reset Password</CardTitle>
+            <CardDescription>
+              Reset your password
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResetPasswordSection />
+          </CardContent>
+        </Card>
       </div>
     </section>
   );

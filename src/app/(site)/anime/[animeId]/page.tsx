@@ -4,6 +4,7 @@ import { MainInfoCard } from "@/components/anime/MainInfoCard";
 import { EpisodesList } from "@/components/anime/EpisodesList";
 import AnimeSuggestions from "@/components/anime/RecommendationSection";
 import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 export default async function AnimeDetails({
   params,
@@ -12,24 +13,43 @@ export default async function AnimeDetails({
 }) {
   const animeId = (await params).animeId;
   const { data } = await api.get(`/anime/${animeId}`);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br ">
-      <div>
+    <div
+      className={cn(
+        "min-h-screen",
+        "bg-background",
+        "dark:bg-gradient-to-br dark:from-background dark:to-background/90" 
+      )}
+    >
+      <div className="container mx-auto px-4 py-6 space-y-8">
         {/* Hero Section */}
-        <HeroSection anime={data} />
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Main Info Card */}
-          <MainInfoCard anime={data} animeId={animeId} />
-        </div>
+        <section className="w-full">
+          <HeroSection anime={data} />
+        </section>
 
-        {/* Episode List */}
-        <div className="mb-6">
-          <EpisodesList cols={8} anime={data} animeId={animeId} />
-        </div>
+        {/* Main Info Section */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="col-span-1 md:col-span-2 lg:col-span-3">
+            <MainInfoCard anime={data} animeId={animeId} />
+          </div>
+          <div className="hidden md:block md:col-span-2">
+          </div>
+        </section>
 
-        <div className="mb-6">
-          <AnimeSuggestions anime={data} animeId={animeId} />
-        </div>
+        {/* Episodes Section */}
+        <section className="w-full">
+          <div className="bg-card rounded-lg">
+            <EpisodesList anime={data} animeId={animeId} />
+          </div>
+        </section>
+
+        {/* Recommendations Section */}
+        <section className="w-full">
+          <div className="bg-card rounded-lg">
+            <AnimeSuggestions anime={data} animeId={animeId} />
+          </div>
+        </section>
       </div>
     </div>
   );

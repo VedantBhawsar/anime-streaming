@@ -15,6 +15,7 @@ import { Github, Twitter, Mail } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type FormData = {
   email: string;
@@ -23,11 +24,11 @@ type FormData = {
 
 export default function SignIn() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<FormData>({
     defaultValues: {
       email: "",
@@ -35,9 +36,8 @@ export default function SignIn() {
     },
   });
 
-  console.log(errors);
-
   const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
     try {
       const response = await signIn("credentials", {
         ...data,
@@ -46,86 +46,133 @@ export default function SignIn() {
       if (response?.error) {
         alert("Sign-in failed: " + response.error);
       } else if (response?.ok) {
-        console.log("Sign-in Data:", data);
         router.push("/");
       }
     } catch (error) {
       console.error("Error signing in:", error);
       alert("An unexpected error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="h-full flex items-center justify-center bg-gradient-to-br p-4">
-      <Card className="w-full max-w-md border-2 border-pink-300 shadow-2xl">
-        <CardHeader className="text-center">
-          <CardTitle className="text-4xl font-bold text-pink-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
+      <Card className="w-full max-w-md border-2 border-primary/20 shadow-lg">
+        <CardHeader className="text-center space-y-2">
+          <CardTitle className="text-3xl md:text-4xl font-bold text-primary">
             Welcome Back!
           </CardTitle>
-          <CardDescription className="text-purple-800">
+          <CardDescription className="text-muted-foreground">
             Sign in to continue your anime adventure
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 gap-4">
-              <div className="col-span-1">
-                <Label htmlFor="name">Email</Label>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="email" className="text-foreground">
+                  Email
+                </Label>
                 <Controller
                   control={control}
                   name="email"
+                  rules={{
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  }}
                   render={({ field }) => (
-                    <Input
-                      id="email"
-                      placeholder="Enter your email"
-                      {...field}
-                      required
-                      className="mt-2"
-                    />
+                    <div className="mt-1">
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        className="w-full"
+                        {...field}
+                      />
+                      {errors.email && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
-              <div className="col-span-1">
-                <Label htmlFor="name">Password</Label>
+
+              <div>
+                <Label htmlFor="password" className="text-foreground">
+                  Password
+                </Label>
                 <Controller
                   control={control}
                   name="password"
+                  rules={{
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  }}
                   render={({ field }) => (
-                    <Input
-                      id="password"
-                      placeholder="Enter your password"
-                      {...field}
-                      required
-                      className="mt-2"
-                    />
+                    <div className="mt-1">
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        className="w-full"
+                        {...field}
+                      />
+                      {errors.password && (
+                        <span className="text-sm text-destructive mt-1">
+                          {errors.password.message}
+                        </span>
+                      )}
+                    </div>
                   )}
                 />
               </div>
             </div>
-            <Button className="w-full bg-pink-600 hover:bg-pink-700">
-              Sign In
+
+            <Button 
+              className="w-full"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
 
-            <div className="flex w-full overflow-hidden items-center my-4">
-              <Separator className="flex-1" />
-              <span className="px-4 text-gray-500">Or continue with</span>
-              <Separator className="flex-1" />
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <Separator className="w-full" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
             </div>
 
             <div className="flex justify-center gap-4">
               <Button variant="outline" size="icon">
-                <Github className="h-5 w-5" />
+                <Github className="h-4 w-4" />
               </Button>
               <Button variant="outline" size="icon">
-                <Twitter className="h-5 w-5" />
+                <Twitter className="h-4 w-4" />
               </Button>
               <Button variant="outline" size="icon">
-                <Mail className="h-5 w-5" />
+                <Mail className="h-4 w-4" />
               </Button>
             </div>
 
-            <div className="text-center mt-4">
-              <Link href="/signup" className="text-pink-600 hover:underline">
+            <div className="text-center">
+              <Link 
+                href="/signup" 
+                className="text-primary hover:text-primary/90 hover:underline text-sm"
+              >
                 Don&apos;t have an account? Sign Up
               </Link>
             </div>

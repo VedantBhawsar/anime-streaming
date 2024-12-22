@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { CommentsList } from "./CommentsList";
 import { api } from "@/lib/api";
 import { useSession } from "next-auth/react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export interface IEpisode {
   id?: string;
@@ -24,6 +24,7 @@ export interface IEpisode {
   isFiller?: boolean;
   url?: string;
 }
+
 export interface IAnime {
   description?: string;
   episodes?: IEpisode[];
@@ -98,11 +99,15 @@ export function AnimeBottomSection({
   }
 
   return (
-    <div className="mt-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">{anime?.title}</h1>
-      <p className="text-base italic text-gray-600 mb-4">
-        {anime?.otherName || "No other name"}
-      </p>
+    <div className="mt-6 space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+          {anime?.title}
+        </h1>
+        <p className="text-sm sm:text-base italic text-muted-foreground">
+          {anime?.otherName || "No other name"}
+        </p>
+      </div>
 
       <div className="hidden justify-between items-center">
         <div className="flex items-center space-x-2">
@@ -113,7 +118,7 @@ export function AnimeBottomSection({
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsFavorite(!isFavorite)}
-                  className={isFavorite ? "text-pink-600" : ""}
+                  className={isFavorite ? "text-primary" : ""}
                 >
                   <Heart
                     className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`}
@@ -121,9 +126,7 @@ export function AnimeBottomSection({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-                </p>
+                <p>{isFavorite ? "Remove from Favorites" : "Add to Favorites"}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -143,84 +146,89 @@ export function AnimeBottomSection({
         </div>
       </div>
 
-      <Separator className="my-4" />
+      <Separator />
 
       {/* Anime Info */}
       <Card>
-        <CardContent className="p-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-base text-gray-600">Type</p>
-              <p className="font-semibold">{anime.type}</p>
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div className="space-y-1">
+              <p className="text-sm text-muted-foreground">Type</p>
+              <p className="font-medium">{anime.type}</p>
             </div>
-            <div>
-              <p className="text-base text-gray-600">Status</p>
-              <p className="font-semibold">{anime.status}</p>
+            <div className="space-y-1">
+              <p className="text-sm text-muted-foreground">Status</p>
+              <p className="font-medium">{anime.status}</p>
             </div>
-            <div>
-              <p className="text-base text-gray-600">Episodes</p>
-              <p className="font-semibold">{anime?.episodes?.length}</p>
+            <div className="space-y-1">
+              <p className="text-sm text-muted-foreground">Episodes</p>
+              <p className="font-medium">{anime?.episodes?.length}</p>
             </div>
-            <div>
-              <p className="text-base text-gray-600">Genre</p>
-              <p className="font-semibold">{anime?.genres?.join(", ")}</p>
+            <div className="space-y-1">
+              <p className="text-sm text-muted-foreground">Genre</p>
+              <p className="font-medium">{anime?.genres?.join(", ")}</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Anime Description */}
-      <Card className="mt-4">
-        <CardContent className="p-4">
-          <h1 className="mb-1 text-black font-semibold">Description</h1>
-          <p className="text-gray-800">{anime?.description}</p>
+      <Card>
+        <CardContent className="p-4 sm:p-6 space-y-2">
+          <h2 className="font-semibold text-foreground">Description</h2>
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+            {anime?.description}
+          </p>
         </CardContent>
       </Card>
 
       {/* Comments Section */}
-      <div className="mt-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold">Comments ({comments?.length})</h3>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg sm:text-xl font-bold text-foreground">
+            Comments ({comments?.length})
+          </h3>
         </div>
 
         {/* Comment Input */}
-        <div className="mb-4">
+        <div>
           {data?.user ? (
             <div className="flex space-x-4">
               <Avatar>
                 <AvatarImage
-                  src="https://images.unsplash.com/photo-1631947430066-48c30d57b943?q=80&w=2816&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={data.user.image || undefined}
                   alt="Your Avatar"
                   className="object-cover"
                 />
-                <AvatarFallback>YOU</AvatarFallback>
+                <AvatarFallback>
+                  {data.user.name?.charAt(0) || "U"}
+                </AvatarFallback>
               </Avatar>
-              <div className="flex-grow">
-                <div className="flex items-center space-x-2">
-                  <Input
-                    type="text"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Add a comment..."
-                    className="flex-grow border-b border-gray-300 py-2 focus:outline-none focus:border-pink-400 bg-white"
-                  />
-                  <Button
-                    disabled={loading}
-                    onClick={handleComment}
-                    variant="default"
-                    className="text-base hover:bg-pink-600 bg-pink-500"
-                  >
-                    Comment
-                  </Button>
-                </div>
+              <div className="flex-grow space-y-4">
+                <Input
+                  type="text"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Add a comment..."
+                  className="w-full"
+                />
+                <Button
+                  disabled={loading}
+                  onClick={handleComment}
+                  className="w-full sm:w-auto"
+                >
+                  {loading ? "Posting..." : "Comment"}
+                </Button>
               </div>
             </div>
           ) : (
-            <div>
-              <p className="text-gray-600 text-sm">
-                Please login to add a comment
-              </p>
-            </div>
+            <Card>
+              <CardContent className="p-4">
+                <p className="text-sm text-muted-foreground">
+                  Please login to add a comment
+                </p>
+              </CardContent>
+            </Card>
           )}
         </div>
 

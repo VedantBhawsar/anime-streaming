@@ -8,6 +8,9 @@ import {
   AnimeBottomSection,
   IAnime,
 } from "@/components/anime/AnimeBottomSection";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface IAnimeEpisode {
   title: string;
@@ -54,36 +57,61 @@ export default function AnimePage() {
   }, [params.animeId, params.episodeId]);
 
   if (isLoading) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+    return (
+      <div className="container mx-auto px-4 py-8 space-y-4">
+        <Skeleton className="w-full aspect-video" />
+        <Skeleton className="h-24 w-full" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {[...Array(8)].map((_, i) => (
+            <Skeleton key={i} className="h-32" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8 text-red-500">{error}</div>
+      <div className="container mx-auto px-4 py-8">
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </div>
     );
   }
 
   if (!anime || !episode) {
-    return <div className="container mx-auto px-4 py-8">No data available</div>;
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Alert>
+          <AlertDescription>No data available</AlertDescription>
+        </Alert>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Anime Player Section */}
-      <div className="lg:col-span-2">
-        <div className="aspect-video w-full">
-          <div className="h-full flex items-center justify-center text-white">
+    <div className="container mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+      {/* Main Content Section */}
+      <div className="lg:col-span-2 space-y-6">
+        {/* Video Player */}
+        <div className="relative aspect-video w-full bg-muted rounded-lg overflow-hidden">
+          {episode[1]?.url ? (
             <iframe
-              src={episode[1]?.url}
+              src={episode[1].url}
               frameBorder="0"
               scrolling="no"
               allowFullScreen
-              className="w-full h-full"
+              className="absolute inset-0 w-full h-full"
             />
-          </div>
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+              Video unavailable
+            </div>
+          )}
         </div>
 
-        {/* Anime Title and Interactions */}
+        {/* Bottom Section */}
         <AnimeBottomSection
           anime={anime}
           animeId={params.animeId}
@@ -93,9 +121,16 @@ export default function AnimePage() {
         />
       </div>
 
-      {/* Episodes Section */}
-      <div className="space-y-4 lg:max-h-[800px] overflow-y-auto -mt-6">
-        <EpisodesList cols={4} animeId={params.animeId} anime={anime} />
+      {/* Episodes List Section */}
+      <div className="relative">
+        <ScrollArea className="h-[calc(100vh-12rem)]">
+          <div className="md:pr-4 ">
+            <EpisodesList 
+              animeId={params.animeId} 
+              anime={anime}
+            />
+          </div>
+        </ScrollArea>
       </div>
     </div>
   );
