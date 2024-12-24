@@ -3,6 +3,8 @@ import { Button } from "./ui/button";
 import { Star, Github, Twitter } from "lucide-react";
 
 export default function Footer() {
+
+
   return (
     <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto p-4 sm:p-8">

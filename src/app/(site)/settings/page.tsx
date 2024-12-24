@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 

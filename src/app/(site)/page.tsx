@@ -40,6 +40,8 @@ export default async function HomePage() {
     );
   }
 
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted text-foreground">
       <div className="relative">

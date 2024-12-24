@@ -85,9 +85,10 @@ export default function Header() {
     </>
   );
 
+
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      <div className="container mx-auto flex items-center justify-between py-4">
+      <div className="container mx-auto flex items-center justify-between py-4 px-4 md:px-0">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
           <img
@@ -159,7 +160,7 @@ export default function Header() {
                   <Link href="/account">Account</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/setting">Setting</Link>
+                  <Link href="/settings">Settings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => signOut()}>
                   Logout
@@ -167,7 +168,7 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant="default" asChild>
+            <Button variant="default" size={"sm"} asChild>
               <Link href="/signup">Sign Up</Link>
             </Button>
           )}

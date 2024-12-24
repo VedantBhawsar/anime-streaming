@@ -38,7 +38,7 @@ export default function RecommendationsPage() {
       </h1>
 
       {!data?.user && (
-        <div className="w-full flex items-center justify-center h-40 border rounded-lg bg-muted/50">
+        <div className="w-full flex items-center justify-center h-40 border-2 border-primary/25 rounded-lg bg-primary/5 mt-5"> 
           <p className="text-sm text-muted-foreground">
             To use this feature you have to login first.
           </p>
