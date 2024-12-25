@@ -94,7 +94,7 @@ export default function Header() {
           <img
             src="./logo.png"
             alt="Logo"
-            className="w-12 sm:w-16 rounded-full"
+            className="w-8 sm:w-10 rounded-full mr-2"
           />
           <span
             className={`text-xl sm:text-2xl font-bold text-primary ${protestRevolution.className}`}
