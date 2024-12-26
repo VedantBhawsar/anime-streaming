@@ -3,9 +3,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/providers";
 
-export const metadata: Metadata = {
+interface IMetaData extends Metadata {
+  "google-adsense-account": string;
+}
+
+export const metadata: IMetaData = {
   title: "AnimeVerse",
   description: "Watch anime here",
+  "google-adsense-account": process.env.GOOGLE_ADSENSE as string,
 };
 
 export default function RootLayout({

@@ -42,7 +42,7 @@ export default function AnimeSuggestions({
       transition={{ delay: 0.5 }}
     >
       <Card className="border-2 border-primary/20">
-        <CardHeader className="pb-0 space-y-2">
+        <CardHeader className="pb-0 space-y-2 p-4 md:p-6">
           <CardTitle className="text-xl sm:text-2xl text-primary">
             Unveiling the Story
           </CardTitle>
@@ -53,8 +53,8 @@ export default function AnimeSuggestions({
             excitement.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="min-h-[10rem] sm:min-h-[12rem] flex justify-center items-center p-4">
+        <CardContent className="p-4 md:p-6">
+          <div className="min-h-[10rem] sm:min-h-[12rem] flex justify-center items-center p-1 md:p-4">
             {suggestions.length > 0 ? (
               <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none">
                 <span dangerouslySetInnerHTML={{ __html: suggestions }} />

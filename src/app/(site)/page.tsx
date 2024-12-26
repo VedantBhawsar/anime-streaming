@@ -52,40 +52,40 @@ export default async function HomePage() {
         />
       </div>
 
-      <div className="container mx-auto px-4 space-y-8 md:space-y-12 py-8">
-        <section>
+      <div className="container mx-auto space-y-8 md:space-y-12 py-8 px-4 md:px-0 overflow-hidden">
+        <div>
           <AnimeCarousel
             episodes={data.recentlyAddedEpisodes?.results}
             category="Recently Updated"
             isEpisodes={true}
             isLoading={false}
           />
-        </section>
+        </div>
 
-        <section>
+        <div>
           <AnimeCarousel
             movies={data.recentlyAddedMovies?.results}
             category="Recently Added Movies"
             isMovie={true}
             isLoading={false}
           />
-        </section>
+        </div>
 
-        <section>
+        <div>
           <AnimeCarousel
             animes={data.mostPopular?.results}
             category="Most Popular"
             isLoading={false}
           />
-        </section>
+        </div>
 
-        <section>
+        <div>
           <AnimeCarousel
             animes={data.topAiring?.results}
             category="Top Airing"
             isLoading={false}
           />
-        </section>
+        </div>
       </div>
     </div>
   );

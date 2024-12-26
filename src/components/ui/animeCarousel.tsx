@@ -40,7 +40,7 @@ function AnimeCarousel({
   isMovie = false,
 }: IAnimeCarouselProps) {
   return (
-    <div className="px-0 py-8 border-b border-border">
+    <div className="px-0 pb-3 pt-0 md:py-8 border-b border-border">
       <h2 className="text-2xl font-bold mb-4 text-primary">{category}</h2>
 
       <div>

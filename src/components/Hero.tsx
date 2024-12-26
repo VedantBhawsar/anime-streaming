@@ -56,7 +56,7 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
 
   return (
     <motion.div
-      className="relative min-h-[50vh] md:h-[80vh] bg-cover bg-center overflow-hidden"
+      className="relative min-h-[35vh]   md:min-h-[50vh] md:h-[80vh] bg-cover bg-center overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -78,9 +78,10 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
       />
+      
 
       <motion.div
-        className="absolute bottom-4 md:bottom-14 left-4 md:left-14 p-4 md:p-0"
+        className="absolute bottom-4 md:bottom-14 left-4 md:left-14 p-2  md:p-0"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
