@@ -20,6 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta name="google-adsense-account" content="ca-pub-3554837885726481"/>
       <body className={`${poppins.className}  antialiased `}>
         <Providers>{children}</Providers>
       </body>
