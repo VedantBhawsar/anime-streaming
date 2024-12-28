@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,55 +9,49 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Info, AlertTriangle, CheckCircle2 } from "lucide-react";
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { Info, AlertTriangle, CheckCircle2 } from 'lucide-react'
 
 // Enum for alert types
 const AlertType = {
-  INFO: "info",
-  WARNING: "warning",
-  SUCCESS: "success",
-  ERROR: "error",
-};
+  INFO: 'info',
+  WARNING: 'warning',
+  SUCCESS: 'success',
+  ERROR: 'error',
+}
 
 // Component to render different icons based on alert type
-const AlertIcon = ({
-  type,
-  className,
-}: {
-  type: string;
-  className: string;
-}) => {
+const AlertIcon = ({ type, className }: { type: string; className: string }) => {
   switch (type) {
     case AlertType.INFO:
-      return <Info className={`text-blue-500 ${className}`} />;
+      return <Info className={`text-blue-500 ${className}`} />
     case AlertType.WARNING:
-      return <AlertTriangle className={`text-yellow-500 ${className}`} />;
+      return <AlertTriangle className={`text-yellow-500 ${className}`} />
     case AlertType.SUCCESS:
-      return <CheckCircle2 className={`text-green-500 ${className}`} />;
+      return <CheckCircle2 className={`text-green-500 ${className}`} />
     case AlertType.ERROR:
-      return <AlertTriangle className={`text-red-500 ${className}`} />;
+      return <AlertTriangle className={`text-red-500 ${className}`} />
     default:
-      return null;
+      return null
   }
-};
+}
 export enum EAlertType {
-  INFO = "info",
-  WARNING = "warning",
-  ERROR = "error",
-  SUCCESS = "success",
+  INFO = 'info',
+  WARNING = 'warning',
+  ERROR = 'error',
+  SUCCESS = 'success',
 }
 
 interface AnimeAlertDialogProps {
-  trigger: boolean;
-  title: string;
-  description?: string;
-  type?: string;
-  confirmText?: string;
-  cancelText?: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
+  trigger: boolean
+  title: string
+  description?: string
+  type?: string
+  confirmText?: string
+  cancelText?: string
+  onConfirm?: () => void
+  onCancel?: () => void
 }
 
 export default function AnimeAlertDialog({
@@ -65,8 +59,8 @@ export default function AnimeAlertDialog({
   title,
   description,
   type = AlertType.INFO,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
   onConfirm,
   onCancel,
 }: AnimeAlertDialogProps) {
@@ -79,13 +73,9 @@ export default function AnimeAlertDialog({
         <AlertDialogHeader>
           <div className="flex items-center gap-4 mb-4">
             <AlertIcon type={type} className="w-12 h-12" />
-            <AlertDialogTitle className="text-2xl text-purple-700">
-              {title}
-            </AlertDialogTitle>
+            <AlertDialogTitle className="text-2xl text-purple-700">{title}</AlertDialogTitle>
           </div>
-          <AlertDialogDescription className="text-gray-600">
-            {description}
-          </AlertDialogDescription>
+          <AlertDialogDescription className="text-gray-600">{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel} className="hover:bg-gray-100">
@@ -96,10 +86,10 @@ export default function AnimeAlertDialog({
             className={`
               ${
                 type === AlertType.ERROR
-                  ? "bg-red-500 hover:bg-red-600"
+                  ? 'bg-red-500 hover:bg-red-600'
                   : type === AlertType.SUCCESS
-                  ? "bg-green-500 hover:bg-green-600"
-                  : "bg-pink-600 hover:bg-pink-700"
+                    ? 'bg-green-500 hover:bg-green-600'
+                    : 'bg-pink-600 hover:bg-pink-700'
               }
               text-white
             `}
@@ -109,7 +99,7 @@ export default function AnimeAlertDialog({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }
 
-export { AlertType };
+export { AlertType }

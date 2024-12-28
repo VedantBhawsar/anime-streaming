@@ -1,60 +1,59 @@
-"use client";
+'use client'
 
-import React, { useEffect, useState } from "react";
-import { EpisodesList } from "@/components/anime/EpisodesList";
-import { useParams } from "next/navigation";
-import { api } from "@/lib/api";
-import {
-  AnimeBottomSection,
-  IAnime,
-} from "@/components/anime/AnimeBottomSection";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import React, { useEffect, useState } from 'react'
+import { EpisodesList } from '@/components/anime/EpisodesList'
+import { useParams } from 'next/navigation'
+import { api } from '@/lib/api'
+import { AnimeBottomSection, IAnime } from '@/components/anime/AnimeBottomSection'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
-interface IAnimeEpisode {
-  title: string;
-  url: string;
+export interface IAnimeEpisode {
+  title: string
+  url: string
 }
 
 export default function AnimePage() {
   const params = useParams() as {
-    episodeId: string;
-    animeId: string;
-  };
+    episodeId: string
+    animeId: string
+  }
 
-  const [anime, setAnime] = useState<IAnime | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [episode, setEpisode] = useState<IAnimeEpisode[] | null>(null);
-  const [comments, setComments] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [anime, setAnime] = useState<IAnime | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [episode, setEpisode] = useState<IAnimeEpisode[] | null>(null)
+  const [comments, setComments] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchData() {
       try {
-        setIsLoading(true);
-        setError(null);
-
+        setIsLoading(true)
+        setError(null)
         const [animeData, episodeData] = await Promise.all([
           api.get(`/anime/${params.animeId}`),
           api.get(`/anime/episode/${params.episodeId}`),
-        ]);
-
-        setAnime(animeData.data);
-        setEpisode(episodeData.data.sources);
-        setComments(episodeData.data.comments);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to load anime data. Please try again later.");
+        ])
+        setAnime(animeData.data)
+        setEpisode(episodeData.data.sources)
+        setComments(episodeData.data.comments)
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error('Error fetching data:', error.message)
+        } else {
+          console.error('Something went wrong', error)
+        }
+        setError('Failed to load anime data. Please try again later.')
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
 
     if (params.animeId && params.episodeId) {
-      fetchData();
+      fetchData()
     }
-  }, [params.animeId, params.episodeId]);
+  }, [params.animeId, params.episodeId])
 
   if (isLoading) {
     return (
@@ -67,7 +66,7 @@ export default function AnimePage() {
           ))}
         </div>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -77,7 +76,7 @@ export default function AnimePage() {
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       </div>
-    );
+    )
   }
 
   if (!anime || !episode) {
@@ -87,7 +86,7 @@ export default function AnimePage() {
           <AlertDescription>No data available</AlertDescription>
         </Alert>
       </div>
-    );
+    )
   }
 
   return (
@@ -113,6 +112,7 @@ export default function AnimePage() {
 
         {/* Bottom Section */}
         <AnimeBottomSection
+          episode={episode}
           anime={anime}
           animeId={params.animeId}
           episodeId={params.episodeId}
@@ -125,13 +125,10 @@ export default function AnimePage() {
       <div className="relative">
         <ScrollArea className="h-[calc(100vh-12rem)]">
           <div className="md:pr-4 ">
-            <EpisodesList 
-              animeId={params.animeId} 
-              anime={anime}
-            />
+            <EpisodesList animeId={params.animeId} anime={anime} />
           </div>
         </ScrollArea>
       </div>
     </div>
-  );
+  )
 }

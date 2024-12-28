@@ -1,26 +1,26 @@
-import React from "react";
-import AnimeCarousel from "@/components/ui/animeCarousel";
-import Hero from "@/components/Hero";
-import { api } from "@/lib/api";
-import { Skeleton } from "@/components/ui/skeleton";
+import React from 'react'
+import AnimeCarousel from '@/components/ui/animeCarousel'
+import Hero from '@/components/Hero'
+import { api } from '@/lib/api'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface AnimeData {
   recentlyAddedEpisodes: {
-    results: any[];
-  };
+    results: any[]
+  }
   recentlyAddedMovies: {
-    results: any[];
-  };
+    results: any[]
+  }
   mostPopular: {
-    results: any[];
-  };
+    results: any[]
+  }
   topAiring: {
-    results: any[];
-  };
+    results: any[]
+  }
 }
 
 export default async function HomePage() {
-  const { data } = await api.get<AnimeData>("/anime/home");
+  const { data } = await api.get<AnimeData>('/anime/home')
 
   if (!data) {
     return (
@@ -37,10 +37,8 @@ export default async function HomePage() {
           </div>
         ))}
       </div>
-    );
+    )
   }
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted text-foreground">
@@ -80,13 +78,9 @@ export default async function HomePage() {
         </div>
 
         <div>
-          <AnimeCarousel
-            animes={data.topAiring?.results}
-            category="Top Airing"
-            isLoading={false}
-          />
+          <AnimeCarousel animes={data.topAiring?.results} category="Top Airing" isLoading={false} />
         </div>
       </div>
     </div>
-  );
+  )
 }

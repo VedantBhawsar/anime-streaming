@@ -1,4 +1,4 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {
   Pagination,
   PaginationContent,
@@ -6,44 +6,40 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from '@/components/ui/pagination'
 
 interface IAnimePagination {
-  hasNextPage: boolean;
-  currentPage: number;
-  refetch: () => void;
+  hasNextPage: boolean
+  currentPage: number
+  refetch: () => void
 }
 
-function AnimePagination({
-  hasNextPage,
-  currentPage = 1,
-  refetch,
-}: IAnimePagination) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const genre = searchParams.get("q") || "action";
+function AnimePagination({ hasNextPage, currentPage = 1, refetch }: IAnimePagination) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const genre = searchParams.get('q') || 'action'
 
   const handlePageChange = (page: number) => {
-    if (page < 1) return;
+    if (page < 1) return
 
-    const newUrl = `${pathname}?q=${genre}&page=${page}`;
-    router.push(newUrl, { scroll: true });
-    setTimeout(refetch, 150);
-  };
+    const newUrl = `${pathname}?q=${genre}&page=${page}`
+    router.push(newUrl, { scroll: true })
+    setTimeout(refetch, 150)
+  }
 
   const getVisiblePages = () => {
-    const pages = [currentPage];
+    const pages = [currentPage]
 
     if (hasNextPage) {
-      pages.push(currentPage + 1);
+      pages.push(currentPage + 1)
       if (currentPage + 2 <= currentPage + 3) {
-        pages.push(currentPage + 2);
+        pages.push(currentPage + 2)
       }
     }
 
-    return pages;
-  };
+    return pages
+  }
 
   return (
     <Pagination>
@@ -51,11 +47,7 @@ function AnimePagination({
         <PaginationItem>
           <PaginationPrevious
             onClick={() => handlePageChange(currentPage - 1)}
-            className={`${
-              currentPage === 1
-                ? "pointer-events-none opacity-50"
-                : "cursor-pointer"
-            }`}
+            className={`${currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}
             aria-disabled={currentPage === 1}
           />
         </PaginationItem>
@@ -82,7 +74,7 @@ function AnimePagination({
         )}
       </PaginationContent>
     </Pagination>
-  );
+  )
 }
 
-export default AnimePagination;
+export default AnimePagination

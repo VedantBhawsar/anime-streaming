@@ -1,19 +1,19 @@
-"use client";
+'use client'
 
-import Link from "next/link";
+import Link from 'next/link'
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
-import { Home, TvIcon, ListTodo, Lightbulb, Menu, X } from "lucide-react";
-import { protestRevolution } from "@/fonts";
-import { usePathname } from "next/navigation";
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { signOut, useSession } from "next-auth/react";
+} from '@/components/ui/navigation-menu'
+import { Button } from '@/components/ui/button'
+import { Home, TvIcon, ListTodo, Lightbulb, Menu, X } from 'lucide-react'
+import { protestRevolution } from '@/fonts'
+import { usePathname } from 'next/navigation'
+import React, { useState } from 'react'
+import { cn } from '@/lib/utils'
+import { useSession, signOut } from 'next-auth/react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,43 +21,43 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import SearchBar from "./SearchBar";
+} from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import SearchBar from './SearchBar'
 
 export default function Header() {
-  const pathName = usePathname();
-  const { data } = useSession();
-  const user = data?.user;
-  const [isOpen, setIsOpen] = useState(false);
+  const pathName = usePathname()
+  const { data } = useSession()
+  const user = data?.user
+  const [isOpen, setIsOpen] = useState(false)
 
   const navigationMenu = [
     {
-      href: "/",
+      href: '/',
       icon: <Home className="h-4 w-4" />,
-      label: "Home",
-      hoverClass: "group/home",
+      label: 'Home',
+      hoverClass: 'group/home',
     },
     {
-      href: "/explore",
+      href: '/explore',
       icon: <TvIcon className="h-4 w-4" />,
-      label: "Explore",
-      hoverClass: "group/anime",
+      label: 'Explore',
+      hoverClass: 'group/anime',
     },
     {
-      href: "/recommendations",
+      href: '/recommendations',
       icon: <Lightbulb className="h-4 w-4" />,
-      label: "Recommendations",
-      hoverClass: "group/recommendations",
+      label: 'Recommendations',
+      hoverClass: 'group/recommendations',
     },
     {
-      href: "/watchlist",
+      href: '/watchlist',
       icon: <ListTodo className="h-4 w-4" />,
-      label: "Watchlist",
-      hoverClass: "group/watchlist",
+      label: 'Watchlist',
+      hoverClass: 'group/watchlist',
     },
-  ];
+  ]
 
   const NavItems = () => (
     <>
@@ -67,12 +67,12 @@ export default function Header() {
             <Link
               href={item.href}
               className={cn(
-                "relative flex items-center gap-2 transition-colors rounded-md p-2 text-sm",
-                "hover:bg-accent hover:text-accent-foreground",
-                item.href.split("/")[1] === pathName.split("/")[1]
-                  ? "bg-accent text-accent-foreground"
-                  : "text-foreground",
-                isOpen ? "w-full" : ""
+                'relative flex items-center gap-2 transition-colors rounded-md p-2 text-sm',
+                'hover:bg-accent hover:text-accent-foreground',
+                item.href.split('/')[1] === pathName.split('/')[1]
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-foreground',
+                isOpen ? 'w-full' : '',
               )}
               onClick={() => setIsOpen(false)}
             >
@@ -83,19 +83,14 @@ export default function Header() {
         </NavigationMenuItem>
       ))}
     </>
-  );
-
+  )
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="container mx-auto flex items-center justify-between py-4 px-4 md:px-0">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
-          <img
-            src="./logo.png"
-            alt="Logo"
-            className="w-8 sm:w-10 rounded-full mr-2"
-          />
+          <img src="./logo.png" alt="Logo" className="w-8 sm:w-10 rounded-full mr-2" />
           <span
             className={`text-xl sm:text-2xl font-bold text-primary ${protestRevolution.className}`}
           >
@@ -114,17 +109,10 @@ export default function Header() {
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="md:hidden ml-auto pr-10">
             <Button variant="ghost" size="icon">
-              {isOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </SheetTrigger>
-          <SheetContent
-            side="left"
-            className="w-72 flex justify-start items-center flex-col"
-          >
+          <SheetContent side="left" className="w-72 flex justify-start items-center flex-col">
             <NavigationMenu className="mt-8 ">
               <NavigationMenuList className="flex flex-col gap-2">
                 <NavItems />
@@ -146,10 +134,7 @@ export default function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
@@ -162,18 +147,16 @@ export default function Header() {
                 <DropdownMenuItem asChild>
                   <Link href="/settings">Settings</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => signOut()}>
-                  Logout
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant="default" size={"sm"} asChild>
+            <Button variant="default" size={'sm'} asChild>
               <Link href="/signup">Sign Up</Link>
             </Button>
           )}
         </div>
       </div>
     </nav>
-  );
+  )
 }

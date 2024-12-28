@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import {
   Dialog,
   DialogContent,
@@ -6,22 +6,22 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Info, Clock, Tv } from "lucide-react";
-import { useAnimeStore } from "@/store/anime-store";
-import { Skeleton } from "./skeleton";
-import Link from "next/link";
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Info, Clock, Tv } from 'lucide-react'
+import { useAnimeStore } from '@/store/anime-store'
+import { Skeleton } from './skeleton'
+import Link from 'next/link'
 
 export default function AnimeDetailsModal({
   handleCloseModal,
   open,
 }: {
-  handleCloseModal: () => void;
-  open: boolean;
+  handleCloseModal: () => void
+  open: boolean
 }) {
-  const { anime } = useAnimeStore();
+  const { anime } = useAnimeStore()
 
   return (
     <Dialog open={open} onOpenChange={handleCloseModal}>
@@ -49,9 +49,7 @@ export default function AnimeDetailsModal({
 
           <div className="col-span-2">
             {anime?.description ? (
-              <p className="text-lg mb-4 text-gray-700 line-clamp-6">
-                {anime?.description}
-              </p>
+              <p className="text-lg mb-4 text-gray-700 line-clamp-6">{anime?.description}</p>
             ) : (
               <div className="flex flex-col gap-2 mb-5">
                 <Skeleton className="w-full h-6" />
@@ -72,19 +70,11 @@ export default function AnimeDetailsModal({
                   Details
                 </h3>
                 <div className="space-y-1">
-                  {anime?.type && (
-                    <Badge variant="secondary">Type: {anime?.type}</Badge>
-                  )}
+                  {anime?.type && <Badge variant="secondary">Type: {anime?.type}</Badge>}
                   {anime?.totalEpisodes && (
-                    <Badge variant="secondary">
-                      Total Episodes: {anime?.totalEpisodes}
-                    </Badge>
+                    <Badge variant="secondary">Total Episodes: {anime?.totalEpisodes}</Badge>
                   )}
-                  {anime?.subOrDub && (
-                    <Badge variant="secondary">
-                      Sub/Dub: {anime?.subOrDub}
-                    </Badge>
-                  )}
+                  {anime?.subOrDub && <Badge variant="secondary">Sub/Dub: {anime?.subOrDub}</Badge>}
                 </div>
               </div>
 
@@ -95,18 +85,10 @@ export default function AnimeDetailsModal({
                 </h3>
                 <div className="space-y-1">
                   <Badge variant="secondary">
-                    Subtitles: {anime?.hasSub ? "Available" : "Not Available"}
+                    Subtitles: {anime?.hasSub ? 'Available' : 'Not Available'}
                   </Badge>
-                  {anime?.sub && (
-                    <Badge variant="secondary">
-                      Sub Episodes: {anime?.sub}
-                    </Badge>
-                  )}
-                  {anime?.dub && (
-                    <Badge variant="secondary">
-                      Dub Episodes: {anime?.dub}
-                    </Badge>
-                  )}
+                  {anime?.sub && <Badge variant="secondary">Sub Episodes: {anime?.sub}</Badge>}
+                  {anime?.dub && <Badge variant="secondary">Dub Episodes: {anime?.dub}</Badge>}
                 </div>
               </div>
             </div>
@@ -121,5 +103,5 @@ export default function AnimeDetailsModal({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

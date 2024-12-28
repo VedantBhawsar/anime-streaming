@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/26466516/107675802-36216b80-6c77-11eb-8db1-4d3407dc53d9.png" alt="Next.js and TypeScript">
+</p>
 
-## Getting Started
+<p align="center">
+  <img src="https://img.shields.io/static/v1?label=PRs&message=welcome&style=for-the-badge&color=24B36B&labelColor=000000" alt="PRs welcome!" />
 
-First, run the development server:
+  <img alt="License" src="https://img.shields.io/github/license/chhpt/typescript-nextjs-starter?style=for-the-badge&color=24B36B&labelColor=000000">
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  <a href="https://twitter.com/intent/follow?screen_name=cwuyiqing">
+    <img src="https://img.shields.io/twitter/follow/cwuyiqing?style=for-the-badge&color=24B36B&labelColor=000000" alt="Follow @chhpt" />
+  </a>
+</p>
+
+<br>
+
+A full-featured Next.js starter that includes all you need to build amazing projects 🔥. Fork and customize from [jpedroschmitz](https://github.com/jpedroschmitz/typescript-nextjs-starter)
+
+- 🚀 **Next.js 15 App Router & React 18**
+- ⚙️ **Tailwind CSS 3** - A utility-first CSS framework
+- 🍓 **Styled Components** - Styling React component
+- 📏 **ESLint** — Pluggable JavaScript linter
+- 💖 **Prettier** - Opinionated Code Formatter
+- 🐶 **Husky** — Use git hooks with ease
+- 🚫 **lint-staged** - Run linters against staged git files
+- 😁 **shadcn** - Beautifully designed components that you can copy and paste into your apps.
+- 🗂 **Absolute import** - Import folders and files using the `@` prefix
+- 🤩 **Vercel Serverless/Edge Functions** - Serverless/Edge functions for Next.js
+
+## 🚀 Getting started
+
+The best way to start with this template is using `create-next-app`.
+
+```
+npx create-next-app ts-next -e https://github.com/chhpt/nextjs-starter
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+or
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+pnpm create next-app ts-next -e https://github.com/chhpt/nextjs-starter
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+If you prefer you can clone this repository and run the following commands inside the project folder:
 
-## Learn More
+1. `pnpm install` or `npm install`;
+2. `pnpm dev`;
 
-To learn more about Next.js, take a look at the following resources:
+To view the project open `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Fork this repository;
+2. Create your branch: `git checkout -b my-new-feature`;
+3. Commit your changes: `git commit -m 'Add some feature'`;
+4. Push to the branch: `git push origin my-new-feature`.
 
-## Deploy on Vercel
+**After your pull request is merged**, you can safely delete your branch.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for more information.
+
+---
+
+Made with ♥ by Clare Chang

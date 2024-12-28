@@ -1,50 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { PlayIcon } from "lucide-react";
-import AnimeDetailsModal from "./animeDetailsModel";
-import { useAnimeStore } from "@/store/anime-store";
-import { getWishlistAnime } from "@/utils/anime";
-import { IEpisodes } from "./animeCarousel";
+import React, { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { PlayIcon } from 'lucide-react'
+import AnimeDetailsModal from './animeDetailsModel'
+import { useAnimeStore } from '@/store/anime-store'
+import { getWishlistAnime } from '@/utils/anime'
+import { IEpisodes } from './animeCarousel'
 
 interface AnimeCardProps {
-  episode: IEpisodes;
+  episode: IEpisodes
 }
 
 function EpisodeCard({ episode }: AnimeCardProps) {
-  const [open, setOpen] = useState(false);
-  const { setAnime } = useAnimeStore();
+  const [open, setOpen] = useState(false)
+  const { setAnime } = useAnimeStore()
 
   useEffect(() => {
-    const localAnime = getWishlistAnime();
-    const animeIds = localAnime.map((anime) => anime.id);
+    const localAnime = getWishlistAnime()
+    const animeIds = localAnime.map((anime) => anime.id)
     if (animeIds.includes(episode.id)) {
-      console.log(`Episode ${episode.id} is in the wishlist`);
+      console.log(`Episode ${episode.id} is in the wishlist`)
     }
-  }, [episode.id]);
+  }, [episode.id])
 
   const handleRedirect = async () => {
     try {
       const response = await fetch(`/api/anime/${episode.id}`, {
-        cache: "no-cache",
-      });
-      const data = await response.json();
-      setAnime(data);
+        cache: 'no-cache',
+      })
+      const data = await response.json()
+      setAnime(data)
     } catch (error: any) {
-      console.error("Error fetching anime details:", error.message);
+      console.error('Error fetching anime details:', error.message)
     }
-  };
+  }
 
   return (
     <motion.div className="group relative cursor-pointer rounded-lg overflow-hidden">
       {/* Image Container with Overlay */}
       <div className="relative overflow-hidden">
         <div className="aspect-[2/3] rounded-lg overflow-hidden shadow-lg bg-muted">
-          <Image
-            fill
+          <img
             src={episode.image}
             alt={`${episode.title} poster`}
-            className="object-cover transition-transform duration-300 group-hover:scale-110"
+            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
           />
           {/* Hover Overlay */}
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -52,9 +51,9 @@ function EpisodeCard({ episode }: AnimeCardProps) {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={(e) => {
-                e.stopPropagation();
-                handleRedirect();
-                setOpen(true);
+                e.stopPropagation()
+                handleRedirect()
+                setOpen(true)
               }}
               className="bg-background p-3 rounded-full text-primary hover:bg-primary hover:text-background transition-colors"
               aria-label="Watch Episode"
@@ -82,12 +81,12 @@ function EpisodeCard({ episode }: AnimeCardProps) {
       <AnimeDetailsModal
         open={open}
         handleCloseModal={() => {
-          setAnime(null);
-          setOpen(false);
+          setAnime(null)
+          setOpen(false)
         }}
       />
     </motion.div>
-  );
+  )
 }
 
-export default EpisodeCard;
+export default EpisodeCard

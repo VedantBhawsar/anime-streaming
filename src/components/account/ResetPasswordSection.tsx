@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import { Controller, useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Controller, useForm } from 'react-hook-form'
+import { Button } from '../ui/button'
+import { Label } from '../ui/label'
+import { Input } from '../ui/input'
 
 type FormData = {
-  confirmPassword: string;
-  oldpassword: string;
-  newPassword: string;
-};
+  confirmPassword: string
+  oldpassword: string
+  newPassword: string
+}
 
 export function ResetPasswordSection() {
   const {
@@ -19,25 +19,22 @@ export function ResetPasswordSection() {
     setValue,
   } = useForm<FormData>({
     defaultValues: {
-      confirmPassword: "",
-      newPassword: "",
-      oldpassword: "",
+      confirmPassword: '',
+      newPassword: '',
+      oldpassword: '',
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    console.log("submit");
-  };
+    console.log('submit')
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2">
         {/* Old Password Field */}
         <div className="space-y-2">
-          <Label 
-            htmlFor="oldpassword" 
-            className="text-foreground"
-          >
+          <Label htmlFor="oldpassword" className="text-foreground">
             Old Password
           </Label>
           <Controller
@@ -58,10 +55,7 @@ export function ResetPasswordSection() {
 
         {/* New Password Field */}
         <div className="space-y-2">
-          <Label 
-            htmlFor="newPassword" 
-            className="text-foreground"
-          >
+          <Label htmlFor="newPassword" className="text-foreground">
             New Password
           </Label>
           <Controller
@@ -83,10 +77,7 @@ export function ResetPasswordSection() {
 
       {/* Confirm Password Field */}
       <div className="space-y-2">
-        <Label 
-          htmlFor="confirmPassword" 
-          className="text-foreground"
-        >
+        <Label htmlFor="confirmPassword" className="text-foreground">
           Confirm New Password
         </Label>
         <Controller
@@ -106,14 +97,10 @@ export function ResetPasswordSection() {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button 
-          type="submit" 
-          variant="destructive"
-          className="w-full sm:w-auto"
-        >
+        <Button type="submit" variant="destructive" className="w-full sm:w-auto">
           Change Password
         </Button>
       </div>
     </form>
-  );
+  )
 }

@@ -1,60 +1,54 @@
-"use client";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Github, Twitter, Mail } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+'use client'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Github, Twitter, Mail } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 type FormData = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 export default function SignIn() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const response = await signIn("credentials", {
+      const response = await signIn('credentials', {
         ...data,
         redirect: false,
-      });
+      })
       if (response?.error) {
-        alert("Sign-in failed: " + response.error);
+        alert('Sign-in failed: ' + response.error)
       } else if (response?.ok) {
-        router.push("/");
+        router.push('/')
       }
     } catch (error) {
-      console.error("Error signing in:", error);
-      alert("An unexpected error occurred. Please try again later.");
+      console.error('Error signing in:', error)
+      alert('An unexpected error occurred. Please try again later.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
@@ -78,10 +72,10 @@ export default function SignIn() {
                   control={control}
                   name="email"
                   rules={{
-                    required: "Email is required",
+                    required: 'Email is required',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address",
+                      message: 'Invalid email address',
                     },
                   }}
                   render={({ field }) => (
@@ -111,10 +105,10 @@ export default function SignIn() {
                   control={control}
                   name="password"
                   rules={{
-                    required: "Password is required",
+                    required: 'Password is required',
                     minLength: {
                       value: 6,
-                      message: "Password must be at least 6 characters",
+                      message: 'Password must be at least 6 characters',
                     },
                   }}
                   render={({ field }) => (
@@ -137,12 +131,8 @@ export default function SignIn() {
               </div>
             </div>
 
-            <Button 
-              className="w-full"
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? "Signing in..." : "Sign In"}
+            <Button className="w-full" type="submit" disabled={isLoading}>
+              {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
 
             <div className="relative">
@@ -150,9 +140,7 @@ export default function SignIn() {
                 <Separator className="w-full" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
-                </span>
+                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
@@ -169,8 +157,8 @@ export default function SignIn() {
             </div>
 
             <div className="text-center">
-              <Link 
-                href="/signup" 
+              <Link
+                href="/signup"
                 className="text-primary hover:text-primary/90 hover:underline text-sm"
               >
                 Don&apos;t have an account? Sign Up
@@ -180,5 +168,5 @@ export default function SignIn() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

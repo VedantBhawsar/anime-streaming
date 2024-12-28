@@ -1,45 +1,45 @@
-"use client";
-import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Star, BookOpen, Trophy, Heart, HeartCrack } from "lucide-react";
-import React from "react";
-import { Button } from "../ui/button";
-import { api } from "@/lib/api";
-import { useSession } from "next-auth/react";
-import { toast } from "react-hot-toast";
+'use client'
+import { motion } from 'framer-motion'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Star, BookOpen, Trophy, Heart, HeartCrack } from 'lucide-react'
+import React from 'react'
+import { Button } from '../ui/button'
+import { api } from '@/lib/api'
+import { useSession } from 'next-auth/react'
+import { toast } from 'react-hot-toast'
 
 interface MainInfoCardProps {
-  anime: any;
-  animeId: string;
+  anime: any
+  animeId: string
 }
 
 export function MainInfoCard({ anime, animeId }: MainInfoCardProps) {
-  const { data } = useSession();
+  const { data } = useSession()
 
   async function handleLike() {
     try {
-      const { data: response } = await api.post("/anime/like", {
+      const { data: response } = await api.post('/anime/like', {
         animeId,
         userId: data?.user.id,
-      });
-      toast.success(response.message);
+      })
+      toast.success(response.message)
     } catch (error: any) {
-      console.log("Error liking anime", error);
-      toast.error("Error liking anime");
+      console.log('Error liking anime', error)
+      toast.error('Error liking anime')
     }
   }
 
   async function handleUnlike() {
     try {
-      const { data: response } = await api.post("/anime/dislike", {
+      const { data: response } = await api.post('/anime/dislike', {
         animeId,
         userId: data?.user.id,
-      });
-      toast.success(response.message);
+      })
+      toast.success(response.message)
     } catch (error: any) {
-      console.log("Error unliking anime", error);
-      toast.error("Error unliking anime");
+      console.log('Error unliking anime', error)
+      toast.error('Error unliking anime')
     }
   }
 
@@ -88,27 +88,23 @@ export function MainInfoCard({ anime, animeId }: MainInfoCardProps) {
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <p className="text-muted-foreground leading-relaxed">
-            {anime?.description}
-          </p>
+          <p className="text-muted-foreground leading-relaxed">{anime?.description}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="flex items-center gap-2">
               <Star className="text-yellow-500 dark:text-yellow-400 h-4 w-4" />
-              <span className="text-sm">{anime?.rating || "N/A"}/10</span>
+              <span className="text-sm">{anime?.rating || 'N/A'}/10</span>
             </div>
             <div className="flex items-center gap-2">
               <BookOpen className="text-primary h-4 w-4" />
-              <span className="text-sm">
-                {anime?.totalEpisodes || "N/A"} Episodes
-              </span>
+              <span className="text-sm">{anime?.totalEpisodes || 'N/A'} Episodes</span>
             </div>
             <div className="flex items-center gap-2">
               <Trophy className="text-green-500 dark:text-green-400 h-4 w-4" />
-              <span className="text-sm">{anime?.status || "N/A"}</span>
+              <span className="text-sm">{anime?.status || 'N/A'}</span>
             </div>
           </div>
         </CardContent>
       </Card>
     </motion.div>
-  );
+  )
 }

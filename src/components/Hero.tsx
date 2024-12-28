@@ -1,18 +1,18 @@
-"use client";
-import React, { useRef } from "react";
-import { motion } from "framer-motion";
-import { Play, Info, Fullscreen } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+'use client'
+import React, { useRef } from 'react'
+import { motion } from 'framer-motion'
+import { Play, Info, Fullscreen } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 interface HeroProps {
-  backgroundImage: string;
-  title: string;
-  description: string;
+  backgroundImage: string
+  title: string
+  description: string
 }
 
 const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
-  const divRef = useRef(null);
+  const divRef = useRef(null)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -22,7 +22,7 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         delayChildren: 0.3,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { y: 50, opacity: 0 },
@@ -30,29 +30,29 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         damping: 12,
         stiffness: 100,
       },
     },
-  };
+  }
 
   const enterFullScreen = () => {
-    const element = divRef.current;
+    const element = divRef.current
     if (element) {
       // @ts-ignore
       if (element.requestFullscreen) {
         // @ts-ignore
-        element.requestFullscreen();
+        element.requestFullscreen()
       } else if ((element as any).mozRequestFullScreen) {
-        (element as any).mozRequestFullScreen();
+        ;(element as any).mozRequestFullScreen()
       } else if ((element as any).webkitRequestFullscreen) {
-        (element as any).webkitRequestFullscreen();
+        ;(element as any).webkitRequestFullscreen()
       } else if ((element as any).msRequestFullscreen) {
-        (element as any).msRequestFullscreen();
+        ;(element as any).msRequestFullscreen()
       }
     }
-  };
+  }
 
   return (
     <motion.div
@@ -78,7 +78,6 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
       />
-      
 
       <motion.div
         className="absolute bottom-4 md:bottom-14 left-4 md:left-14 p-2  md:p-0"
@@ -100,34 +99,21 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
           {description}
         </motion.p>
 
-        <motion.div
-          className="flex flex-col sm:flex-row gap-2 sm:gap-4"
-          variants={itemVariants}
-        >
-          <Link
-            href={
-              "/anime/jujutsu-kaisen-tv-dub/jujutsu-kaisen-tv-dub-episode-1"
-            }
-          >
+        <motion.div className="flex flex-col sm:flex-row gap-2 sm:gap-4" variants={itemVariants}>
+          <Link href={'/anime/jujutsu-kaisen-tv-dub/jujutsu-kaisen-tv-dub-episode-1'}>
             <Button
               asChild
               className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Play className="mr-2 h-4 w-4" /> Watch Now
               </motion.button>
             </Button>
           </Link>
 
-          <Link href={"/anime/jujutsu-kaisen-tv-dub"}>
+          <Link href={'/anime/jujutsu-kaisen-tv-dub'}>
             <Button variant="outline" asChild className="w-full sm:w-auto">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Info className="mr-2 h-4 w-4" /> More Info
               </motion.button>
             </Button>
@@ -141,7 +127,7 @@ const Hero: React.FC<HeroProps> = ({ backgroundImage, title, description }) => {
         </Button>
       </motion.div>
     </motion.div>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero

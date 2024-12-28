@@ -1,31 +1,25 @@
-"use client";
+'use client'
 
-import { Controller, useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Info } from "lucide-react";
-import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { useSession } from "next-auth/react";
+import { Controller, useForm } from 'react-hook-form'
+import { Button } from '../ui/button'
+import { Label } from '../ui/label'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import { Info } from 'lucide-react'
+import { Input } from '../ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { useSession } from 'next-auth/react'
 
 type FormData = {
-  username: string;
-  email: string;
-  name: string;
-  age: number;
-  favoriteAnimeGenre: string;
-};
+  username: string
+  email: string
+  name: string
+  age: number
+  favoriteAnimeGenre: string
+}
 
 export function PersonalInfoSection() {
-  const { data } = useSession();
-  const user = data?.user;
+  const { data } = useSession()
+  const user = data?.user
 
   const {
     control,
@@ -34,24 +28,26 @@ export function PersonalInfoSection() {
     setValue,
   } = useForm<FormData>({
     defaultValues: {
-      username: "Vedant",
-      email: user?.email || "",
-      name: user?.name || "",
+      username: 'Vedant',
+      email: user?.email || '',
+      name: user?.name || '',
       age: 0,
-      favoriteAnimeGenre: "",
+      favoriteAnimeGenre: '',
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    console.log("submit");
-  };
+    console.log('submit')
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Username Field */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <Label htmlFor="username" className="text-foreground">Username</Label>
+          <Label htmlFor="username" className="text-foreground">
+            Username
+          </Label>
           <Tooltip>
             <TooltipTrigger asChild>
               <Info className="h-4 w-4 text-muted-foreground" />
@@ -81,7 +77,9 @@ export function PersonalInfoSection() {
       {/* Name and Email Fields */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name" className="text-foreground">Full Name</Label>
+          <Label htmlFor="name" className="text-foreground">
+            Full Name
+          </Label>
           <Controller
             control={control}
             name="name"
@@ -97,7 +95,9 @@ export function PersonalInfoSection() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-foreground">Email</Label>
+          <Label htmlFor="email" className="text-foreground">
+            Email
+          </Label>
           <Controller
             control={control}
             name="email"
@@ -118,7 +118,9 @@ export function PersonalInfoSection() {
       {/* Age and Anime Genre Fields */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="age" className="text-foreground">Age</Label>
+          <Label htmlFor="age" className="text-foreground">
+            Age
+          </Label>
           <Controller
             control={control}
             name="age"
@@ -145,7 +147,7 @@ export function PersonalInfoSection() {
             render={({ field }) => (
               <Select
                 value={field.value}
-                onValueChange={(value) => setValue("favoriteAnimeGenre", value)}
+                onValueChange={(value) => setValue('favoriteAnimeGenre', value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select your favorite genre" />
@@ -170,5 +172,5 @@ export function PersonalInfoSection() {
         </Button>
       </div>
     </form>
-  );
+  )
 }

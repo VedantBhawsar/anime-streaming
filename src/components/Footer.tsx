@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { Star, Github, Twitter } from "lucide-react";
+import Link from 'next/link'
+import { Button } from './ui/button'
+import { Star, Github, Twitter } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -10,16 +10,11 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="space-y-3">
             <div className=" items-center">
-              <img
-                src="./logo.png"
-                alt="Logo"
-                className="w-8 sm:w-10 rounded-full mb-2"
-              />
+              <img src="./logo.png" alt="Logo" className="w-8 sm:w-10 rounded-full mb-2" />
               <h3 className="text-xl font-bold text-primary">AnimeVerse</h3>
             </div>
             <p className="text-muted-foreground">
-              Your ultimate destination for anime discoveries and
-              recommendations.
+              Your ultimate destination for anime discoveries and recommendations.
             </p>
           </div>
 
@@ -102,5 +97,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

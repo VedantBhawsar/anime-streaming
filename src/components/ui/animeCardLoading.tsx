@@ -1,4 +1,4 @@
-import { Skeleton } from "./skeleton";
+import { Skeleton } from './skeleton'
 
 export default function AnimeCardLoading() {
   return (
@@ -17,5 +17,5 @@ export default function AnimeCardLoading() {
         <Skeleton className="h-6 w-full rounded-lg" />
       </div>
     </div>
-  );
+  )
 }

@@ -1,6 +1,5 @@
-"use client";
-import { motion } from "framer-motion";
-import Image from "next/image";
+'use client'
+import { motion } from 'framer-motion'
 
 export default function Loading() {
   return (
@@ -16,20 +15,13 @@ export default function Loading() {
         }}
         transition={{
           duration: 0.5,
-          ease: 'linear'
+          ease: 'linear',
         }}
         className="flex items-center justify-center flex-col inset-0"
       >
-        <Image
-          src="/logo.png"
-          alt="loading-logo"
-          height={110}
-          width={110}
-          className="md:h-20 sm:h-16 object-cover"
-          priority
-        />
+        <img src="/logo.png" alt="loading-logo" className="md:h-20 sm:h-16 object-cover mb-2" />
         <p className="dark:text-gray-300 text-gray-500">Loading...</p>
       </motion.div>
     </section>
-  );
+  )
 }

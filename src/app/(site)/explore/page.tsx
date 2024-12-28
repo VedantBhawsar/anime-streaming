@@ -1,40 +1,40 @@
-"use client";
-import { motion, AnimatePresence } from "framer-motion";
+'use client'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectValue,
   SelectTrigger,
-} from "@/components/ui/select";
-import { useGetGenres } from "@/query/get-genres";
-import { useGetGenreData } from "@/query/get-genre-data";
-import AnimeCardLoading from "@/components/ui/animeCardLoading";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useRouter, useSearchParams } from "next/navigation";
-import AnimeCard from "@/components/ui/animeCard";
-import AnimePagination from "@/components/explore/AnimePagination";
+} from '@/components/ui/select'
+import { useGetGenres } from '@/query/get-genres'
+import { useGetGenreData } from '@/query/get-genre-data'
+import AnimeCardLoading from '@/components/ui/animeCardLoading'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useRouter, useSearchParams } from 'next/navigation'
+import AnimeCard from '@/components/ui/animeCard'
+import AnimePagination from '@/components/explore/AnimePagination'
 
 export default function ExplorePage() {
-  const router = useRouter();
-  const { data: genres, isLoading: isGenresLoading } = useGetGenres();
-  const searchParams = useSearchParams();
-  const genre = searchParams.get("q") || "action";
-  const page = searchParams.get("page") || "1";
-  
+  const router = useRouter()
+  const { data: genres, isLoading: isGenresLoading } = useGetGenres()
+  const searchParams = useSearchParams()
+  const genre = searchParams.get('q') || 'action'
+  const page = searchParams.get('page') || '1'
+
   const {
     data: genreData,
     refetch,
     isRefetching: isGenreDataFetching,
     isLoading: isGenreDataLoading,
-  } = useGetGenreData(genre, page);
+  } = useGetGenreData(genre, page)
 
   async function handleGenreChange(value: string) {
-    router.push(`/explore?q=${value}&page=1`);
-    setTimeout(refetch, 800);
+    router.push(`/explore?q=${value}&page=1`)
+    setTimeout(refetch, 800)
   }
 
-  const isLoading = isGenreDataLoading || isGenreDataFetching;
+  const isLoading = isGenreDataLoading || isGenreDataFetching
 
   return (
     <div className="min-h-screen">
@@ -43,7 +43,7 @@ export default function ExplorePage() {
           <h2 className="text-xl sm:text-2xl font-bold text-primary">
             Explore - <span className="capitalize">{genre}</span>
           </h2>
-          
+
           {isGenresLoading ? (
             <Skeleton className="h-10 w-[150px]" />
           ) : (
@@ -56,11 +56,7 @@ export default function ExplorePage() {
               </SelectTrigger>
               <SelectContent>
                 {genres?.map((genre) => (
-                  <SelectItem
-                    key={genre.id}
-                    value={genre.id}
-                    className="capitalize"
-                  >
+                  <SelectItem key={genre.id} value={genre.id} className="capitalize">
                     {genre.title}
                   </SelectItem>
                 ))}
@@ -74,18 +70,18 @@ export default function ExplorePage() {
           <AnimatePresence mode="wait">
             {isLoading
               ? Array(20)
-                  .fill("")
+                  .fill('')
                   .map((_, index) => <AnimeCardLoading key={index} />)
               : genreData?.results?.map((anime: any, index: number) => (
                   <motion.div
                     initial={{ y: 20, opacity: 0 }}
-                    animate={{ 
-                      y: 0, 
+                    animate={{
+                      y: 0,
                       opacity: 1,
-                      transition: { 
+                      transition: {
                         duration: 0.3,
-                        delay: index * 0.05
-                      }
+                        delay: index * 0.05,
+                      },
                     }}
                     exit={{ y: 20, opacity: 0 }}
                     key={anime.id || index}
@@ -106,5 +102,5 @@ export default function ExplorePage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

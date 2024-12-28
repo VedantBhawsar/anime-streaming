@@ -1,17 +1,14 @@
-import { animeGogoClient } from "@/lib/animeClient";
-import { chat } from "@/lib/geminiClient";
-import { NextResponse } from "next/server";
+import { animeGogoClient } from '@/lib/animeClient'
+import { chat } from '@/lib/geminiClient'
+import { NextResponse } from 'next/server'
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ animeId: string }> }
-) {
+export async function GET(req: Request, { params }: { params: Promise<{ animeId: string }> }) {
   try {
-    const animeId = (await params).animeId;
+    const animeId = (await params).animeId
     if (!animeId) {
       return NextResponse.json({
-        error: "Anime ID is required",
-      });
+        error: 'Anime ID is required',
+      })
     }
 
     const prompt = `Prompt: 
@@ -27,8 +24,8 @@ export async function GET(
    
 5. **Noteworthy Awards/Popularity Statistics**: Mention any significant awards the anime has won or notable popularity statistics, such as ratings or viewership numbers.
 
-Ensure the response is informative and engaging, making it suitable for display on a streaming app while maintaining a concise format."`;
-    const response = await chat.ask(prompt);
+Ensure the response is informative and engaging, making it suitable for display on a streaming app while maintaining a concise format."`
+    const response = await chat.ask(prompt)
 
     return NextResponse.json(
       {
@@ -36,13 +33,13 @@ Ensure the response is informative and engaging, making it suitable for display 
       },
       {
         status: 200,
-      }
-    );
+      },
+    )
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error?.message)
     return NextResponse.json(
-      { error: "Internal Server Error", message: error?.message },
-      { status: 500 }
-    );
+      { error: 'Internal Server Error', message: error?.message },
+      { status: 500 },
+    )
   }
 }

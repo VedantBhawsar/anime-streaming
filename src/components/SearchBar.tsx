@@ -1,56 +1,60 @@
-"use client";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import { Input } from "./ui/input";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { api } from "@/lib/api";
-import { ScrollArea } from "./ui/scroll-area";
+'use client'
+import Link from 'next/link'
+import React, { useEffect, useRef, useState } from 'react'
+import { Input } from './ui/input'
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { api } from '@/lib/api'
+import { ScrollArea } from './ui/scroll-area'
 
 interface IAnime {
-  id: string;
-  title: string;
-  url: string;
-  image: string;
-  duration: string;
-  japaneseTitle: string;
-  type: string;
-  nsfw: boolean;
-  sub: number;
-  dub: number;
-  episodes: number;
+  id: string
+  title: string
+  url: string
+  image: string
+  duration: string
+  japaneseTitle: string
+  type: string
+  nsfw: boolean
+  sub: number
+  dub: number
+  episodes: number
 }
 
 const SearchBar = () => {
-  const [isFocused, setIsFocused] = useState(false);
-  const [query, setQuery] = useState("");
-  const [animeData, setAnimeData] = useState<IAnime[]>([]);
-  const inputRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(false)
+  const [query, setQuery] = useState('')
+  const [animeData, setAnimeData] = useState<IAnime[]>([])
+  const inputRef = useRef(null)
 
   const handleFocus = () => {
-    setIsFocused(true);
-  };
+    setIsFocused(true)
+  }
 
   const handleBlur = () => {
     setTimeout(() => {
-      setIsFocused(false);
-    }, 200);
-  };
+      setIsFocused(false)
+    }, 200)
+  }
 
   useEffect(() => {
     function fetchSearch() {
       if (query.trim().length > 3) {
         api
-          .get("/anime/search" + "?q=" + query)
-          .then((response) => setAnimeData(response.data.results))
-          .catch((error) => {
-            console.log(error);
-          });
+          .get('/anime/search' + '?q=' + query)
+          .then((response: any) => setAnimeData(response.data.results))
+          .catch((error: unknown) => {
+            if (error instanceof Error) {
+              console.error('error while fetching the search data:', error)
+            } else {
+              console.error('something went wrong.', error)
+            }
+          })
       }
     }
-    const fetchTimeout = setTimeout(fetchSearch, 500);
-    return () => clearTimeout(fetchTimeout);
-  }, [query]);
+    const fetchTimeout = setTimeout(fetchSearch, 500)
+    return () => clearTimeout(fetchTimeout)
+  }, [query])
 
   return (
     <div className="relative w-full sm:w-96 flex justify-end">
@@ -91,7 +95,7 @@ const SearchBar = () => {
                   className="grid grid-cols-4 gap-4 p-4 hover:bg-accent transition-colors duration-200"
                 >
                   <div className="col-span-1 w-full relative h-24 rounded-md overflow-hidden">
-                    <Image
+                    <img
                       src={anime?.image}
                       alt={anime?.title}
                       width={96}
@@ -101,12 +105,8 @@ const SearchBar = () => {
                   </div>
                   <div className="col-span-3">
                     <h3 className="text-base font-medium text-foreground">{anime?.title}</h3>
-                    <p className="text-xs text-muted-foreground">
-                      Duration: {anime?.duration}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Episodes: {anime?.sub}
-                    </p>
+                    <p className="text-xs text-muted-foreground">Duration: {anime?.duration}</p>
+                    <p className="text-xs text-muted-foreground">Episodes: {anime?.sub}</p>
                   </div>
                 </Link>
               ))
@@ -115,7 +115,7 @@ const SearchBar = () => {
         </motion.div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default SearchBar;
+export default SearchBar

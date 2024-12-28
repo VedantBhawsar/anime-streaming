@@ -1,4 +1,4 @@
 export interface IWatchedAnime {
-  anime: { id: string; title: string; poster: string };
-  episodes: string[];
+  anime: { id: string; title: string; poster: string }
+  episodes: string[]
 }

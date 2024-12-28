@@ -1,21 +1,31 @@
-import React from "react";
-import { HeroSection } from "@/components/anime/HeroSection";
-import { MainInfoCard } from "@/components/anime/MainInfoCard";
-import { EpisodesList } from "@/components/anime/EpisodesList";
-import AnimeSuggestions from "@/components/anime/RecommendationSection";
-import { api } from "@/lib/api";
-import { cn } from "@/lib/utils";
+import React from 'react'
+import { HeroSection } from '@/components/anime/HeroSection'
+import { MainInfoCard } from '@/components/anime/MainInfoCard'
+import { EpisodesList } from '@/components/anime/EpisodesList'
+import AnimeSuggestions from '@/components/anime/RecommendationSection'
+import { api } from '@/lib/api'
+import { cn } from '@/lib/utils'
 
-export default async function AnimeDetails({
-  params,
-}: {
-  params: Promise<{ animeId: string }>;
-}) {
-  const animeId = (await params).animeId;
-  const { data } = await api.get(`/anime/${animeId}`);
+async function fetchAnimeDetails(animeId: string) {
+  try {
+    const { data } = await api.get(`/anime/${animeId}`)
+    return data
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log('error fetching anime details:', error.message)
+    } else {
+      console.log('unexpected error:', error)
+    }
+    return null;
+  }
+}
+
+export default async function AnimeDetails({ params }: { params: Promise<{ animeId: string }> }) {
+  const animeId = (await params).animeId
+  const data = await fetchAnimeDetails(animeId)
 
   return (
-    <div className={cn("min-h-screen")}>
+    <div className={cn('min-h-screen')}>
       <div className="container mx-auto px-4 py-6 pt-0 space-y-8">
         {/* Hero Section */}
         <div className="w-full">
@@ -45,5 +55,5 @@ export default async function AnimeDetails({
         </div>
       </div>
     </div>
-  );
+  )
 }

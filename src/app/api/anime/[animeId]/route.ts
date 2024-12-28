@@ -1,35 +1,32 @@
-import { animeGogoClient } from "@/lib/animeClient";
-import { getRedisClient } from "@/lib/redisClient";
-import { NextResponse } from "next/server";
+import { animeGogoClient } from '@/lib/animeClient'
+import { getRedisClient } from '@/lib/redisClient'
+import { NextResponse } from 'next/server'
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ animeId: string }> }
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ animeId: string }> }) {
   try {
-    const animeId = (await params).animeId;
+    const animeId = (await params).animeId
     if (!animeId) {
       return NextResponse.json({
-        error: "Anime ID is required",
-      });
+        error: 'Anime ID is required',
+      })
     }
 
-    const redisClient = getRedisClient();
-    const cachedAnime = await redisClient.get(animeId);
+    const redisClient = getRedisClient()
+    const cachedAnime = await redisClient.get(animeId)
     if (cachedAnime) {
-      return NextResponse.json(JSON.parse(cachedAnime));
+      return NextResponse.json(JSON.parse(cachedAnime))
     }
 
-    const response = await animeGogoClient.fetchAnimeInfo(animeId);
-    await redisClient.set(animeId, JSON.stringify(response));
+    const response = await animeGogoClient.fetchAnimeInfo(animeId)
+    await redisClient.set(animeId, JSON.stringify(response))
     return NextResponse.json(response, {
       status: 200,
-    });
+    })
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error?.message)
     return NextResponse.json(
-      { error: "Internal Server Error", message: error?.message },
-      { status: 500 }
-    );
+      { error: 'Internal Server Error', message: error?.message },
+      { status: 500 },
+    )
   }
 }

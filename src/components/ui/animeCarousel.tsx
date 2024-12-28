@@ -1,33 +1,27 @@
-"use client";
-import AnimeCard from "./animeCard";
-import AnimeCardLoading from "./animeCardLoading";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./carousel";
-import EpisodeCard from "./episodeCard";
-import MovieCard, { IMovie } from "./movieCard";
+'use client'
+import AnimeCard from './animeCard'
+import AnimeCardLoading from './animeCardLoading'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './carousel'
+import EpisodeCard from './episodeCard'
+import MovieCard, { IMovie } from './movieCard'
 
 export interface IEpisodes {
-  id: string;
-  episodeId: string;
-  episodeNumber: number;
-  title: string;
-  image: string;
-  url: string;
+  id: string
+  episodeId: string
+  episodeNumber: number
+  title: string
+  image: string
+  url: string
 }
 
 interface IAnimeCarouselProps {
-  animes?: any;
-  movies?: IMovie[];
-  isMovie?: boolean;
-  category: string;
-  episodes?: IEpisodes[];
-  isLoading: boolean;
-  isEpisodes?: boolean;
+  animes?: any
+  movies?: IMovie[]
+  isMovie?: boolean
+  category: string
+  episodes?: IEpisodes[]
+  isLoading: boolean
+  isEpisodes?: boolean
 }
 
 function AnimeCarousel({
@@ -49,7 +43,7 @@ function AnimeCarousel({
           <CarouselContent>
             {isLoading
               ? Array(10)
-                  .fill("")
+                  .fill('')
                   .map((_, index) => (
                     <CarouselItem
                       key={index}
@@ -59,38 +53,38 @@ function AnimeCarousel({
                     </CarouselItem>
                   ))
               : isEpisodes
-              ? episodes?.map((episode: IEpisodes, index: number) => (
-                  <CarouselItem
-                    key={index}
-                    className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
-                  >
-                    <EpisodeCard key={index} episode={episode} />
-                  </CarouselItem>
-                ))
-              : isMovie
-              ? movies?.map((movie: IMovie, index: number) => (
-                  <CarouselItem
-                    key={index}
-                    className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
-                  >
-                    <MovieCard key={index} movie={movie} />
-                  </CarouselItem>
-                ))
-              : animes?.map((anime: any, index: number) => (
-                  <CarouselItem
-                    key={index}
-                    className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
-                  >
-                    <AnimeCard key={index} anime={anime} />
-                  </CarouselItem>
-                ))}
+                ? episodes?.map((episode: IEpisodes, index: number) => (
+                    <CarouselItem
+                      key={index}
+                      className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                    >
+                      <EpisodeCard key={index} episode={episode} />
+                    </CarouselItem>
+                  ))
+                : isMovie
+                  ? movies?.map((movie: IMovie, index: number) => (
+                      <CarouselItem
+                        key={index}
+                        className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                      >
+                        <MovieCard key={index} movie={movie} />
+                      </CarouselItem>
+                    ))
+                  : animes?.map((anime: any, index: number) => (
+                      <CarouselItem
+                        key={index}
+                        className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                      >
+                        <AnimeCard key={index} anime={anime} />
+                      </CarouselItem>
+                    ))}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
       </div>
     </div>
-  );
+  )
 }
 
-export default AnimeCarousel;
+export default AnimeCarousel

@@ -1,41 +1,35 @@
-"use client";
-import { useForm, Controller } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Github, Twitter, Mail } from "lucide-react";
+'use client'
+import { useForm, Controller } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Github, Twitter, Mail } from 'lucide-react'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
-import { useState } from "react";
-import toast from "react-hot-toast";
+} from '@/components/ui/select'
+import Link from 'next/link'
+import { signIn } from 'next-auth/react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 type FormData = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-  age: number;
-  favoriteAnimeGenre: string;
-};
+  username: string
+  email: string
+  password: string
+  confirmPassword: string
+  name: string
+  age: number
+  favoriteAnimeGenre: string
+}
 
 export default function SignUp() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const {
     control,
     handleSubmit,
@@ -43,36 +37,36 @@ export default function SignUp() {
     watch,
   } = useForm<FormData>({
     defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      name: "",
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      name: '',
       age: 0,
-      favoriteAnimeGenre: "",
+      favoriteAnimeGenre: '',
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const response = await signIn("credentials", {
+      const response = await signIn('credentials', {
         ...data,
         redirect: false,
-      });
+      })
 
       if (response?.error) {
-        toast.error("Sign-up failed: " + response.error);
+        toast.error('Sign-up failed: ' + response.error)
       } else if (response?.ok) {
-        toast.success("Sign-up successful!");
+        toast.success('Sign-up successful!')
       }
     } catch (error) {
-      console.error("Error signing up:", error);
-      toast.error("An unexpected error occurred. Please try again later.");
+      console.error('Error signing up:', error)
+      toast.error('An unexpected error occurred. Please try again later.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
@@ -93,10 +87,10 @@ export default function SignUp() {
                 control={control}
                 name="username"
                 rules={{
-                  required: "Username is required",
+                  required: 'Username is required',
                   minLength: {
                     value: 3,
-                    message: "Username must be at least 3 characters",
+                    message: 'Username must be at least 3 characters',
                   },
                 }}
                 render={({ field }) => (
@@ -123,18 +117,12 @@ export default function SignUp() {
                 <Controller
                   control={control}
                   name="name"
-                  rules={{ required: "Full name is required" }}
+                  rules={{ required: 'Full name is required' }}
                   render={({ field }) => (
                     <div className="mt-1">
-                      <Input
-                        id="name"
-                        placeholder="Enter your full name"
-                        {...field}
-                      />
+                      <Input id="name" placeholder="Enter your full name" {...field} />
                       {errors.name && (
-                        <span className="text-sm text-destructive mt-1">
-                          {errors.name.message}
-                        </span>
+                        <span className="text-sm text-destructive mt-1">{errors.name.message}</span>
                       )}
                     </div>
                   )}
@@ -146,20 +134,15 @@ export default function SignUp() {
                   control={control}
                   name="email"
                   rules={{
-                    required: "Email is required",
+                    required: 'Email is required',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address",
+                      message: 'Invalid email address',
                     },
                   }}
                   render={({ field }) => (
                     <div className="mt-1">
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        {...field}
-                      />
+                      <Input id="email" type="email" placeholder="Enter your email" {...field} />
                       {errors.email && (
                         <span className="text-sm text-destructive mt-1">
                           {errors.email.message}
@@ -178,10 +161,10 @@ export default function SignUp() {
                   control={control}
                   name="password"
                   rules={{
-                    required: "Password is required",
+                    required: 'Password is required',
                     minLength: {
                       value: 6,
-                      message: "Password must be at least 6 characters",
+                      message: 'Password must be at least 6 characters',
                     },
                   }}
                   render={({ field }) => (
@@ -207,9 +190,8 @@ export default function SignUp() {
                   control={control}
                   name="confirmPassword"
                   rules={{
-                    required: "Please confirm your password",
-                    validate: (value) =>
-                      value === watch("password") || "Passwords do not match",
+                    required: 'Please confirm your password',
+                    validate: (value) => value === watch('password') || 'Passwords do not match',
                   }}
                   render={({ field }) => (
                     <div className="mt-1">
@@ -237,28 +219,21 @@ export default function SignUp() {
                   control={control}
                   name="age"
                   rules={{
-                    required: "Age is required",
+                    required: 'Age is required',
                     min: {
                       value: 13,
-                      message: "You must be at least 13 years old",
+                      message: 'You must be at least 13 years old',
                     },
                     max: {
                       value: 99,
-                      message: "Please enter a valid age",
+                      message: 'Please enter a valid age',
                     },
                   }}
                   render={({ field }) => (
                     <div className="mt-1">
-                      <Input
-                        id="age"
-                        type="number"
-                        placeholder="Enter your age"
-                        {...field}
-                      />
+                      <Input id="age" type="number" placeholder="Enter your age" {...field} />
                       {errors.age && (
-                        <span className="text-sm text-destructive mt-1">
-                          {errors.age.message}
-                        </span>
+                        <span className="text-sm text-destructive mt-1">{errors.age.message}</span>
                       )}
                     </div>
                   )}
@@ -270,21 +245,16 @@ export default function SignUp() {
                 <Controller
                   control={control}
                   name="favoriteAnimeGenre"
-                  rules={{ required: "Please select a genre" }}
+                  rules={{ required: 'Please select a genre' }}
                   render={({ field }) => (
                     <div className="mt-1">
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
+                      <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select your favorite genre" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="shonen">Shonen</SelectItem>
-                          <SelectItem value="slice-of-life">
-                            Slice of Life
-                          </SelectItem>
+                          <SelectItem value="slice-of-life">Slice of Life</SelectItem>
                           <SelectItem value="mecha">Mecha</SelectItem>
                           <SelectItem value="romance">Romance</SelectItem>
                           <SelectItem value="fantasy">Fantasy</SelectItem>
@@ -303,7 +273,7 @@ export default function SignUp() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating Account..." : "Create Account"}
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </Button>
 
             <div className="relative">
@@ -311,9 +281,7 @@ export default function SignUp() {
                 <Separator className="w-full" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
-                </span>
+                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
@@ -341,5 +309,5 @@ export default function SignUp() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
