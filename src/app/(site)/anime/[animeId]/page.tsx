@@ -16,7 +16,7 @@ async function fetchAnimeDetails(animeId: string) {
     } else {
       console.log('unexpected error:', error)
     }
-    return null;
+    return null
   }
 }
 
