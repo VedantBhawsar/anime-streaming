@@ -29,6 +29,7 @@ interface UserCredentials {
   username: string
   email: string
   password: string
+  image: string
 }
 
 // NextAuth Configuration
@@ -50,7 +51,7 @@ const authConfig: NextAuthOptions = {
       ) {
         try {
           if (!credentials) return null
-          const { email, password, username } = credentials as UserCredentials
+          const { email, password, username, image } = credentials as UserCredentials
 
           // Validate input
           if (!email || !password) {
@@ -72,6 +73,7 @@ const authConfig: NextAuthOptions = {
                 email,
                 password: hashedPassword,
                 name: username,
+                image: image,
                 description: 'Welcome to Anime World!',
               },
             })

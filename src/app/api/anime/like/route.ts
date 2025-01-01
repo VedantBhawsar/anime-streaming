@@ -21,20 +21,18 @@ export async function POST(req: Request) {
       },
     })
     if (existingLike) {
-      return NextResponse.json({ message: 'Already Liked' })
+      await prisma.like.delete({
+        where: {
+          id: existingLike.id,
+        },
+      })
+      return NextResponse.json({ message: 'Unliked' })
     }
 
     await prisma.like.create({
       data: {
         userId: body.userId,
         animeId: body.animeId,
-      },
-    })
-
-    await prisma.dislike.deleteMany({
-      where: {
-        animeId: body.animeId,
-        userId: body.userId,
       },
     })
 

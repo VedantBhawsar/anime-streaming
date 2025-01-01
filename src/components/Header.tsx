@@ -85,6 +85,8 @@ export default function Header() {
     </>
   )
 
+  console.log(data?.user.image)
+
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="container mx-auto flex items-center justify-between py-4 px-4 md:px-0">
@@ -134,7 +136,7 @@ export default function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarImage src={user.image || 'https://github.com/shadcn.png'} alt="@shadcn" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>

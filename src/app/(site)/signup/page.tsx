@@ -17,6 +17,7 @@ import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { redirect } from 'next/navigation'
 
 type FormData = {
   username: string
@@ -25,11 +26,13 @@ type FormData = {
   confirmPassword: string
   name: string
   age: number
+  image: string
   favoriteAnimeGenre: string
 }
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
+  const number = Math.round(Math.random() * 10)
   const {
     control,
     handleSubmit,
@@ -41,6 +44,7 @@ export default function SignUp() {
       email: '',
       password: '',
       confirmPassword: '',
+      image: `/avatars/${number}.png`,
       name: '',
       age: 0,
       favoriteAnimeGenre: '',
@@ -52,6 +56,7 @@ export default function SignUp() {
     try {
       const response = await signIn('credentials', {
         ...data,
+        image: `/avatars/${number}.png`,
         redirect: false,
       })
 
@@ -59,6 +64,7 @@ export default function SignUp() {
         toast.error('Sign-up failed: ' + response.error)
       } else if (response?.ok) {
         toast.success('Sign-up successful!')
+        redirect('/')
       }
     } catch (error) {
       console.error('Error signing up:', error)

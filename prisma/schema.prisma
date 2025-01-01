@@ -47,13 +47,11 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  wishlist       String[]
-  watchedAnimes  String[]
-  comments       Comment[]
-  likedAnimes    String[]
-  dislikedAnimes String[]
-  Like           Like[]
-  Dislike        Dislike[]
+  wishlist      String[]
+  watchedAnimes String[]
+  comments      Comment[]
+  likedAnimes   String[]
+  Like          Like[]
 }
 
 model Comment {
@@ -74,17 +72,6 @@ model Like {
   animeId   String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
- 
-  @@unique([userId, animeId])
-}
-
-model Dislike {
-  id        String   @id @default(cuid())
-  userId    String
-  animeId   String
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id])
 
   @@unique([userId, animeId])
 }

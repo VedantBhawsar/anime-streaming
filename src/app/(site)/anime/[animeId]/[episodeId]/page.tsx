@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 export interface IAnimeEpisode {
-  title: string
+  name: string
   url: string
 }
 
@@ -25,6 +25,7 @@ export default function AnimePage() {
   const [episode, setEpisode] = useState<IAnimeEpisode[] | null>(null)
   const [comments, setComments] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
+  const [selectedStream, setSelectedStream] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -38,6 +39,7 @@ export default function AnimePage() {
         setAnime(animeData.data)
         setEpisode(episodeData.data.sources)
         setComments(episodeData.data.comments)
+        setSelectedStream(episodeData.data.sources[0].url)
       } catch (error) {
         if (error instanceof Error) {
           console.error('Error fetching data:', error.message)
@@ -97,7 +99,7 @@ export default function AnimePage() {
         <div className="relative aspect-video w-full bg-muted rounded-lg overflow-hidden">
           {episode[1]?.url ? (
             <iframe
-              src={episode[1].url}
+              src={selectedStream!}
               frameBorder="0"
               scrolling="no"
               allowFullScreen
@@ -118,6 +120,9 @@ export default function AnimePage() {
           episodeId={params.episodeId}
           comments={comments}
           setComments={setComments}
+          changeStream={(streamUrl: string) => {
+            setSelectedStream(streamUrl)
+          }}
         />
       </div>
 

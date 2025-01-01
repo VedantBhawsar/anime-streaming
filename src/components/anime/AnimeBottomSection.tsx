@@ -17,6 +17,7 @@ export interface IEpisode {
   id?: string
   number?: number
   title?: string
+  name?: string
   isFiller?: boolean
   url?: string
 }
@@ -59,15 +60,18 @@ export function AnimeBottomSection({
   setComments,
   episodeId,
   episode,
+  changeStream,
 }: {
   anime: IAnime
   episode: IAnimeEpisode[]
   animeId: string
   episodeId: string
   comments: IComment[]
+  changeStream: (streamUrl: string) => void
   setComments: (comments: IComment[] | ((prevComments: IComment[]) => IComment[])) => void
 }) {
   const [isFavorite, setIsFavorite] = useState(false)
+
   const [newComment, setNewComment] = useState('')
   const [loading, setLoading] = useState(false)
   const { data } = useSession()
@@ -104,12 +108,23 @@ export function AnimeBottomSection({
       </div>
 
       <Card>
-        <CardContent>
-          <h1 className="text-lg font-bold mb-1">Anime Server</h1>
-
-          {episode.map((item) => {
-            return <div>{item.url}</div>
-          })}
+        <CardContent className="p-4 sm:p-6 space-y-2">
+          <h1 className="font-semibold text-foreground">Anime Server</h1>
+          <div className="border border-primary rounded-md p-4">
+            {episode.map((item) => {
+              return (
+                <Button
+                  variant={'link'}
+                  key={item.url}
+                  onClick={() => {
+                    changeStream(item.url)
+                  }}
+                >
+                  {item.name}
+                </Button>
+              )
+            })}
+          </div>
         </CardContent>
       </Card>
 
