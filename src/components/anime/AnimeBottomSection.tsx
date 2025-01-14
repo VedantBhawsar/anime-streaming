@@ -12,6 +12,8 @@ import { api } from '@/lib/api'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
 import { IAnimeEpisode } from '@/app/(site)/anime/[animeId]/[episodeId]/page'
+import { ScrollArea } from '@radix-ui/react-scroll-area'
+import { EpisodesList } from './EpisodesList'
 
 export interface IEpisode {
   id?: string
@@ -198,6 +200,14 @@ export function AnimeBottomSection({
           </p>
         </CardContent>
       </Card>
+
+      <div className="">
+        <ScrollArea className="">
+          <div className="pr-4">
+            <EpisodesList animeId={animeId} anime={anime} />
+          </div>
+        </ScrollArea>
+      </div>
 
       {/* Comments Section */}
       <div className="space-y-4">

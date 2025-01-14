@@ -4,6 +4,8 @@ import Hero from '@/components/Hero'
 import { api } from '@/lib/api'
 import { Skeleton } from '@/components/ui/skeleton'
 
+export const revalidate = 3600;
+
 interface AnimeData {
   recentlyAddedEpisodes: {
     results: any[]
@@ -55,7 +57,7 @@ export default async function HomePage() {
           <AnimeCarousel
             episodes={data.recentlyAddedEpisodes?.results}
             category="Recently Updated"
-            isEpisodes={true}
+            isMovie={true}
             isLoading={false}
           />
         </div>

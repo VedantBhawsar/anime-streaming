@@ -25,6 +25,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import SearchBar from './SearchBar'
+import Image from 'next/image'
 
 export default function Header() {
   const pathName = usePathname()
@@ -84,15 +85,11 @@ export default function Header() {
       ))}
     </>
   )
-
-  console.log(data?.user.image)
-
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="container mx-auto flex items-center justify-between py-4 px-4 md:px-0">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
-          <img src="./logo.png" alt="Logo" className="w-8 sm:w-10 rounded-full mr-2" />
           <span
             className={`text-xl sm:text-2xl font-bold text-primary ${protestRevolution.className}`}
           >

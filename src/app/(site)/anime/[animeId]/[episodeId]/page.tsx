@@ -92,47 +92,36 @@ export default function AnimePage() {
   }
 
   return (
-    <div className="container mx-auto p-4 lg:p-8 pt-0 lg:pt-0 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-      {/* Main Content Section */}
-      <div className="lg:col-span-2 space-y-6">
-        {/* Video Player */}
-        <div className="relative aspect-video w-full bg-muted rounded-lg overflow-hidden">
-          {episode[1]?.url ? (
-            <iframe
-              src={selectedStream!}
-              frameBorder="0"
-              scrolling="no"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-              Video unavailable
-            </div>
-          )}
-        </div>
-
-        {/* Bottom Section */}
-        <AnimeBottomSection
-          episode={episode}
-          anime={anime}
-          animeId={params.animeId}
-          episodeId={params.episodeId}
-          comments={comments}
-          setComments={setComments}
-          changeStream={(streamUrl: string) => {
-            setSelectedStream(streamUrl)
-          }}
-        />
-      </div>
-
-      {/* Episodes List Section */}
-      <div className="relative">
-        <ScrollArea className="h-[calc(100vh-12rem)]">
-          <div className="md:pr-4 ">
-            <EpisodesList animeId={params.animeId} anime={anime} />
+    <div className="min-h-screen">
+      <div className="w-full pt-0 lg:pt-0">
+        <div className="flex flex-col gap-6 lg:gap-8">
+          <div className="relative aspect-video w-full bg-muted rounded-lg overflow-hidden mb-6">
+            {episode[1]?.url ? (
+              <iframe
+                src={selectedStream!}
+                frameBorder="0"
+                scrolling="no"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+                Video unavailable
+              </div>
+            )}
           </div>
-        </ScrollArea>
+          <AnimeBottomSection
+            episode={episode}
+            anime={anime}
+            animeId={params.animeId}
+            episodeId={params.episodeId}
+            comments={comments}
+            setComments={setComments}
+            changeStream={(streamUrl: string) => {
+              setSelectedStream(streamUrl)
+            }}
+          />
+        </div>
       </div>
     </div>
   )

@@ -17,9 +17,9 @@ export default function Loading() {
           duration: 0.5,
           ease: 'linear',
         }}
-        className="flex items-center justify-center flex-col inset-0"
+        className="flex items-center justify-center flex-col inset-0 "
       >
-        <img src="/logo.png" alt="loading-logo" className="md:h-20 sm:h-8 object-cover mb-2" />
+        <img src="/logo.png" alt="loading-logo" className="md:h-20 sm:h-8 object-cover mb-2 animate-pulse" />
         <p className="dark:text-gray-300 text-gray-500">Loading...</p>
       </motion.div>
     </section>
