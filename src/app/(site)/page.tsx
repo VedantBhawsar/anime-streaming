@@ -4,7 +4,7 @@ import Hero from '@/components/Hero'
 import { api } from '@/lib/api'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export const revalidate = 3600;
+export const revalidate = 3600
 
 interface AnimeData {
   recentlyAddedEpisodes: {
