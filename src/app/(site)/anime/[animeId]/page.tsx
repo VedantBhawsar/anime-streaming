@@ -1,59 +1,63 @@
-import React from 'react'
-import { HeroSection } from '@/components/anime/HeroSection'
-import { MainInfoCard } from '@/components/anime/MainInfoCard'
-import { EpisodesList } from '@/components/anime/EpisodesList'
-import AnimeSuggestions from '@/components/anime/RecommendationSection'
-import { api } from '@/lib/api'
-import { cn } from '@/lib/utils'
+'use client'
+import { useParams } from 'next/navigation'
 
-async function fetchAnimeDetails(animeId: string) {
-  try {
-    const { data } = await api.get(`/anime/${animeId}`)
-    return data
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log('error fetching anime details:', error.message)
-    } else {
-      console.log('unexpected error:', error)
-    }
-    return null
+import { AnimeHeader } from '@/components/anime/AnimeHeader'
+import { AnimeStats } from '@/components/anime/AnimeStats'
+import { MediaSection } from '@/components/anime/MediaSection'
+import { RelatedAnime } from '@/components/anime/RelatedAnime'
+import { Card } from '@/components/ui/card'
+import { useGetAnimeDetailsData } from '@/query/get-anime-details'
+import type { AnimeData } from '@/types/anime'
+
+export default function AnimeDetails() {
+  const { animeId } = useParams<{ animeId: string }>()
+  const { data: anime, isLoading, isError } = useGetAnimeDetailsData(animeId)
+
+  if (isError) {
+    return <div>Error... Something went wrong</div>
   }
-}
-
-export default async function AnimeDetails({ params }: { params: Promise<{ animeId: string }> }) {
-  const animeId = (await params).animeId
-  const data = await fetchAnimeDetails(animeId)
-
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
   return (
-    <div className={cn('min-h-screen')}>
-      <div className="container mx-auto px-4 py-6 pt-0 space-y-8">
-        {/* Hero Section */}
-        <div className="w-full">
-          <HeroSection anime={data} />
+    <div className="container max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <AnimeHeader anime={anime.anime.info} />
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+          <MediaSection anime={anime.anime.info} />
+          <RelatedAnime animes={anime.relatedAnimes} />
         </div>
 
-        {/* Main Info div */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          <div className="col-span-1 md:col-span-2 lg:col-span-3">
-            <MainInfoCard anime={data} animeId={animeId} />
-          </div>
-          <div className="hidden md:block md:col-span-2"></div>
-        </div>
-
-        {/* Episodes div */}
-        <div className="w-full">
-          <div className="bg-card rounded-lg">
-            <EpisodesList anime={data} animeId={animeId} />
-          </div>
-        </div>
-
-        {/* Recommendations div */}
-        <div className="w-full">
-          <div className="bg-card rounded-lg">
-            <AnimeSuggestions anime={data} animeId={animeId} />
-          </div>
+        <div className="space-y-8">
+          <AnimeStats anime={anime.anime.info} />
+          <VoiceActorsSection voiceActors={anime.anime.info.charactersVoiceActors} />
         </div>
       </div>
     </div>
+  )
+}
+
+// @ts-ignore
+function VoiceActorsSection({ voiceActors }: { voiceActors: AnimeData['charactersVoiceActors'] }) {
+  return (
+    <Card className="p-6 space-y-4">
+      <h2 className="text-2xl font-bold">Voice Cast</h2>
+      <div className="space-y-4">
+        {voiceActors?.map(({ character, voiceActor }: any) => (
+          <div key={character.name} className="flex items-center gap-4">
+            <img
+              src={character.poster}
+              alt={character.name}
+              className="size-12 rounded-full object-cover"
+            />
+            <div>
+              <p className="font-medium">{character.name}</p>
+              <p className="text-sm text-muted-foreground">{voiceActor.name}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
   )
 }

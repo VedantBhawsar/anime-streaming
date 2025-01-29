@@ -15,25 +15,26 @@ interface MainInfoCardProps {
 }
 
 const fetchLikes = async (animeId: string) => {
-  const { data } = await api.get(`/anime/${animeId}/like`)
-  return data
+  // const { data } = await api.get(`/anime/${animeId}/like`)
+  // return data
+  return null
 }
 
 export function MainInfoCard({ anime, animeId }: MainInfoCardProps) {
   const { data } = useSession()
   const [likedUserIds, setLikedUserIds] = useState<string[]>([])
 
-  async function getlikes() {
-    const response = await fetchLikes(animeId)
-    if (!response) {
-      toast.error('Failed to fetch likes')
-    }
-    setLikedUserIds(response.userIds)
-  }
+  // async function getlikes() {
+  //   const response = await fetchLikes(animeId)
+  //   if (!response) {
+  //     toast.error('Failed to fetch likes')
+  //   }
+  //   setLikedUserIds(response.userIds)
+  // }
 
   useEffect(() => {
     if (animeId) {
-      getlikes()
+      // getlikes()
     }
   }, [animeId])
 
@@ -43,7 +44,7 @@ export function MainInfoCard({ anime, animeId }: MainInfoCardProps) {
         animeId,
         userId: data?.user.id,
       })
-      getlikes()
+      // getlikes()
       toast.success(response.message)
     } catch (error: any) {
       console.log('Error liking anime', error)

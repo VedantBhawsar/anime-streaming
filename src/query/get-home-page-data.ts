@@ -1,13 +1,14 @@
-import { GET_HOME_PAGE_DATA } from '@/constants/query-keys'
-import { api } from '@/lib/api'
 import { useQuery } from 'react-query'
 
-export const getHomePageData = async () => {
+import { GET_HOME_PAGE_DATA } from '@/constants/query-keys'
+import { api } from '@/lib/api'
+
+export async function getHomePageData() {
   const res = await api.get('/anime/home')
   return res.data as any
 }
 
-export const useGetHomePageData = () => {
+export function useGetHomePageData() {
   return useQuery({
     queryFn: getHomePageData,
     queryKey: [GET_HOME_PAGE_DATA],

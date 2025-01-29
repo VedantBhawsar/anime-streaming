@@ -8,9 +8,9 @@ import Link from 'next/link'
 
 interface IAnime {
   id: string
-  title: string
-  image: string
-  released?: string
+  name: string
+  poster: string
+  type?: string
 }
 
 interface IAnimeCardProps {
@@ -21,6 +21,7 @@ function AnimeCard({ anime }: IAnimeCardProps) {
   const [open, setOpen] = useState(false)
   const [animeIds, setAnimeIds] = useState<string[]>([])
   const { anime: fullAnime, setAnime } = useAnimeStore()
+  console.log(anime)
 
   useEffect(() => {
     const localAnime = getWishlistAnime()
@@ -33,8 +34,8 @@ function AnimeCard({ anime }: IAnimeCardProps) {
       <div className="relative overflow-hidden">
         <div className="bg-muted aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
           <img
-            src={anime.image}
-            alt={`${anime.title} poster`}
+            src={anime.poster}
+            alt={`${anime.name} poster`}
             className="object-cover w-full h-full transition-transform group-hover:scale-110 duration-300"
           />
 
@@ -72,13 +73,11 @@ function AnimeCard({ anime }: IAnimeCardProps) {
       {/* Title and Episode Number */}
       <div className="mt-3 grid grid-cols-4">
         <div className="pr-2 col-span-3">
-          <h4 className="text-base font-semibold text-foreground line-clamp-1" title={anime.title}>
-            {anime.title}
-          </h4>
+          <h4 className="text-base font-semibold text-foreground line-clamp-1">{anime.name}</h4>
         </div>
         <div className="flex justify-end">
           <div className="bg-accent text-accent-foreground text-sm font-medium px-2 py-1 rounded-md shadow-sm line-clamp-1">
-            <span className="font-bold">{anime.released}</span>
+            <span className="font-bold">{anime.type}</span>
           </div>
         </div>
       </div>

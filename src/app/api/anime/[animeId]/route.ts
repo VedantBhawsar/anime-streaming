@@ -1,32 +1,44 @@
-import { animeGogoClient } from '@/lib/animeClient'
-import { getRedisClient } from '@/lib/redisClient'
 import { NextResponse } from 'next/server'
+
+import { hianime } from '@/lib/animeClient'
+import { errorHandler } from '@/lib/error-handler'
+import { getRedisClient } from '@/lib/redisClient'
 
 export async function GET(request: Request, { params }: { params: Promise<{ animeId: string }> }) {
   try {
-    const animeId = (await params).animeId
+    const { animeId } = await params
+
     if (!animeId) {
-      return NextResponse.json({
-        error: 'Anime ID is required',
-      })
+      return NextResponse.json({ message: 'Anime ID is required' }, { status: 400 })
     }
 
     const redisClient = getRedisClient()
+
     const cachedAnime = await redisClient.get(animeId)
     if (cachedAnime) {
-      return NextResponse.json(JSON.parse(cachedAnime))
+      return NextResponse.json(JSON.parse(cachedAnime), {
+        headers: {
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=300',
+          'CDN-Cache-Control': 'public, max-age=3600',
+        },
+      })
     }
 
-    const response = await animeGogoClient.fetchAnimeInfo(animeId)
-    await redisClient.set(animeId, JSON.stringify(response))
-    return NextResponse.json(response, {
-      status: 200,
-    })
-  } catch (error: any) {
-    console.error(error?.message)
+    const animeData = await hianime.getInfo(animeId)
+    const episodeData = await hianime.getEpisodes(animeId)
+    await redisClient.set(animeId, JSON.stringify(animeData))
+
     return NextResponse.json(
-      { error: 'Internal Server Error', message: error?.message },
-      { status: 500 },
+      { ...animeData, episodes: episodeData },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=600, stale-while-revalidate=300',
+          'CDN-Cache-Control': 'public, max-age=600',
+        },
+      },
     )
+  } catch (error: Error | unknown) {
+    const handleError = errorHandler(error)
+    return NextResponse.json(handleError, { status: 500 })
   }
 }

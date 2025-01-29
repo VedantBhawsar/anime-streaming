@@ -12,6 +12,8 @@ export default defineConfig(
       '@stylistic/arrow-parens': 'off',
       'tailwindcss/classnames-order': 'off',
       'import/no-anonymous-default-export': 'off',
+      '@stylistic/brace-style': 'off',
+      '@eslint-react/no-array-index-key': 'off',
     },
   },
   {

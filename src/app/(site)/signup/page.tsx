@@ -1,11 +1,16 @@
 'use client'
-import { useForm, Controller } from 'react-hook-form'
+import { Github, Mail, Twitter } from 'lucide-react'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Github, Twitter, Mail } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -13,11 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import Link from 'next/link'
-import { signIn } from 'next-auth/react'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
-import { redirect } from 'next/navigation'
+import { Separator } from '@/components/ui/separator'
 
 type FormData = {
   username: string
@@ -61,7 +62,7 @@ export default function SignUp() {
       })
 
       if (response?.error) {
-        toast.error('Sign-up failed: ' + response.error)
+        toast.error(`Sign-up failed: ${response.error}`)
       } else if (response?.ok) {
         toast.success('Sign-up successful!')
         redirect('/')
@@ -142,7 +143,7 @@ export default function SignUp() {
                   rules={{
                     required: 'Email is required',
                     pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      value: /^[\w.%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                       message: 'Invalid email address',
                     },
                   }}
@@ -293,13 +294,13 @@ export default function SignUp() {
 
             <div className="flex justify-center gap-4">
               <Button variant="outline" size="icon" type="button">
-                <Github className="h-4 w-4" />
+                <Github className="size-4" />
               </Button>
               <Button variant="outline" size="icon" type="button">
-                <Twitter className="h-4 w-4" />
+                <Twitter className="size-4" />
               </Button>
               <Button variant="outline" size="icon" type="button">
-                <Mail className="h-4 w-4" />
+                <Mail className="size-4" />
               </Button>
             </div>
 

@@ -1,14 +1,16 @@
-import { animeGogoClient, animePaheClient } from '@/lib/animeClient'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+
+import { hianime } from '@/lib/animeClient'
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
+    const { searchParams } = request.nextUrl
     const query = searchParams.get('q') || ''
-    const response = await animeGogoClient.search(query)
+    const response = await hianime.search(query)
     return NextResponse.json(response)
   } catch (error: any) {
-    console.log(error)
+    console.error(error)
     return NextResponse.json(error)
   }
 }

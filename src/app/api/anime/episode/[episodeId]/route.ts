@@ -1,39 +1,44 @@
-import { animeGogoClient } from '@/lib/animeClient'
-import { prisma } from '@/lib/prismaClient'
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-export async function GET(req: Request, { params }: { params: Promise<{ episodeId: string }> }) {
-  const episodeId = (await params).episodeId
-  try {
-    const sources = await animeGogoClient.fetchEpisodeServers(episodeId)
+import { hianime } from '@/lib/animeClient'
 
-    const comments = await prisma.comment.findMany({
-      where: {
-        episode: episodeId,
-      },
-      select: {
-        id: true,
-        content: true,
-        createdAt: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-            email: true,
-          },
-        },
-      },
-    })
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ episodeId: string }> },
+) {
+  const { episodeId } = await params
+  const epId = req.nextUrl.searchParams.get('ep')
+  try {
+    const sources = await hianime.getEpisodeSources(`${episodeId}?ep=${epId}`)
+
+    // const comments = await prisma.comment.findMany({
+    //   where: {
+    //     episode: episodeId,
+    //   },
+    //   select: {
+    //     id: true,
+    //     content: true,
+    //     createdAt: true,
+    //     user: {
+    //       select: {
+    //         id: true,
+    //         name: true,
+    //         image: true,
+    //         email: true,
+    //       },
+    //     },
+    //   },
+    // })
 
     return NextResponse.json(
-      { sources, comments },
+      { ...sources, comments: [] },
       {
         status: 200,
       },
     )
   } catch (error: any) {
-    console.log(error.message)
+    console.error(error.message)
     return NextResponse.json(
       { error: 'Internal Server Error', message: error.message },
       { status: 500 },

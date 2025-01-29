@@ -1,15 +1,16 @@
 'use client'
+import { Github, Mail, Twitter } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Github, Twitter, Mail } from 'lucide-react'
-import { Controller, useForm } from 'react-hook-form'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 type FormData = {
   email: string
@@ -38,7 +39,7 @@ export default function SignIn() {
         redirect: false,
       })
       if (response?.error) {
-        alert('Sign-in failed: ' + response.error)
+        alert(`Sign-in failed: ${response.error}`)
       } else if (response?.ok) {
         router.push('/')
       }
@@ -74,7 +75,7 @@ export default function SignIn() {
                   rules={{
                     required: 'Email is required',
                     pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      value: /^[\w.%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                       message: 'Invalid email address',
                     },
                   }}
@@ -146,13 +147,13 @@ export default function SignIn() {
 
             <div className="flex justify-center gap-4">
               <Button variant="outline" size="icon">
-                <Github className="h-4 w-4" />
+                <Github className="size-4" />
               </Button>
               <Button variant="outline" size="icon">
-                <Twitter className="h-4 w-4" />
+                <Twitter className="size-4" />
               </Button>
               <Button variant="outline" size="icon">
-                <Mail className="h-4 w-4" />
+                <Mail className="size-4" />
               </Button>
             </div>
 

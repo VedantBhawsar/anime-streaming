@@ -1,10 +1,10 @@
-import { animeGogoClient } from '@/lib/animeClient'
-import { chat } from '@/lib/geminiClient'
 import { NextResponse } from 'next/server'
+
+import { chat } from '@/lib/geminiClient'
 
 export async function GET(req: Request, { params }: { params: Promise<{ animeId: string }> }) {
   try {
-    const animeId = (await params).animeId
+    const { animeId } = await params
     if (!animeId) {
       return NextResponse.json({
         error: 'Anime ID is required',

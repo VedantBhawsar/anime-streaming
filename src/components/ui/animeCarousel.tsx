@@ -3,7 +3,8 @@ import AnimeCard from './animeCard'
 import AnimeCardLoading from './animeCardLoading'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './carousel'
 import EpisodeCard from './episodeCard'
-import MovieCard, { IMovie } from './movieCard'
+import type { IMovie } from './movieCard'
+import MovieCard from './movieCard'
 
 export interface IEpisodes {
   id: string
@@ -42,7 +43,7 @@ function AnimeCarousel({
         <Carousel className="w-full">
           <CarouselContent>
             {isLoading
-              ? Array(10)
+              ? Array.from({ length: 10 })
                   .fill('')
                   .map((_, index) => (
                     <CarouselItem
@@ -54,30 +55,30 @@ function AnimeCarousel({
                   ))
               : isEpisodes
                 ? episodes?.map((episode: IEpisodes, index: number) => (
+                  <CarouselItem
+                    key={index}
+                    className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                  >
+                    <EpisodeCard key={index} episode={episode} />
+                  </CarouselItem>
+                ))
+                : isMovie
+                  ? movies?.map((movie: IMovie, index: number) => (
                     <CarouselItem
                       key={index}
                       className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
                     >
-                      <EpisodeCard key={index} episode={episode} />
+                      <MovieCard key={index} movie={movie} />
                     </CarouselItem>
                   ))
-                : isMovie
-                  ? movies?.map((movie: IMovie, index: number) => (
-                      <CarouselItem
-                        key={index}
-                        className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
-                      >
-                        <MovieCard key={index} movie={movie} />
-                      </CarouselItem>
-                    ))
                   : animes?.map((anime: any, index: number) => (
-                      <CarouselItem
-                        key={index}
-                        className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
-                      >
-                        <AnimeCard key={index} anime={anime} />
-                      </CarouselItem>
-                    ))}
+                    <CarouselItem
+                      key={index}
+                      className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 gap-4"
+                    >
+                      <AnimeCard key={index} anime={anime} />
+                    </CarouselItem>
+                  ))}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />

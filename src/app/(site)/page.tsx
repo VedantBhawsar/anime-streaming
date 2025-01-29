@@ -1,45 +1,39 @@
-import React from 'react'
-import AnimeCarousel from '@/components/ui/animeCarousel'
-import Hero from '@/components/Hero'
-import { api } from '@/lib/api'
-import { Skeleton } from '@/components/ui/skeleton'
+'use client'
+import * as React from 'react'
 
-export const revalidate = 3600
+import Hero from '@/components/Hero'
+import AnimeCarousel from '@/components/ui/animeCarousel'
+import { useGetHomePageData } from '@/query/get-home-page-data'
+import type { IEpisodes } from '@/types/episodes'
 
 interface AnimeData {
+  trendingAnimes: unknown
+  latestCompletedAnimes: unknown
+  latestEpisodeAnimes: IEpisodes[] | undefined
+  topUpcomingAnimes: unknown
   recentlyAddedEpisodes: {
     results: any[]
   }
   recentlyAddedMovies: {
     results: any[]
   }
-  mostPopular: {
-    results: any[]
-  }
-  topAiring: {
-    results: any[]
-  }
+  mostPopularAnimes: any[]
+  topAiringAnimes: any[]
 }
 
-export default async function HomePage() {
-  const { data } = await api.get<AnimeData>('/anime/home')
+export default function HomePage() {
+  const { data, isLoading, isError } = useGetHomePageData() as {
+    data: AnimeData | undefined
+    isLoading: boolean
+    isError: boolean
+  }
 
-  if (!data) {
-    return (
-      <div className="space-y-8 p-4">
-        <Skeleton className="w-full h-[400px] md:h-[500px] rounded-lg" />
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="space-y-4">
-            <Skeleton className="h-8 w-48" />
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((j) => (
-                <Skeleton key={j} className="h-40 rounded-lg" />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    )
+  if (isLoading) {
+    return <div className="space-y-8 p-4">Loading...</div>
+  }
+
+  if (isError) {
+    return <>Error... Something went wrong</>
   }
 
   return (
@@ -48,39 +42,54 @@ export default async function HomePage() {
         <Hero
           backgroundImage="https://p325k7wa.twic.pics/high/jujutsu-kaisen/jujutsu-kaisen-cursed-clash/01-news/jjkcc-character-trailer-1.jpg?twic=v1/resize=1080/step=10/quality=100"
           title="Jujutsu kaisen"
-          description={`Idly indulging in baseless paranormal activities with the Occult Club, high schooler Yuuji Itadori spends his days at either the clubroom or the hospital, where he visits his bedridden grandfather. However, this leisurely lifestyle soon takes a turn for the strange when he unknowingly encounters a cursed item.`}
+          description="Idly indulging in baseless paranormal activities with the Occult Club, high schooler Yuuji Itadori spends his days at either the clubroom or the hospital, where he visits his bedridden grandfather. However, this leisurely lifestyle soon takes a turn for the strange when he unknowingly encounters a cursed item."
         />
       </div>
 
       <div className="container mx-auto space-y-8 md:space-y-12 py-8 px-4 md:px-0 overflow-hidden">
         <div>
           <AnimeCarousel
-            episodes={data.recentlyAddedEpisodes?.results}
-            category="Recently Updated"
-            isMovie={true}
+            animes={data?.trendingAnimes}
+            category="Trending animes"
+            isLoading={false}
+          />
+        </div>
+        <div>
+          <AnimeCarousel
+            animes={data?.latestCompletedAnimes}
+            category="Latest completed anime"
             isLoading={false}
           />
         </div>
 
         <div>
           <AnimeCarousel
-            movies={data.recentlyAddedMovies?.results}
-            category="Recently Added Movies"
-            isMovie={true}
+            // @ts-ignore
+            episodes={data?.latestEpisodeAnimes}
+            category="Latest animes episode"
+            isEpisodes={true}
             isLoading={false}
           />
         </div>
 
         <div>
           <AnimeCarousel
-            animes={data.mostPopular?.results}
+            animes={data?.topUpcomingAnimes}
+            category="Upcoming animes"
+            isLoading={false}
+          />
+        </div>
+
+        <div>
+          <AnimeCarousel
+            animes={data?.mostPopularAnimes}
             category="Most Popular"
             isLoading={false}
           />
         </div>
 
         <div>
-          <AnimeCarousel animes={data.topAiring?.results} category="Top Airing" isLoading={false} />
+          <AnimeCarousel animes={data?.topAiringAnimes} category="Top Airing" isLoading={false} />
         </div>
       </div>
     </div>

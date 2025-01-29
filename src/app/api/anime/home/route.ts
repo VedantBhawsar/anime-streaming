@@ -1,44 +1,46 @@
-import { animeGogoClient } from '@/lib/animeClient'
-import { getRedisClient } from '@/lib/redisClient'
 import { NextResponse } from 'next/server'
 
+import { hianime } from '@/lib/animeClient'
+import { errorHandler } from '@/lib/error-handler'
+import { getRedisClient } from '@/lib/redisClient'
+
+const CACHE_KEY = 'homePageData'
+
 export async function GET() {
+  const redisClient = getRedisClient()
+
   try {
-    const redisClient = getRedisClient()
-    const cacheKey = 'homePageData'
-    const cachedData = await redisClient.get(cacheKey)
+    const cachedData = await redisClient.get(CACHE_KEY)
     if (cachedData) {
-      return NextResponse.json(JSON.parse(cachedData))
+      return NextResponse.json(JSON.parse(cachedData), {
+        headers: {
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=300',
+          'CDN-Cache-Control': 'public, max-age=3600',
+        },
+      })
     }
+  } catch (cacheError) {
+    console.error('Redis get error:', cacheError)
+  }
 
-    const [recentlyAddedEpisodes, mostPopular, topAiring, recentlyAddedMovies] = await Promise.all([
-      await animeGogoClient.fetchRecentEpisodes(),
-      await animeGogoClient.fetchPopular(),
-      await animeGogoClient.fetchTopAiring(),
-      await animeGogoClient.fetchRecentMovies(),
-    ])
+  try {
+    const homeData = await hianime.getHomePage()
 
-    const homeData = {
-      recentlyAddedEpisodes,
-      mostPopular,
-      topAiring,
-      recentlyAddedMovies,
+    try {
+      await redisClient.set(CACHE_KEY, JSON.stringify(homeData))
+    } catch (cacheError) {
+      console.error('Redis set error:', cacheError)
     }
-
-    await redisClient.set(cacheKey, JSON.stringify(homeData), {
-      EX: 1000 * 60 * 60,
-    })
 
     return NextResponse.json(homeData, {
-      status: 200,
+      headers: {
+        'Cache-Control': 'public, max-age=600, stale-while-revalidate=300',
+        'CDN-Cache-Control': 'public, max-age=600',
+      },
     })
   } catch (error: any) {
-    return NextResponse.json(
-      {
-        error: 'An error occurred while fetching data',
-        details: error.message,
-      },
-      { status: 500 },
-    )
+    console.error('Data fetch error:', error)
+    const handleError = errorHandler(error)
+    return NextResponse.json(handleError, { status: 500 })
   }
 }

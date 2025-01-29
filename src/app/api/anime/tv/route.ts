@@ -1,6 +1,7 @@
+import { NextResponse } from 'next/server'
+
 import { animePaheClient } from '@/lib/animeClient'
 import { getRedisClient } from '@/lib/redisClient'
-import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
@@ -18,7 +19,7 @@ export async function GET() {
 
     return NextResponse.json(response)
   } catch (error: any) {
-    console.log(error.message)
+    console.error(error.message)
     return NextResponse.json(error)
   }
 }
