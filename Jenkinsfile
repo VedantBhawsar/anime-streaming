@@ -14,7 +14,7 @@ pipeline {
   stages {
     stage('Checkout Code') {
       steps {
-        git 'https://github.com/YOUR_USERNAME/YOUR_NEXTJS_REPO.git'
+        git 'https://github.com/VedantBhawsar/anime-streaming.git'
       }
     }
 
